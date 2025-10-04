@@ -1,423 +1,101 @@
-// Enhanced Navbar SCSS
-// Variables
-$primary-color: #0066ff;
-$primary-dark: #0052cc;
-$accent-color: #ff6b35;
-$accent-light: #ff8f5a;
-$text-light: #ffffff;
-$text-muted: rgba(255, 255, 255, 0.8);
-$glass-bg: rgba(255, 255, 255, 0.08);
-$glass-border: rgba(255, 255, 255, 0.12);
-
-// Shadows
-$shadow-1: 0 4px 20px rgba(0, 102, 255, 0.15);
-$shadow-2: 0 8px 30px rgba(0, 102, 255, 0.25);
-$shadow-accent: 0 4px 12px rgba(255, 107, 53, 0.3);
-$shadow-accent-hover: 0 8px 25px rgba(255, 107, 53, 0.4);
-
-// Gradients
-$gradient-primary: linear-gradient(135deg, $primary-color 0%, $primary-dark 100%);
-$gradient-accent: linear-gradient(45deg, $accent-color, $accent-light);
-$gradient-accent-hover: linear-gradient(45deg, $accent-light, $accent-color);
-
-// Transitions
-$transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-$transition-ease: all 0.3s ease;
-
-// Font families
-$font-primary: 'Inter', sans-serif;
-$font-brand: 'Space Grotesk', sans-serif;
-
-// Breakpoints
-$mobile: 768px;
-
-// Mixins
-@mixin glass-effect($opacity: 0.1) {
-  background: rgba(255, 255, 255, $opacity);
-  backdrop-filter: blur(20px) saturate(1.8);
-  border: 1px solid $glass-border;
-}
-
-@mixin hover-lift($y: -2px) {
-  transform: translateY($y);
-  transition: $transition-smooth;
-}
-
-@mixin flex-center {
+.navbar-sidebar {
+  width: 220px;
+  background: #183153;
+  color: #fff;
+  padding: 32px 0 0 0;
   display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.navbar-avatar {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-}
-
-@mixin button-style {
-  padding: 10px 18px;
-  border-radius: 12px;
-  transition: $transition-smooth;
-  text-decoration: none;
-  font-weight: 500;
-  position: relative;
-  overflow: hidden;
-}
-
-// Reset
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-// Base styles
-body {
-  font-family: $font-primary;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  min-height: 100vh;
-  padding-top: 90px;
-}
-
-// Navbar component
-.navbar {
-  position: fixed;
-  top: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: calc(100% - 40px);
-  max-width: 1200px;
-  height: 70px;
-  z-index: 1000;
-  overflow: hidden;
-  
-  @include glass-effect();
-  @include flex-center;
-  
-  border-radius: 20px;
-  justify-content: space-between;
-  padding: 0 30px;
-  box-shadow: $shadow-1;
-  transition: $transition-smooth;
-
-  // Animated shine effect
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-    transition: left 0.8s ease;
+  margin-bottom: 16px;
+  svg {
+    margin-top: 10px;
   }
+  .navbar-admin-label {
+    color: #183153;
+    font-weight: bold;
+    margin-top: 8px;
+    font-size: 16px;
+  }
+}
 
-  &:hover {
-    box-shadow: $shadow-2;
-    transform: translateX(-50%) translateY(-2px);
-
-    &::before {
-      left: 100%;
+.navbar-nav {
+  width: 100%;
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    li {
+      width: 100%;
+      a {
+        display: block;
+        padding: 12px 32px;
+        color: #fff;
+        text-decoration: none;
+        transition: background 0.2s, color 0.2s;
+        border-left: 4px solid transparent;
+        font-size: 15px;
+        &.active, &:hover {
+          background: #25406b;
+          color: #fff;
+          border-left: 4px solid #4e8cff;
+        }
+      }
     }
   }
-
-  // Responsive adjustments
-  @media (max-width: $mobile) {
-    width: calc(100% - 20px);
-    top: 10px;
-    padding: 0 20px;
-    height: 60px;
-  }
 }
 
-// Brand section
-.navbar-brand {
-  @include flex-center;
-  text-decoration: none;
-  font-family: $font-brand;
-  font-weight: 700;
-  font-size: 1.5rem;
-  color: $text-light;
-  position: relative;
-  z-index: 2;
-  transition: $transition-ease;
-
-  &:hover {
-    transform: scale(1.05);
-  }
-
-  @media (max-width: $mobile) {
-    font-size: 1.3rem;
-  }
-}
-
-.navbar-logo {
-  width: 35px;
-  height: 35px;
-  background: $gradient-accent;
-  border-radius: 12px;
-  margin-right: 12px;
-  font-size: 1.2rem;
-  color: white;
-  font-weight: 600;
-  box-shadow: $shadow-accent;
-  transition: $transition-ease;
-  
-  @include flex-center;
-
-  &:hover {
-    transform: rotate(5deg) scale(1.1);
-    box-shadow: 0 6px 20px rgba(255, 107, 53, 0.5);
-  }
-
-  @media (max-width: $mobile) {
-    width: 30px;
-    height: 30px;
-    margin-right: 10px;
-  }
-}
-
-// Navigation links
-.navbar-links {
+.navbar-features {
+  margin-top: auto;
+  margin-bottom: 24px;
   display: flex;
-  list-style: none;
-  gap: 8px;
   align-items: center;
+  gap: 8px;
+  color: #fff;
+  font-size: 14px;
+  .navbar-new-badge {
+    background: #4e8cff;
+    color: #fff;
+    border-radius: 8px;
+    padding: 2px 8px;
+    font-size: 12px;
+    margin-left: 4px;
+    font-weight: bold;
+  }
+}
 
-  li a {
-    @include flex-center;
-    @include button-style;
-    
-    gap: 8px;
-    color: $text-muted;
-    font-size: 0.95rem;
-
-    // Glass effect overlay
-    &::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: $glass-bg;
-      border-radius: 12px;
-      opacity: 0;
-      transition: $transition-ease;
-    }
-
-    // Icon styling
-    i {
-      font-size: 0.9rem;
-      opacity: 0.8;
-      transition: $transition-ease;
-    }
-
-    // Hover effects
-    &:hover {
-      color: $text-light;
-      @include hover-lift(-1px);
-
-      &::before {
-        opacity: 1;
+@media (max-width: 900px) {
+  .navbar-sidebar {
+    width: 100px;
+    padding: 16px 0 0 0;
+    .navbar-avatar {
+      width: 60px;
+      height: 60px;
+      svg {
+        width: 40px;
+        height: 40px;
       }
-
-      i {
-        opacity: 1;
-        transform: scale(1.1);
+      .navbar-admin-label {
+        font-size: 12px;
       }
     }
-
-    // Active state
-    &.active {
-      color: $text-light;
-      background: $glass-bg;
-      backdrop-filter: blur(10px);
-      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
-
-      i {
-        color: $accent-color;
-      }
+    .navbar-nav ul li a {
+      padding: 10px 10px;
+      font-size: 13px;
     }
-  }
-
-  // Responsive mobile menu
-  @media (max-width: $mobile) {
-    position: absolute;
-    top: calc(100% + 10px);
-    right: 0;
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(20px);
-    border-radius: 16px;
-    padding: 20px;
-    flex-direction: column;
-    gap: 8px;
-    min-width: 200px;
-    transform: translateY(-10px);
-    opacity: 0;
-    visibility: hidden;
-    transition: $transition-smooth;
-    border: 1px solid $glass-border;
-
-    &.active {
-      transform: translateY(0);
-      opacity: 1;
-      visibility: visible;
+    .navbar-features {
+      font-size: 12px;
     }
-
-    li a {
-      width: 100%;
-      justify-content: flex-start;
-      padding: 12px 16px;
-    }
-  }
-}
-
-// CTA Button
-.cta-button {
-  background: $gradient-accent !important;
-  color: white !important;
-  font-weight: 600 !important;
-  padding: 12px 24px !important;
-  border-radius: 14px !important;
-  box-shadow: $shadow-accent !important;
-
-  &::before {
-    background: $gradient-accent-hover !important;
-  }
-
-  &:hover {
-    @include hover-lift(-2px);
-    box-shadow: $shadow-accent-hover !important;
-  }
-}
-
-// Mobile menu toggle
-.mobile-menu-toggle {
-  display: none;
-  background: none;
-  border: none;
-  color: $text-light;
-  font-size: 1.2rem;
-  cursor: pointer;
-  padding: 8px;
-  border-radius: 8px;
-  transition: $transition-ease;
-
-  &:hover {
-    background: $glass-bg;
-  }
-
-  @media (max-width: $mobile) {
-    display: block;
-  }
-}
-
-// Progress indicator
-.progress-indicator {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  height: 2px;
-  background: $gradient-accent;
-  width: 30%;
-  border-radius: 2px;
-  animation: progress 4s ease-in-out infinite;
-}
-
-// Animations
-@keyframes progress {
-  0%, 100% { 
-    transform: translateX(0); 
-    width: 30%; 
-  }
-  50% { 
-    transform: translateX(200%); 
-    width: 40%; 
-  }
-}
-
-// Demo content styles (optional)
-.demo-content {
-  padding: 40px 20px;
-  text-align: center;
-  color: white;
-  max-width: 800px;
-  margin: 0 auto;
-
-  h1 {
-    font-size: 3rem;
-    font-weight: 700;
-    margin-bottom: 20px;
-    font-family: $font-brand;
-
-    @media (max-width: $mobile) {
-      font-size: 2rem;
-    }
-  }
-
-  p {
-    font-size: 1.2rem;
-    opacity: 0.9;
-    line-height: 1.6;
-
-    @media (max-width: $mobile) {
-      font-size: 1rem;
-    }
-  }
-}
-
-// Utility classes
-.text-center { text-align: center; }
-.text-light { color: $text-light; }
-.text-muted { color: $text-muted; }
-
-.bg-glass {
-  @include glass-effect();
-}
-
-.shadow-1 { box-shadow: $shadow-1; }
-.shadow-2 { box-shadow: $shadow-2; }
-
-.transition-smooth { transition: $transition-smooth; }
-.transition-ease { transition: $transition-ease; }
-
-// Advanced hover effects for premium feel
-.navbar-links li a {
-  &:not(.cta-button) {
-    position: relative;
-
-    // Ripple effect on click
-    &::after {
-      content: '';
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 0;
-      height: 0;
-      background: rgba(255, 255, 255, 0.2);
-      border-radius: 50%;
-      transform: translate(-50%, -50%);
-      transition: width 0.3s ease, height 0.3s ease;
-    }
-
-    &:active::after {
-      width: 100%;
-      height: 100%;
-    }
-  }
-}
-
-// Scroll-based navbar behavior (requires JavaScript)
-.navbar {
-  &.navbar-hidden {
-    transform: translateX(-50%) translateY(-100%);
-  }
-
-  &.navbar-visible {
-    transform: translateX(-50%) translateY(0);
-  }
-}
-
-// Dark mode support (optional)
-@media (prefers-color-scheme: dark) {
-  .navbar {
-    background: rgba(0, 0, 0, 0.2);
-    border-color: rgba(255, 255, 255, 0.1);
   }
 }
