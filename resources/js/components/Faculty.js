@@ -1,6 +1,133 @@
-import React, { useState } from "react";
+import React, { useState, memo } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "./Navbar";
+
+const FacultyFullForm = memo(({ isEdit, onSubmit, onCancel, form, setForm }) => (
+    <div className="faculty-form-overlay">
+        <form className="faculty-full-form" onSubmit={onSubmit}>
+            <div className="faculty-form-header-row">
+                <h2 className="faculty-form-title">{isEdit ? "Edit Faculty" : "Add Faculty"}</h2>
+                <input
+                    className="faculty-form-designation"
+                    type="text"
+                    placeholder="Designation"
+                    value={form.designation}
+                    onChange={e => setForm({ ...form, designation: e.target.value })}
+                />
+            </div>
+            <div className="faculty-form-section-label">Manually</div>
+            <div className="faculty-form-row">
+                <div className="faculty-form-group" style={{ flex: 1 }}>
+                    <label>Full Name</label>
+                    <input
+                        type="text"
+                        required
+                        value={form.name}
+                        onChange={e => setForm({ ...form, name: e.target.value })}
+                        placeholder="Full Name"
+                    />
+                </div>
+            </div>
+            <div className="faculty-form-row">
+                <div className="faculty-form-group" style={{ flex: 2 }}>
+                    <label>Email address</label>
+                    <input
+                        type="email"
+                        required
+                        value={form.email}
+                        onChange={e => setForm({ ...form, email: e.target.value })}
+                        placeholder="Email address"
+                    />
+                </div>
+                <div className="faculty-form-group" style={{ flex: 1 }}>
+                    <label>Class</label>
+                    <input
+                        type="text"
+                        required
+                        value={form.class}
+                        onChange={e => setForm({ ...form, class: e.target.value })}
+                        placeholder="Class"
+                    />
+                </div>
+                <div className="faculty-form-group" style={{ flex: 1 }}>
+                    <label>Gender</label>
+                    <select
+                        required
+                        value={form.gender}
+                        onChange={e => setForm({ ...form, gender: e.target.value })}
+                    >
+                        <option value="">Select</option>
+                        <option>Male</option>
+                        <option>Female</option>
+                    </select>
+                </div>
+            </div>
+            <div className="faculty-form-row">
+                <div className="faculty-form-group" style={{ flex: 1 }}>
+                    <label>Password</label>
+                    <input
+                        type="password"
+                        required={!isEdit}
+                        value={form.password}
+                        onChange={e => setForm({ ...form, password: e.target.value })}
+                        placeholder="Password"
+                    />
+                </div>
+                <div className="faculty-form-group" style={{ flex: 1 }}>
+                    <label>Phone number</label>
+                    <input
+                        type="text"
+                        value={form.phone}
+                        onChange={e => setForm({ ...form, phone: e.target.value })}
+                        placeholder="Phone number"
+                    />
+                </div>
+            </div>
+            <div className="faculty-form-row">
+                <div className="faculty-form-group" style={{ flex: 1 }}>
+                    <label>Subject</label>
+                    <input
+                        type="text"
+                        required
+                        value={form.subject}
+                        onChange={e => setForm({ ...form, subject: e.target.value })}
+                        placeholder="Subject"
+                    />
+                </div>
+                <div className="faculty-form-group" style={{ flex: 1 }}>
+                    <label>Age</label>
+                    <input
+                        type="number"
+                        required
+                        value={form.age}
+                        onChange={e => setForm({ ...form, age: e.target.value })}
+                        placeholder="Age"
+                    />
+                </div>
+            </div>
+            <div className="faculty-form-row">
+                <div className="faculty-form-group" style={{ flex: 1 }}>
+                    <label>About</label>
+                    <textarea
+                        required
+                        value={form.about}
+                        onChange={e => setForm({ ...form, about: e.target.value })}
+                        placeholder="About this faculty member"
+                        style={{ minHeight: 60 }}
+                    />
+                </div>
+            </div>
+            <div className="faculty-form-actions">
+                <button type="submit" className="faculty-form-submit">
+                    {isEdit ? "Save Changes" : "Add Faculty"}
+                </button>
+                <button type="button" className="faculty-form-cancel" onClick={onCancel}>
+                    Cancel
+                </button>
+            </div>
+        </form>
+    </div>
+));
 
 export default function Faculty() {
     const navigate = useNavigate();
@@ -121,137 +248,6 @@ export default function Faculty() {
         setSelectedUser(null);
     };
 
-    // Full-page Add/Edit Faculty Form
-    const FacultyFullForm = ({ isEdit, onSubmit, onCancel }) => (
-        <div className="faculty-form-overlay">
-            <form className="faculty-full-form" onSubmit={onSubmit}>
-                <div className="faculty-form-header-row">
-                    <h2 className="faculty-form-title">{isEdit ? "Edit Faculty" : "Add Faculty"}</h2>
-                    <input
-                        className="faculty-form-designation"
-                        type="text"
-                        placeholder="Designation"
-                        value={form.designation}
-                        onChange={e => setForm({ ...form, designation: e.target.value })}
-                    />
-                </div>
-                <div className="faculty-form-section-label">Manually</div>
-                <div className="faculty-form-row">
-                    <div className="faculty-form-group" style={{ flex: 1 }}>
-                        <label>Full Name</label>
-                        <input
-                            type="text"
-                            required
-                            value={form.name}
-                            onChange={e => setForm({ ...form, name: e.target.value })}
-                            placeholder="Full Name"
-                        />
-                    </div>
-                </div>
-                <div className="faculty-form-row">
-                    <div className="faculty-form-group" style={{ flex: 2 }}>
-                        <label>Email address</label>
-                        <input
-                            type="email"
-                            required
-                            value={form.email}
-                            onChange={e => setForm({ ...form, email: e.target.value })}
-                            placeholder="Email address"
-                        />
-                    </div>
-                    <div className="faculty-form-group" style={{ flex: 1 }}>
-                        <label>Class</label>
-                        <input
-                            type="text"
-                            required
-                            value={form.class}
-                            onChange={e => setForm({ ...form, class: e.target.value })}
-                            placeholder="Class"
-                        />
-                    </div>
-                    <div className="faculty-form-group" style={{ flex: 1 }}>
-                        <label>Gender</label>
-                        <select
-                            required
-                            value={form.gender}
-                            onChange={e => setForm({ ...form, gender: e.target.value })}
-                        >
-                            <option value="">Select</option>
-                            <option>Male</option>
-                            <option>Female</option>
-                        </select>
-                    </div>
-                </div>
-                <div className="faculty-form-row">
-                    <div className="faculty-form-group" style={{ flex: 1 }}>
-                        <label>Password</label>
-                        <input
-                            type="password"
-                            required={!isEdit}
-                            value={form.password}
-                            onChange={e => setForm({ ...form, password: e.target.value })}
-                            placeholder="Password"
-                        />
-                    </div>
-                    <div className="faculty-form-group" style={{ flex: 1 }}>
-                        <label>Phone number</label>
-                        <input
-                            type="text"
-                            value={form.phone}
-                            onChange={e => setForm({ ...form, phone: e.target.value })}
-                            placeholder="Phone number"
-                        />
-                    </div>
-                </div>
-                <div className="faculty-form-row">
-                    <div className="faculty-form-group" style={{ flex: 1 }}>
-                        <label>Subject</label>
-                        <input
-                            type="text"
-                            required
-                            value={form.subject}
-                            onChange={e => setForm({ ...form, subject: e.target.value })}
-                            placeholder="Subject"
-                        />
-                    </div>
-                    <div className="faculty-form-group" style={{ flex: 1 }}>
-                        <label>Age</label>
-                        <input
-                            type="number"
-                            required
-                            value={form.age}
-                            onChange={e => setForm({ ...form, age: e.target.value })}
-                            placeholder="Age"
-                        />
-                    </div>
-                </div>
-                <div className="faculty-form-row">
-                    <div className="faculty-form-group" style={{ flex: 1 }}>
-                        <label>About</label>
-                        <textarea
-                            required
-                            value={form.about}
-                            onChange={e => setForm({ ...form, about: e.target.value })}
-                            placeholder="About this faculty member"
-                            style={{ minHeight: 60 }}
-                        />
-                    </div>
-                </div>
-                <div className="faculty-form-actions">
-                    <button type="button" className="faculty-form-add-another" tabIndex={-1}>
-                        <span style={{ fontSize: 18, marginRight: 6 }}>⨁</span> Add another
-                    </button>
-                    <button type="submit" className="faculty-form-submit">
-                        {isEdit ? "Save Changes" : "Add Faculty"}
-                    </button>
-                    <button type="button" className="faculty-form-cancel" onClick={onCancel}>
-                        Cancel
-                    </button>
-                </div>
-            </form>
-        </div>
-    );
-
     return (
         <div style={{ display: "flex", minHeight: "100vh", background: "#f8fafc" }}>
             <Navbar />
@@ -298,6 +294,8 @@ export default function Faculty() {
                         isEdit={false}
                         onSubmit={handleAddSubmit}
                         onCancel={() => setShowAdd(false)}
+                        form={form}
+                        setForm={setForm}
                     />
                 )}
 
@@ -307,6 +305,8 @@ export default function Faculty() {
                         isEdit={true}
                         onSubmit={handleEditSubmit}
                         onCancel={() => setShowEdit(false)}
+                        form={form}
+                        setForm={setForm}
                     />
                 )}
 
