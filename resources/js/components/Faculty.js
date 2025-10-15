@@ -7,15 +7,18 @@ const FacultyFullForm = memo(({ isEdit, onSubmit, onCancel, form, setForm }) => 
         <form className="faculty-full-form" onSubmit={onSubmit}>
             <div className="faculty-form-header-row">
                 <h2 className="faculty-form-title">{isEdit ? "Edit Faculty" : "Add Faculty"}</h2>
-                <input
-                    className="faculty-form-designation"
-                    type="text"
-                    placeholder="Designation"
-                    value={form.designation}
-                    onChange={e => setForm({ ...form, designation: e.target.value })}
-                />
+                <div className="faculty-form-group" style={{ minWidth: 260 }}>
+                    <input
+                        type="text"
+                        required
+                        className="faculty-form-designation"
+                        value={form.department}
+                        onChange={e => setForm({ ...form, department: e.target.value })}
+                        placeholder="Department"
+                    />
+                </div>
             </div>
-            <div className="faculty-form-section-label">Manually</div>
+            <div className="faculty-form-section-label"></div>
             <div className="faculty-form-row">
                 <div className="faculty-form-group" style={{ flex: 1 }}>
                     <label>Full Name</label>
@@ -63,16 +66,6 @@ const FacultyFullForm = memo(({ isEdit, onSubmit, onCancel, form, setForm }) => 
                 </div>
             </div>
             <div className="faculty-form-row">
-                <div className="faculty-form-group" style={{ flex: 1 }}>
-                    <label>Password</label>
-                    <input
-                        type="password"
-                        required={!isEdit}
-                        value={form.password}
-                        onChange={e => setForm({ ...form, password: e.target.value })}
-                        placeholder="Password"
-                    />
-                </div>
                 <div className="faculty-form-group" style={{ flex: 1 }}>
                     <label>Phone number</label>
                     <input
@@ -142,40 +135,20 @@ export default function Faculty() {
         gender: "Male",
         avatar: "",
         about: "",
-        password: "",
         phone: "",
-        designation: ""
+        department: ""
     };
 
     // Faculty list state
-    const [facultyList, setFacultyList] = useState([
-    {
-        name: "Doms Red",
-        subject: "Biology Instructor",
-        class: "V-19",
-        email: "Doms@gmail.ph",
-        gender: "Female",
-        avatar: "https://randomuser.me/api/portraits/men/32.jpg",
-        about: "Nulla Lorem mollit cupidatat irure. Laborum magna nulla duis ullamco cillum dolor. Voluptate exercitation incididunt aliquip deserunt reprehenderit elit laborum. Nulla Lorem mollit cupidatat irure. Laborum magna nulla duis ullamco cillum dolor. Voluptate exercitation incididunt aliquip deserunt reprehenderit elit laborum.",
-        age: "", // <-- change from "--" to ""
-        password: "",
-        phone: "",
-        designation: ""
-    },
-    {
-        name: "James Blue",
-        subject: "Fundamentals Of Sport",
-        class: "V-4",
-        email: "jebrontlame@gmail.com",
-        gender: "Male",
-        avatar: "https://randomuser.me/api/portraits/men/33.jpg",
-        about: "Short bio for James Blue.",
-        age: "", // <-- change from "--" to ""
-        password: "",
-        phone: "",
-        designation: ""
-    }
-]);
+    const [facultyList, setFacultyList] = useState([]);
+
+    // Fetch faculty list from backend on mount
+    React.useEffect(() => {
+        fetch('/api/faculties')
+            .then(res => res.json())
+            .then(data => setFacultyList(data))
+            .catch(() => setFacultyList([]));
+    }, []);
 
     // Modal and form state
     const [showAdd, setShowAdd] = useState(false);
@@ -193,36 +166,60 @@ export default function Faculty() {
         setForm(defaultForm);
         setShowAdd(true);
     };
-    const handleAddSubmit = (e) => {
+    const handleAddSubmit = async (e) => {
         e.preventDefault();
-        setFacultyList([
-            ...facultyList,
-            {
-                ...form,
-                avatar: form.avatar || "https://randomuser.me/api/portraits/men/34.jpg"
+        try {
+            const res = await fetch('/api/faculties', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    ...form,
+                    avatar: form.avatar || "https://randomuser.me/api/portraits/men/34.jpg"
+                })
+            });
+            if (res.ok) {
+                const newFaculty = await res.json();
+                setFacultyList([...facultyList, newFaculty]);
+                setShowAdd(false);
             }
-        ]);
-        setShowAdd(false);
+        } catch (err) {}
     };
 
     // Edit Faculty
     const handleEdit = (idx) => {
         setEditIndex(idx);
-        setForm({ ...defaultForm, ...facultyList[idx] }); // Ensures all fields are present
+        setForm({ ...defaultForm, ...facultyList[idx] });
         setShowEdit(true);
     };
-    const handleEditSubmit = (e) => {
+    const handleEditSubmit = async (e) => {
         e.preventDefault();
-        const updated = [...facultyList];
-        updated[editIndex] = form;
-        setFacultyList(updated);
-        setShowEdit(false);
+        try {
+            const id = facultyList[editIndex].id;
+            const res = await fetch(`/api/faculties/${id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(form)
+            });
+            if (res.ok) {
+                const updatedFaculty = await res.json();
+                const updated = [...facultyList];
+                updated[editIndex] = updatedFaculty;
+                setFacultyList(updated);
+                setShowEdit(false);
+            }
+        } catch (err) {}
     };
 
     // Delete Faculty
-    const handleDelete = (idx) => {
+    const handleDelete = async (idx) => {
         if (window.confirm("Are you sure you want to delete this record?")) {
-            setFacultyList(facultyList.filter((_, i) => i !== idx));
+            const id = facultyList[idx].id;
+            try {
+                const res = await fetch(`/api/faculties/${id}`, { method: 'DELETE' });
+                if (res.ok) {
+                    setFacultyList(facultyList.filter((_, i) => i !== idx));
+                }
+            } catch (err) {}
         }
     };
 
@@ -409,6 +406,7 @@ export default function Faculty() {
                                     <th>Subject</th>
                                     <th>Class</th>
                                     <th>Email address</th>
+                                    <th>Department</th>
                                     <th>Gender</th>
                                     <th></th>
                                 </tr>
@@ -425,6 +423,7 @@ export default function Faculty() {
                                         <td onClick={() => handleUserClick(f)}>{f.subject}</td>
                                         <td onClick={() => handleUserClick(f)}>{f.class}</td>
                                         <td onClick={() => handleUserClick(f)}>{f.email}</td>
+                                        <td onClick={() => handleUserClick(f)}>{f.department}</td>
                                         <td onClick={() => handleUserClick(f)}>{f.gender}</td>
                                         <td>
                                             <button className="faculty-icon-btn" title="Edit" onClick={e => { e.stopPropagation(); handleEdit(idx); }}>

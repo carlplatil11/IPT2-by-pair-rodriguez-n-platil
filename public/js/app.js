@@ -70175,10 +70175,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Navbar__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Navbar */ "./resources/js/components/Navbar.js");
 /* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
+function _regenerator() { /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/babel/babel/blob/main/packages/babel-helpers/LICENSE */ var e, t, r = "function" == typeof Symbol ? Symbol : {}, n = r.iterator || "@@iterator", o = r.toStringTag || "@@toStringTag"; function i(r, n, o, i) { var c = n && n.prototype instanceof Generator ? n : Generator, u = Object.create(c.prototype); return _regeneratorDefine2(u, "_invoke", function (r, n, o) { var i, c, u, f = 0, p = o || [], y = !1, G = { p: 0, n: 0, v: e, a: d, f: d.bind(e, 4), d: function d(t, r) { return i = t, c = 0, u = e, G.n = r, a; } }; function d(r, n) { for (c = r, u = n, t = 0; !y && f && !o && t < p.length; t++) { var o, i = p[t], d = G.p, l = i[2]; r > 3 ? (o = l === n) && (u = i[(c = i[4]) ? 5 : (c = 3, 3)], i[4] = i[5] = e) : i[0] <= d && ((o = r < 2 && d < i[1]) ? (c = 0, G.v = n, G.n = i[1]) : d < l && (o = r < 3 || i[0] > n || n > l) && (i[4] = r, i[5] = n, G.n = l, c = 0)); } if (o || r > 1) return a; throw y = !0, n; } return function (o, p, l) { if (f > 1) throw TypeError("Generator is already running"); for (y && 1 === p && d(p, l), c = p, u = l; (t = c < 2 ? e : u) || !y;) { i || (c ? c < 3 ? (c > 1 && (G.n = -1), d(c, u)) : G.n = u : G.v = u); try { if (f = 2, i) { if (c || (o = "next"), t = i[o]) { if (!(t = t.call(i, u))) throw TypeError("iterator result is not an object"); if (!t.done) return t; u = t.value, c < 2 && (c = 0); } else 1 === c && (t = i["return"]) && t.call(i), c < 2 && (u = TypeError("The iterator does not provide a '" + o + "' method"), c = 1); i = e; } else if ((t = (y = G.n < 0) ? u : r.call(n, G)) !== a) break; } catch (t) { i = e, c = 1, u = t; } finally { f = 1; } } return { value: t, done: y }; }; }(r, o, i), !0), u; } var a = {}; function Generator() {} function GeneratorFunction() {} function GeneratorFunctionPrototype() {} t = Object.getPrototypeOf; var c = [][n] ? t(t([][n]())) : (_regeneratorDefine2(t = {}, n, function () { return this; }), t), u = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(c); function f(e) { return Object.setPrototypeOf ? Object.setPrototypeOf(e, GeneratorFunctionPrototype) : (e.__proto__ = GeneratorFunctionPrototype, _regeneratorDefine2(e, o, "GeneratorFunction")), e.prototype = Object.create(u), e; } return GeneratorFunction.prototype = GeneratorFunctionPrototype, _regeneratorDefine2(u, "constructor", GeneratorFunctionPrototype), _regeneratorDefine2(GeneratorFunctionPrototype, "constructor", GeneratorFunction), GeneratorFunction.displayName = "GeneratorFunction", _regeneratorDefine2(GeneratorFunctionPrototype, o, "GeneratorFunction"), _regeneratorDefine2(u), _regeneratorDefine2(u, o, "Generator"), _regeneratorDefine2(u, n, function () { return this; }), _regeneratorDefine2(u, "toString", function () { return "[object Generator]"; }), (_regenerator = function _regenerator() { return { w: i, m: f }; })(); }
+function _regeneratorDefine2(e, r, n, t) { var i = Object.defineProperty; try { i({}, "", {}); } catch (e) { i = 0; } _regeneratorDefine2 = function _regeneratorDefine(e, r, n, t) { function o(r, n) { _regeneratorDefine2(e, r, function (e) { return this._invoke(r, n, e); }); } r ? i ? i(e, r, { value: n, enumerable: !t, configurable: !t, writable: !t }) : e[r] = n : (o("next", 0), o("throw", 1), o("return", 2)); }, _regeneratorDefine2(e, r, n, t); }
 function _toConsumableArray(r) { return _arrayWithoutHoles(r) || _iterableToArray(r) || _unsupportedIterableToArray(r) || _nonIterableSpread(); }
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 function _iterableToArray(r) { if ("undefined" != typeof Symbol && null != r[Symbol.iterator] || null != r["@@iterator"]) return Array.from(r); }
 function _arrayWithoutHoles(r) { if (Array.isArray(r)) return _arrayLikeToArray(r); }
+function asyncGeneratorStep(n, t, e, r, o, a, c) { try { var i = n[a](c), u = i.value; } catch (n) { return void e(n); } i.done ? t(u) : Promise.resolve(u).then(r, o); }
+function _asyncToGenerator(n) { return function () { var t = this, e = arguments; return new Promise(function (r, o) { var a = n.apply(t, e); function _next(n) { asyncGeneratorStep(a, r, o, _next, _throw, "next", n); } function _throw(n) { asyncGeneratorStep(a, r, o, _next, _throw, "throw", n); } _next(void 0); }); }; }
 function _slicedToArray(r, e) { return _arrayWithHoles(r) || _iterableToArrayLimit(r, e) || _unsupportedIterableToArray(r, e) || _nonIterableRest(); }
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 function _unsupportedIterableToArray(r, a) { if (r) { if ("string" == typeof r) return _arrayLikeToArray(r, a); var t = {}.toString.call(r).slice(8, -1); return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? Array.from(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? _arrayLikeToArray(r, a) : void 0; } }
@@ -70210,20 +70214,26 @@ var FacultyFullForm = /*#__PURE__*/(0,react__WEBPACK_IMPORTED_MODULE_0__.memo)(f
         children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("h2", {
           className: "faculty-form-title",
           children: isEdit ? "Edit Faculty" : "Add Faculty"
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("input", {
-          className: "faculty-form-designation",
-          type: "text",
-          placeholder: "Designation",
-          value: form.designation,
-          onChange: function onChange(e) {
-            return setForm(_objectSpread(_objectSpread({}, form), {}, {
-              designation: e.target.value
-            }));
-          }
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+          className: "faculty-form-group",
+          style: {
+            minWidth: 260
+          },
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("input", {
+            type: "text",
+            required: true,
+            className: "faculty-form-designation",
+            value: form.department,
+            onChange: function onChange(e) {
+              return setForm(_objectSpread(_objectSpread({}, form), {}, {
+                department: e.target.value
+              }));
+            },
+            placeholder: "Department"
+          })
         })]
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
-        className: "faculty-form-section-label",
-        children: "Manually"
+        className: "faculty-form-section-label"
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
         className: "faculty-form-row",
         children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
@@ -70308,27 +70318,9 @@ var FacultyFullForm = /*#__PURE__*/(0,react__WEBPACK_IMPORTED_MODULE_0__.memo)(f
             })]
           })]
         })]
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
         className: "faculty-form-row",
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
-          className: "faculty-form-group",
-          style: {
-            flex: 1
-          },
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("label", {
-            children: "Password"
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("input", {
-            type: "password",
-            required: !isEdit,
-            value: form.password,
-            onChange: function onChange(e) {
-              return setForm(_objectSpread(_objectSpread({}, form), {}, {
-                password: e.target.value
-              }));
-            },
-            placeholder: "Password"
-          })]
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
           className: "faculty-form-group",
           style: {
             flex: 1
@@ -70345,7 +70337,7 @@ var FacultyFullForm = /*#__PURE__*/(0,react__WEBPACK_IMPORTED_MODULE_0__.memo)(f
             },
             placeholder: "Phone number"
           })]
-        })]
+        })
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
         className: "faculty-form-row",
         children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
@@ -70437,42 +70429,26 @@ function Faculty() {
     gender: "Male",
     avatar: "",
     about: "",
-    password: "",
     phone: "",
-    designation: ""
+    department: ""
   };
 
   // Faculty list state
-  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([{
-      name: "Doms Red",
-      subject: "Biology Instructor",
-      "class": "V-19",
-      email: "Doms@gmail.ph",
-      gender: "Female",
-      avatar: "https://randomuser.me/api/portraits/men/32.jpg",
-      about: "Nulla Lorem mollit cupidatat irure. Laborum magna nulla duis ullamco cillum dolor. Voluptate exercitation incididunt aliquip deserunt reprehenderit elit laborum. Nulla Lorem mollit cupidatat irure. Laborum magna nulla duis ullamco cillum dolor. Voluptate exercitation incididunt aliquip deserunt reprehenderit elit laborum.",
-      age: "",
-      // <-- change from "--" to ""
-      password: "",
-      phone: "",
-      designation: ""
-    }, {
-      name: "James Blue",
-      subject: "Fundamentals Of Sport",
-      "class": "V-4",
-      email: "jebrontlame@gmail.com",
-      gender: "Male",
-      avatar: "https://randomuser.me/api/portraits/men/33.jpg",
-      about: "Short bio for James Blue.",
-      age: "",
-      // <-- change from "--" to ""
-      password: "",
-      phone: "",
-      designation: ""
-    }]),
+  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
     _useState2 = _slicedToArray(_useState, 2),
     facultyList = _useState2[0],
     setFacultyList = _useState2[1];
+
+  // Fetch faculty list from backend on mount
+  react__WEBPACK_IMPORTED_MODULE_0___default().useEffect(function () {
+    fetch('/api/faculties').then(function (res) {
+      return res.json();
+    }).then(function (data) {
+      return setFacultyList(data);
+    })["catch"](function () {
+      return setFacultyList([]);
+    });
+  }, []);
 
   // Modal and form state
   var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
@@ -70511,36 +70487,143 @@ function Faculty() {
     setForm(defaultForm);
     setShowAdd(true);
   };
-  var handleAddSubmit = function handleAddSubmit(e) {
-    e.preventDefault();
-    setFacultyList([].concat(_toConsumableArray(facultyList), [_objectSpread(_objectSpread({}, form), {}, {
-      avatar: form.avatar || "https://randomuser.me/api/portraits/men/34.jpg"
-    })]));
-    setShowAdd(false);
-  };
+  var handleAddSubmit = /*#__PURE__*/function () {
+    var _ref2 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee(e) {
+      var res, newFaculty, _t;
+      return _regenerator().w(function (_context) {
+        while (1) switch (_context.p = _context.n) {
+          case 0:
+            e.preventDefault();
+            _context.p = 1;
+            _context.n = 2;
+            return fetch('/api/faculties', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify(_objectSpread(_objectSpread({}, form), {}, {
+                avatar: form.avatar || "https://randomuser.me/api/portraits/men/34.jpg"
+              }))
+            });
+          case 2:
+            res = _context.v;
+            if (!res.ok) {
+              _context.n = 4;
+              break;
+            }
+            _context.n = 3;
+            return res.json();
+          case 3:
+            newFaculty = _context.v;
+            setFacultyList([].concat(_toConsumableArray(facultyList), [newFaculty]));
+            setShowAdd(false);
+          case 4:
+            _context.n = 6;
+            break;
+          case 5:
+            _context.p = 5;
+            _t = _context.v;
+          case 6:
+            return _context.a(2);
+        }
+      }, _callee, null, [[1, 5]]);
+    }));
+    return function handleAddSubmit(_x) {
+      return _ref2.apply(this, arguments);
+    };
+  }();
 
   // Edit Faculty
   var handleEdit = function handleEdit(idx) {
     setEditIndex(idx);
-    setForm(_objectSpread(_objectSpread({}, defaultForm), facultyList[idx])); // Ensures all fields are present
+    setForm(_objectSpread(_objectSpread({}, defaultForm), facultyList[idx]));
     setShowEdit(true);
   };
-  var handleEditSubmit = function handleEditSubmit(e) {
-    e.preventDefault();
-    var updated = _toConsumableArray(facultyList);
-    updated[editIndex] = form;
-    setFacultyList(updated);
-    setShowEdit(false);
-  };
+  var handleEditSubmit = /*#__PURE__*/function () {
+    var _ref3 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee2(e) {
+      var id, res, updatedFaculty, updated, _t2;
+      return _regenerator().w(function (_context2) {
+        while (1) switch (_context2.p = _context2.n) {
+          case 0:
+            e.preventDefault();
+            _context2.p = 1;
+            id = facultyList[editIndex].id;
+            _context2.n = 2;
+            return fetch("/api/faculties/".concat(id), {
+              method: 'PUT',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify(form)
+            });
+          case 2:
+            res = _context2.v;
+            if (!res.ok) {
+              _context2.n = 4;
+              break;
+            }
+            _context2.n = 3;
+            return res.json();
+          case 3:
+            updatedFaculty = _context2.v;
+            updated = _toConsumableArray(facultyList);
+            updated[editIndex] = updatedFaculty;
+            setFacultyList(updated);
+            setShowEdit(false);
+          case 4:
+            _context2.n = 6;
+            break;
+          case 5:
+            _context2.p = 5;
+            _t2 = _context2.v;
+          case 6:
+            return _context2.a(2);
+        }
+      }, _callee2, null, [[1, 5]]);
+    }));
+    return function handleEditSubmit(_x2) {
+      return _ref3.apply(this, arguments);
+    };
+  }();
 
   // Delete Faculty
-  var handleDelete = function handleDelete(idx) {
-    if (window.confirm("Are you sure you want to delete this record?")) {
-      setFacultyList(facultyList.filter(function (_, i) {
-        return i !== idx;
-      }));
-    }
-  };
+  var handleDelete = /*#__PURE__*/function () {
+    var _ref4 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee3(idx) {
+      var id, res, _t3;
+      return _regenerator().w(function (_context3) {
+        while (1) switch (_context3.p = _context3.n) {
+          case 0:
+            if (!window.confirm("Are you sure you want to delete this record?")) {
+              _context3.n = 4;
+              break;
+            }
+            id = facultyList[idx].id;
+            _context3.p = 1;
+            _context3.n = 2;
+            return fetch("/api/faculties/".concat(id), {
+              method: 'DELETE'
+            });
+          case 2:
+            res = _context3.v;
+            if (res.ok) {
+              setFacultyList(facultyList.filter(function (_, i) {
+                return i !== idx;
+              }));
+            }
+            _context3.n = 4;
+            break;
+          case 3:
+            _context3.p = 3;
+            _t3 = _context3.v;
+          case 4:
+            return _context3.a(2);
+        }
+      }, _callee3, null, [[1, 3]]);
+    }));
+    return function handleDelete(_x3) {
+      return _ref4.apply(this, arguments);
+    };
+  }();
 
   // Filter (demo: just toggles a modal)
   var handleFilter = function handleFilter() {
@@ -70846,6 +70929,8 @@ function Faculty() {
               }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("th", {
                 children: "Email address"
               }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("th", {
+                children: "Department"
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("th", {
                 children: "Gender"
               }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("th", {})]
             })
@@ -70884,6 +70969,11 @@ function Faculty() {
                     return handleUserClick(f);
                   },
                   children: f.email
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("td", {
+                  onClick: function onClick() {
+                    return handleUserClick(f);
+                  },
+                  children: f.department
                 }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("td", {
                   onClick: function onClick() {
                     return handleUserClick(f);
