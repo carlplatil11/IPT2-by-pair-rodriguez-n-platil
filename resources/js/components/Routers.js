@@ -6,6 +6,8 @@ import Home from "./Home";
 import Login from "./Login";
 import Dashboard from "./Dashboard";
 import Faculty from "./Faculty";
+import Student from "./Student";
+import Department from "./Department";
 
 
 
@@ -18,6 +20,10 @@ export default function Routers() {
                     <Route path="/login" element={<Login />} />
                     <Route path="/dashboard" element={<Dashboard />} />
                     <Route path="/faculty" element={<Faculty />} />
+                    <Route path="/student" element={<Student />} />
+                    <Route path="/department" element={<Department />} />
+
+
 
                 </Routes>
             </div>

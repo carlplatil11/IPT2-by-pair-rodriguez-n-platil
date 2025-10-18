@@ -20,7 +20,7 @@ export default function Navbar() {
                         <NavLink to="/faculty" className={({ isActive }) => isActive ? "active" : ""}>Faculty</NavLink>
                     </li>
                     <li>
-                        <NavLink to="/students" className={({ isActive }) => isActive ? "active" : ""}>Students/Classes</NavLink>
+                        <NavLink to="/student" className={({ isActive }) => isActive ? "active" : ""}>Students/Classes</NavLink>
                     </li>
                     <li>
                         <NavLink to="/settings" className={({ isActive }) => isActive ? "active" : ""}>Settings and profile</NavLink>
