@@ -45,16 +45,7 @@ const CourseFullForm = memo(({ isEdit, onSubmit, onCancel, form, setForm }) => (
                         placeholder="Instructor Email"
                     />
                 </div>
-                <div className="student-form-group" style={{ flex: 1 }}>
-                    <label>Class</label>
-                    <input
-                        type="text"
-                        required
-                        value={form.class}
-                        onChange={e => setForm({ ...form, class: e.target.value })}
-                        placeholder="Class"
-                    />
-                </div>
+                
                 <div className="student-form-group" style={{ flex: 1 }}>
                     <label>Level</label>
                     <select
@@ -135,7 +126,6 @@ export default function Courses() {
     const defaultForm = {
         name: "",
         subject: "",
-        class: "",
         email: "",
         age: "",
         gender: "Undergraduate",
@@ -292,7 +282,7 @@ export default function Courses() {
                                 <input
                                     className="student-search"
                                     type="text"
-                                    placeholder="Search for by name or email"
+                                    placeholder="Search Course"
                                     value={search}
                                     onChange={e => setSearch(e.target.value)}
                                 />
@@ -399,10 +389,9 @@ export default function Courses() {
                         <table className="student-table">
                             <thead>
                                 <tr>
-                                    <th>Name</th>
+                                    <th>Course Name</th>
                                     <th>Subject</th>
-                                    <th>Class</th>
-                                    <th>Instructor Email</th>
+                                    <th>Instructor</th>
                                     <th>Department</th>
                                     <th>Level</th>
                                     <th></th>

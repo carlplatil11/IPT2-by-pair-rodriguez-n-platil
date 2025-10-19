@@ -9,7 +9,7 @@ export default function Login() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        if (username === "admin" && password === "12345") {
+        if (username === "admin" && password === "admin") {
             setError("");
             // alert("Login successful!");
             navigate("/dashboard"); // Redirect to dashboard

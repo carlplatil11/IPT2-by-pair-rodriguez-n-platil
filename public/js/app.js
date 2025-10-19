@@ -70123,24 +70123,6 @@ var CourseFullForm = /*#__PURE__*/(0,react__WEBPACK_IMPORTED_MODULE_0__.memo)(fu
             flex: 1
           },
           children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("label", {
-            children: "Class"
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("input", {
-            type: "text",
-            required: true,
-            value: form["class"],
-            onChange: function onChange(e) {
-              return setForm(_objectSpread(_objectSpread({}, form), {}, {
-                "class": e.target.value
-              }));
-            },
-            placeholder: "Class"
-          })]
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
-          className: "student-form-group",
-          style: {
-            flex: 1
-          },
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("label", {
             children: "Level"
           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("select", {
             required: true,
@@ -70263,7 +70245,6 @@ function Courses() {
   var defaultForm = {
     name: "",
     subject: "",
-    "class": "",
     email: "",
     age: "",
     gender: "Undergraduate",
@@ -70626,7 +70607,7 @@ function Courses() {
             }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("input", {
               className: "student-search",
               type: "text",
-              placeholder: "Search for by name or email",
+              placeholder: "Search Course",
               value: search,
               onChange: function onChange(e) {
                 return setSearch(e.target.value);
@@ -70840,13 +70821,11 @@ function Courses() {
           children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("thead", {
             children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("tr", {
               children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("th", {
-                children: "Name"
+                children: "Course Name"
               }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("th", {
                 children: "Subject"
               }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("th", {
-                children: "Class"
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("th", {
-                children: "Instructor Email"
+                children: "Instructor"
               }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("th", {
                 children: "Department"
               }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("th", {
@@ -71441,6 +71420,7 @@ function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t =
 function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
 function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : i + ""; }
 function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
+// ...existing code...
 
 
 
@@ -71496,7 +71476,7 @@ var DepartmentFullForm = /*#__PURE__*/(0,react__WEBPACK_IMPORTED_MODULE_0__.memo
                 head: e.target.value
               }));
             },
-            placeholder: "HOD Name"
+            placeholder: "Complete Name"
           })]
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
           className: "department-form-group",
@@ -71514,6 +71494,29 @@ var DepartmentFullForm = /*#__PURE__*/(0,react__WEBPACK_IMPORTED_MODULE_0__.memo
               }));
             },
             placeholder: "Contact email"
+          })]
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+          className: "department-form-group",
+          style: {
+            width: 160
+          },
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("label", {
+            children: "Status"
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("select", {
+            value: form.status,
+            onChange: function onChange(e) {
+              return setForm(_objectSpread(_objectSpread({}, form), {}, {
+                status: e.target.value
+              }));
+            },
+            className: "department-form-status",
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("option", {
+              value: "Active",
+              children: "Active"
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("option", {
+              value: "Offline",
+              children: "Offline"
+            })]
           })]
         })]
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
@@ -71560,17 +71563,18 @@ function Department() {
     name: "",
     head: "",
     email: "",
-    description: ""
+    description: "",
+    status: "Active" // default status
   };
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
     _useState2 = _slicedToArray(_useState, 2),
     departments = _useState2[0],
     setDepartments = _useState2[1];
-  react__WEBPACK_IMPORTED_MODULE_0___default().useEffect(function () {
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
     fetch('/api/departments').then(function (res) {
       return res.json();
     }).then(function (data) {
-      return setDepartments(data);
+      return setDepartments(Array.isArray(data) ? data : []);
     })["catch"](function () {
       return setDepartments([]);
     });
@@ -71595,25 +71599,30 @@ function Department() {
     _useState10 = _slicedToArray(_useState1, 2),
     search = _useState10[0],
     setSearch = _useState10[1];
+  var _useState11 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null),
+    _useState12 = _slicedToArray(_useState11, 2),
+    selectedDept = _useState12[0],
+    setSelectedDept = _useState12[1];
   var handleAdd = function handleAdd() {
     setForm(defaultForm);
     setShowAdd(true);
   };
   var handleAddSubmit = /*#__PURE__*/function () {
     var _ref2 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee(e) {
-      var res, newDept, _t;
+      var payload, res, newDept, _t;
       return _regenerator().w(function (_context) {
         while (1) switch (_context.p = _context.n) {
           case 0:
             e.preventDefault();
             _context.p = 1;
+            payload = _objectSpread({}, form);
             _context.n = 2;
             return fetch('/api/departments', {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json'
               },
-              body: JSON.stringify(form)
+              body: JSON.stringify(payload)
             });
           case 2:
             res = _context.v;
@@ -71625,18 +71634,35 @@ function Department() {
             return res.json();
           case 3:
             newDept = _context.v;
-            setDepartments([].concat(_toConsumableArray(departments), [newDept]));
+            setDepartments(function (prev) {
+              return [].concat(_toConsumableArray(prev), [newDept]);
+            });
             setShowAdd(false);
-          case 4:
-            _context.n = 6;
+            _context.n = 5;
             break;
+          case 4:
+            setDepartments(function (prev) {
+              return [].concat(_toConsumableArray(prev), [_objectSpread(_objectSpread({}, payload), {}, {
+                id: Date.now()
+              })]);
+            });
+            setShowAdd(false);
           case 5:
-            _context.p = 5;
-            _t = _context.v;
+            _context.n = 7;
+            break;
           case 6:
+            _context.p = 6;
+            _t = _context.v;
+            setDepartments(function (prev) {
+              return [].concat(_toConsumableArray(prev), [_objectSpread(_objectSpread({}, form), {}, {
+                id: Date.now()
+              })]);
+            });
+            setShowAdd(false);
+          case 7:
             return _context.a(2);
         }
-      }, _callee, null, [[1, 5]]);
+      }, _callee, null, [[1, 6]]);
     }));
     return function handleAddSubmit(_x) {
       return _ref2.apply(this, arguments);
@@ -71649,20 +71675,27 @@ function Department() {
   };
   var handleEditSubmit = /*#__PURE__*/function () {
     var _ref3 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee2(e) {
-      var id, res, updated, copy, _t2;
+      var id, payload, res, updated, copy, _copy, _copy2, _t2;
       return _regenerator().w(function (_context2) {
         while (1) switch (_context2.p = _context2.n) {
           case 0:
             e.preventDefault();
+            if (!(editIndex === null)) {
+              _context2.n = 1;
+              break;
+            }
+            return _context2.a(2);
+          case 1:
             _context2.p = 1;
             id = departments[editIndex].id;
+            payload = _objectSpread({}, form);
             _context2.n = 2;
             return fetch("/api/departments/".concat(id), {
               method: 'PUT',
               headers: {
                 'Content-Type': 'application/json'
               },
-              body: JSON.stringify(form)
+              body: JSON.stringify(payload)
             });
           case 2:
             res = _context2.v;
@@ -71678,16 +71711,32 @@ function Department() {
             copy[editIndex] = updated;
             setDepartments(copy);
             setShowEdit(false);
-          case 4:
-            _context2.n = 6;
+            _context2.n = 5;
             break;
+          case 4:
+            _copy = _toConsumableArray(departments);
+            _copy[editIndex] = _objectSpread(_objectSpread({}, _copy[editIndex]), payload);
+            setDepartments(_copy);
+            setShowEdit(false);
           case 5:
-            _context2.p = 5;
-            _t2 = _context2.v;
+            _context2.n = 7;
+            break;
           case 6:
+            _context2.p = 6;
+            _t2 = _context2.v;
+            _copy2 = _toConsumableArray(departments);
+            _copy2[editIndex] = _objectSpread(_objectSpread({}, _copy2[editIndex]), form);
+            setDepartments(_copy2);
+            setShowEdit(false);
+          case 7:
+            _context2.p = 7;
+            setEditIndex(null);
+            setForm(defaultForm);
+            return _context2.f(7);
+          case 8:
             return _context2.a(2);
         }
-      }, _callee2, null, [[1, 5]]);
+      }, _callee2, null, [[1, 6, 7, 8]]);
     }));
     return function handleEditSubmit(_x2) {
       return _ref3.apply(this, arguments);
@@ -71713,15 +71762,25 @@ function Department() {
             });
           case 3:
             res = _context3.v;
-            if (res.ok) setDepartments(departments.filter(function (_, i) {
-              return i !== idx;
-            }));
+            if (res.ok) setDepartments(function (prev) {
+              return prev.filter(function (_, i) {
+                return i !== idx;
+              });
+            });
             _context3.n = 5;
             break;
           case 4:
             _context3.p = 4;
             _t3 = _context3.v;
+            setDepartments(function (prev) {
+              return prev.filter(function (_, i) {
+                return i !== idx;
+              });
+            });
           case 5:
+            // if deleting currently selected, clear view
+            if (selectedDept && selectedDept.id === id) setSelectedDept(null);
+          case 6:
             return _context3.a(2);
         }
       }, _callee3, null, [[2, 4]]);
@@ -71730,8 +71789,14 @@ function Department() {
       return _ref4.apply(this, arguments);
     };
   }();
+  var handleUserClick = function handleUserClick(dept) {
+    setSelectedDept(dept);
+  };
+  var handleBackToList = function handleBackToList() {
+    setSelectedDept(null);
+  };
   var filtered = departments.filter(function (d) {
-    return d.name.toLowerCase().includes(search.toLowerCase());
+    return (d.name || "").toLowerCase().includes(search.toLowerCase()) || (d.head || "").toLowerCase().includes(search.toLowerCase());
   });
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
     style: {
@@ -71758,7 +71823,7 @@ function Department() {
         children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
           className: "department-back-btn",
           onClick: function onClick() {
-            return navigate(-1);
+            return selectedDept ? handleBackToList() : navigate(-1);
           },
           children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("svg", {
             width: "28",
@@ -71811,98 +71876,298 @@ function Department() {
         },
         form: form,
         setForm: setForm
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+      }), !showAdd && !showEdit && selectedDept ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+        style: {
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "flex-start",
+          marginTop: "40px",
+          gap: "60px"
+        },
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+          style: {
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            minWidth: 320
+          },
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+            style: {
+              width: 220,
+              height: 220,
+              borderRadius: "10px",
+              background: "#f3f6f9",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              boxShadow: "0 4px 24px #e6eaf1"
+            },
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("svg", {
+              width: "64",
+              height: "64",
+              viewBox: "0 0 24 24",
+              fill: "none",
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("path", {
+                d: "M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4z",
+                stroke: "#94a3b8",
+                strokeWidth: "1.5"
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("path", {
+                d: "M4 20v-1c0-2.8 3.6-4 8-4s8 1.2 8 4v1",
+                stroke: "#94a3b8",
+                strokeWidth: "1.5"
+              })]
+            })
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+            style: {
+              marginTop: 24,
+              fontWeight: 700,
+              fontSize: "1.3rem",
+              textAlign: "center"
+            },
+            children: selectedDept.name
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+            style: {
+              color: "#888",
+              fontSize: "1rem",
+              marginBottom: 24,
+              textAlign: "center"
+            },
+            children: selectedDept.head
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+            style: {
+              display: "flex",
+              gap: 16
+            },
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
+              className: "department-icon-btn",
+              title: "Edit",
+              onClick: function onClick() {
+                var idx = departments.findIndex(function (d) {
+                  return d.id === selectedDept.id;
+                });
+                if (idx !== -1) handleEdit(idx);
+              },
+              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("svg", {
+                width: "20",
+                height: "20",
+                fill: "none",
+                stroke: "#222",
+                strokeWidth: "2",
+                viewBox: "0 0 24 24",
+                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("path", {
+                  d: "M12 20h9"
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("path", {
+                  d: "M16.5 3.5a2.121 2.121 0 1 1 3 3L7 19.5 3 21l1.5-4L16.5 3.5z"
+                })]
+              })
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
+              className: "department-icon-btn",
+              title: "Delete",
+              onClick: function onClick() {
+                var idx = departments.findIndex(function (d) {
+                  return d.id === selectedDept.id;
+                });
+                if (idx !== -1) handleDelete(idx);
+                handleBackToList();
+              },
+              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("svg", {
+                width: "20",
+                height: "20",
+                fill: "none",
+                stroke: "#222",
+                strokeWidth: "2",
+                viewBox: "0 0 24 24",
+                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("path", {
+                  d: "M3 6h18"
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("path", {
+                  d: "M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("path", {
+                  d: "M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("path", {
+                  d: "M10 11v6"
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("path", {
+                  d: "M14 11v6"
+                })]
+              })
+            })]
+          })]
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+          style: {
+            minWidth: 320,
+            maxWidth: 600
+          },
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+            style: {
+              fontWeight: 700,
+              fontSize: "1.1rem",
+              marginBottom: 8
+            },
+            children: "Description"
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+            style: {
+              color: "#555",
+              marginBottom: 24,
+              lineHeight: 1.6
+            },
+            children: selectedDept.description
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+            style: {
+              display: "flex",
+              gap: 40
+            },
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+                style: {
+                  color: "#888",
+                  fontSize: 13
+                },
+                children: "Contact"
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+                style: {
+                  fontWeight: 600
+                },
+                children: selectedDept.email
+              })]
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+                style: {
+                  color: "#888",
+                  fontSize: 13
+                },
+                children: "Status"
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+                style: {
+                  fontWeight: 600
+                },
+                children: selectedDept.status
+              })]
+            })]
+          })]
+        })]
+      }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
         className: "department-table-container",
         children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("table", {
           className: "department-table",
           children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("thead", {
             children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("tr", {
               children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("th", {
-                children: "Name"
+                children: "Department Name"
               }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("th", {
-                children: "HOD"
+                children: "Dean"
               }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("th", {
                 children: "Contact"
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("th", {})]
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("th", {
+                children: "No. of Students"
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("th", {
+                children: "Status"
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("th", {
+                style: {
+                  width: 84,
+                  textAlign: "center"
+                }
+              })]
             })
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("tbody", {
-            children: filtered.map(function (d, idx) {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("tbody", {
+            children: [filtered.length === 0 && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("tr", {
+              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("td", {
+                colSpan: "6",
+                children: "No programs found."
+              })
+            }), filtered.map(function (d, idx) {
+              var _d$id, _d$students, _d$status;
               return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("tr", {
                 style: {
                   cursor: 'pointer'
                 },
                 children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("td", {
                   onClick: function onClick() {
-                    return navigate("/department/".concat(d.id));
+                    return handleUserClick(d);
                   },
                   children: d.name
                 }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("td", {
                   onClick: function onClick() {
-                    return navigate("/department/".concat(d.id));
+                    return handleUserClick(d);
                   },
                   children: d.head
                 }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("td", {
                   onClick: function onClick() {
-                    return navigate("/department/".concat(d.id));
+                    return handleUserClick(d);
                   },
                   children: d.email
-                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("td", {
-                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
-                    className: "department-icon-btn",
-                    title: "Edit",
-                    onClick: function onClick(e) {
-                      e.stopPropagation();
-                      handleEdit(idx);
-                    },
-                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("svg", {
-                      width: "20",
-                      height: "20",
-                      fill: "none",
-                      stroke: "#222",
-                      strokeWidth: "2",
-                      viewBox: "0 0 24 24",
-                      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("path", {
-                        d: "M12 20h9"
-                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("path", {
-                        d: "M16.5 3.5a2.121 2.121 0 1 1 3 3L7 19.5 3 21l1.5-4L16.5 3.5z"
-                      })]
-                    })
-                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
-                    className: "department-icon-btn",
-                    title: "Delete",
-                    onClick: function onClick(e) {
-                      e.stopPropagation();
-                      handleDelete(idx);
-                    },
-                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("svg", {
-                      width: "20",
-                      height: "20",
-                      fill: "none",
-                      stroke: "#222",
-                      strokeWidth: "2",
-                      viewBox: "0 0 24 24",
-                      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("path", {
-                        d: "M3 6h18"
-                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("path", {
-                        d: "M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"
-                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("path", {
-                        d: "M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"
-                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("path", {
-                        d: "M10 11v6"
-                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("path", {
-                        d: "M14 11v6"
-                      })]
-                    })
-                  })]
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("td", {
+                  onClick: function onClick() {
+                    return handleUserClick(d);
+                  },
+                  children: (_d$students = d.students) !== null && _d$students !== void 0 ? _d$students : ""
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("td", {
+                  onClick: function onClick() {
+                    return handleUserClick(d);
+                  },
+                  children: (_d$status = d.status) !== null && _d$status !== void 0 ? _d$status : "Active"
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("td", {
+                  style: {
+                    textAlign: "center"
+                  },
+                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+                    className: "actions-cell",
+                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
+                      className: "department-icon-btn",
+                      title: "Edit",
+                      onClick: function onClick(e) {
+                        e.stopPropagation();
+                        handleEdit(idx);
+                      },
+                      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("svg", {
+                        width: "20",
+                        height: "20",
+                        fill: "none",
+                        stroke: "#222",
+                        strokeWidth: "2",
+                        viewBox: "0 0 24 24",
+                        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("path", {
+                          d: "M12 20h9"
+                        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("path", {
+                          d: "M16.5 3.5a2.121 2.121 0 1 1 3 3L7 19.5 3 21l1.5-4L16.5 3.5z"
+                        })]
+                      })
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
+                      className: "department-icon-btn",
+                      title: "Delete",
+                      onClick: function onClick(e) {
+                        e.stopPropagation();
+                        handleDelete(idx);
+                      },
+                      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("svg", {
+                        width: "20",
+                        height: "20",
+                        fill: "none",
+                        stroke: "#222",
+                        strokeWidth: "2",
+                        viewBox: "0 0 24 24",
+                        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("path", {
+                          d: "M3 6h18"
+                        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("path", {
+                          d: "M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"
+                        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("path", {
+                          d: "M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"
+                        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("path", {
+                          d: "M10 11v6"
+                        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("path", {
+                          d: "M14 11v6"
+                        })]
+                      })
+                    })]
+                  })
                 })]
-              }, idx);
-            })
+              }, (_d$id = d.id) !== null && _d$id !== void 0 ? _d$id : idx);
+            })]
           })]
         })
       })]
     })]
   });
 }
+// ...existing code...
 
 /***/ }),
 
@@ -71922,30 +72187,147 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router/dist/index.js");
 /* harmony import */ var _Navbar__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Navbar */ "./resources/js/components/Navbar.js");
 /* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
-function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
-function _regenerator() { /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/babel/babel/blob/main/packages/babel-helpers/LICENSE */ var e, t, r = "function" == typeof Symbol ? Symbol : {}, n = r.iterator || "@@iterator", o = r.toStringTag || "@@toStringTag"; function i(r, n, o, i) { var c = n && n.prototype instanceof Generator ? n : Generator, u = Object.create(c.prototype); return _regeneratorDefine2(u, "_invoke", function (r, n, o) { var i, c, u, f = 0, p = o || [], y = !1, G = { p: 0, n: 0, v: e, a: d, f: d.bind(e, 4), d: function d(t, r) { return i = t, c = 0, u = e, G.n = r, a; } }; function d(r, n) { for (c = r, u = n, t = 0; !y && f && !o && t < p.length; t++) { var o, i = p[t], d = G.p, l = i[2]; r > 3 ? (o = l === n) && (u = i[(c = i[4]) ? 5 : (c = 3, 3)], i[4] = i[5] = e) : i[0] <= d && ((o = r < 2 && d < i[1]) ? (c = 0, G.v = n, G.n = i[1]) : d < l && (o = r < 3 || i[0] > n || n > l) && (i[4] = r, i[5] = n, G.n = l, c = 0)); } if (o || r > 1) return a; throw y = !0, n; } return function (o, p, l) { if (f > 1) throw TypeError("Generator is already running"); for (y && 1 === p && d(p, l), c = p, u = l; (t = c < 2 ? e : u) || !y;) { i || (c ? c < 3 ? (c > 1 && (G.n = -1), d(c, u)) : G.n = u : G.v = u); try { if (f = 2, i) { if (c || (o = "next"), t = i[o]) { if (!(t = t.call(i, u))) throw TypeError("iterator result is not an object"); if (!t.done) return t; u = t.value, c < 2 && (c = 0); } else 1 === c && (t = i["return"]) && t.call(i), c < 2 && (u = TypeError("The iterator does not provide a '" + o + "' method"), c = 1); i = e; } else if ((t = (y = G.n < 0) ? u : r.call(n, G)) !== a) break; } catch (t) { i = e, c = 1, u = t; } finally { f = 1; } } return { value: t, done: y }; }; }(r, o, i), !0), u; } var a = {}; function Generator() {} function GeneratorFunction() {} function GeneratorFunctionPrototype() {} t = Object.getPrototypeOf; var c = [][n] ? t(t([][n]())) : (_regeneratorDefine2(t = {}, n, function () { return this; }), t), u = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(c); function f(e) { return Object.setPrototypeOf ? Object.setPrototypeOf(e, GeneratorFunctionPrototype) : (e.__proto__ = GeneratorFunctionPrototype, _regeneratorDefine2(e, o, "GeneratorFunction")), e.prototype = Object.create(u), e; } return GeneratorFunction.prototype = GeneratorFunctionPrototype, _regeneratorDefine2(u, "constructor", GeneratorFunctionPrototype), _regeneratorDefine2(GeneratorFunctionPrototype, "constructor", GeneratorFunction), GeneratorFunction.displayName = "GeneratorFunction", _regeneratorDefine2(GeneratorFunctionPrototype, o, "GeneratorFunction"), _regeneratorDefine2(u), _regeneratorDefine2(u, o, "Generator"), _regeneratorDefine2(u, n, function () { return this; }), _regeneratorDefine2(u, "toString", function () { return "[object Generator]"; }), (_regenerator = function _regenerator() { return { w: i, m: f }; })(); }
-function _regeneratorDefine2(e, r, n, t) { var i = Object.defineProperty; try { i({}, "", {}); } catch (e) { i = 0; } _regeneratorDefine2 = function _regeneratorDefine(e, r, n, t) { function o(r, n) { _regeneratorDefine2(e, r, function (e) { return this._invoke(r, n, e); }); } r ? i ? i(e, r, { value: n, enumerable: !t, configurable: !t, writable: !t }) : e[r] = n : (o("next", 0), o("throw", 1), o("return", 2)); }, _regeneratorDefine2(e, r, n, t); }
 function _toConsumableArray(r) { return _arrayWithoutHoles(r) || _iterableToArray(r) || _unsupportedIterableToArray(r) || _nonIterableSpread(); }
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 function _iterableToArray(r) { if ("undefined" != typeof Symbol && null != r[Symbol.iterator] || null != r["@@iterator"]) return Array.from(r); }
 function _arrayWithoutHoles(r) { if (Array.isArray(r)) return _arrayLikeToArray(r); }
-function asyncGeneratorStep(n, t, e, r, o, a, c) { try { var i = n[a](c), u = i.value; } catch (n) { return void e(n); } i.done ? t(u) : Promise.resolve(u).then(r, o); }
-function _asyncToGenerator(n) { return function () { var t = this, e = arguments; return new Promise(function (r, o) { var a = n.apply(t, e); function _next(n) { asyncGeneratorStep(a, r, o, _next, _throw, "next", n); } function _throw(n) { asyncGeneratorStep(a, r, o, _next, _throw, "throw", n); } _next(void 0); }); }; }
 function _slicedToArray(r, e) { return _arrayWithHoles(r) || _iterableToArrayLimit(r, e) || _unsupportedIterableToArray(r, e) || _nonIterableRest(); }
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 function _unsupportedIterableToArray(r, a) { if (r) { if ("string" == typeof r) return _arrayLikeToArray(r, a); var t = {}.toString.call(r).slice(8, -1); return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? Array.from(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? _arrayLikeToArray(r, a) : void 0; } }
 function _arrayLikeToArray(r, a) { (null == a || a > r.length) && (a = r.length); for (var e = 0, n = Array(a); e < a; e++) n[e] = r[e]; return n; }
 function _iterableToArrayLimit(r, l) { var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (null != t) { var e, n, i, u, a = [], f = !0, o = !1; try { if (i = (t = t.call(r)).next, 0 === l) { if (Object(t) !== t) return; f = !1; } else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0); } catch (r) { o = !0, n = r; } finally { try { if (!f && null != t["return"] && (u = t["return"](), Object(u) !== u)) return; } finally { if (o) throw n; } } return a; } }
 function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
+function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
 function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
 function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { _defineProperty(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
 function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
+function _regenerator() { /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/babel/babel/blob/main/packages/babel-helpers/LICENSE */ var e, t, r = "function" == typeof Symbol ? Symbol : {}, n = r.iterator || "@@iterator", o = r.toStringTag || "@@toStringTag"; function i(r, n, o, i) { var c = n && n.prototype instanceof Generator ? n : Generator, u = Object.create(c.prototype); return _regeneratorDefine2(u, "_invoke", function (r, n, o) { var i, c, u, f = 0, p = o || [], y = !1, G = { p: 0, n: 0, v: e, a: d, f: d.bind(e, 4), d: function d(t, r) { return i = t, c = 0, u = e, G.n = r, a; } }; function d(r, n) { for (c = r, u = n, t = 0; !y && f && !o && t < p.length; t++) { var o, i = p[t], d = G.p, l = i[2]; r > 3 ? (o = l === n) && (u = i[(c = i[4]) ? 5 : (c = 3, 3)], i[4] = i[5] = e) : i[0] <= d && ((o = r < 2 && d < i[1]) ? (c = 0, G.v = n, G.n = i[1]) : d < l && (o = r < 3 || i[0] > n || n > l) && (i[4] = r, i[5] = n, G.n = l, c = 0)); } if (o || r > 1) return a; throw y = !0, n; } return function (o, p, l) { if (f > 1) throw TypeError("Generator is already running"); for (y && 1 === p && d(p, l), c = p, u = l; (t = c < 2 ? e : u) || !y;) { i || (c ? c < 3 ? (c > 1 && (G.n = -1), d(c, u)) : G.n = u : G.v = u); try { if (f = 2, i) { if (c || (o = "next"), t = i[o]) { if (!(t = t.call(i, u))) throw TypeError("iterator result is not an object"); if (!t.done) return t; u = t.value, c < 2 && (c = 0); } else 1 === c && (t = i["return"]) && t.call(i), c < 2 && (u = TypeError("The iterator does not provide a '" + o + "' method"), c = 1); i = e; } else if ((t = (y = G.n < 0) ? u : r.call(n, G)) !== a) break; } catch (t) { i = e, c = 1, u = t; } finally { f = 1; } } return { value: t, done: y }; }; }(r, o, i), !0), u; } var a = {}; function Generator() {} function GeneratorFunction() {} function GeneratorFunctionPrototype() {} t = Object.getPrototypeOf; var c = [][n] ? t(t([][n]())) : (_regeneratorDefine2(t = {}, n, function () { return this; }), t), u = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(c); function f(e) { return Object.setPrototypeOf ? Object.setPrototypeOf(e, GeneratorFunctionPrototype) : (e.__proto__ = GeneratorFunctionPrototype, _regeneratorDefine2(e, o, "GeneratorFunction")), e.prototype = Object.create(u), e; } return GeneratorFunction.prototype = GeneratorFunctionPrototype, _regeneratorDefine2(u, "constructor", GeneratorFunctionPrototype), _regeneratorDefine2(GeneratorFunctionPrototype, "constructor", GeneratorFunction), GeneratorFunction.displayName = "GeneratorFunction", _regeneratorDefine2(GeneratorFunctionPrototype, o, "GeneratorFunction"), _regeneratorDefine2(u), _regeneratorDefine2(u, o, "Generator"), _regeneratorDefine2(u, n, function () { return this; }), _regeneratorDefine2(u, "toString", function () { return "[object Generator]"; }), (_regenerator = function _regenerator() { return { w: i, m: f }; })(); }
+function _regeneratorDefine2(e, r, n, t) { var i = Object.defineProperty; try { i({}, "", {}); } catch (e) { i = 0; } _regeneratorDefine2 = function _regeneratorDefine(e, r, n, t) { function o(r, n) { _regeneratorDefine2(e, r, function (e) { return this._invoke(r, n, e); }); } r ? i ? i(e, r, { value: n, enumerable: !t, configurable: !t, writable: !t }) : e[r] = n : (o("next", 0), o("throw", 1), o("return", 2)); }, _regeneratorDefine2(e, r, n, t); }
+function asyncGeneratorStep(n, t, e, r, o, a, c) { try { var i = n[a](c), u = i.value; } catch (n) { return void e(n); } i.done ? t(u) : Promise.resolve(u).then(r, o); }
+function _asyncToGenerator(n) { return function () { var t = this, e = arguments; return new Promise(function (r, o) { var a = n.apply(t, e); function _next(n) { asyncGeneratorStep(a, r, o, _next, _throw, "next", n); } function _throw(n) { asyncGeneratorStep(a, r, o, _next, _throw, "throw", n); } _next(void 0); }); }; }
+function _classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeError("Cannot call a class as a function"); }
+function _defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, _toPropertyKey(o.key), o); } }
+function _createClass(e, r, t) { return r && _defineProperties(e.prototype, r), t && _defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
 function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : i + ""; }
 function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
+// ...existing code...
 
 
 
 
+/* Local storage helper */
+
+var LocalDB = /*#__PURE__*/function () {
+  function LocalDB() {
+    var key = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "faculties";
+    _classCallCheck(this, LocalDB);
+    this.key = key;
+  }
+  return _createClass(LocalDB, [{
+    key: "_read",
+    value: function _read() {
+      try {
+        var raw = localStorage.getItem(this.key);
+        return raw ? JSON.parse(raw) : [];
+      } catch (_unused) {
+        return [];
+      }
+    }
+  }, {
+    key: "readAll",
+    value: function () {
+      var _readAll = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee() {
+        return _regenerator().w(function (_context) {
+          while (1) switch (_context.n) {
+            case 0:
+              return _context.a(2, this._read());
+          }
+        }, _callee, this);
+      }));
+      function readAll() {
+        return _readAll.apply(this, arguments);
+      }
+      return readAll;
+    }()
+  }, {
+    key: "create",
+    value: function () {
+      var _create = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee2(item) {
+        var _item$id;
+        var list, toAdd;
+        return _regenerator().w(function (_context2) {
+          while (1) switch (_context2.n) {
+            case 0:
+              list = this._read();
+              toAdd = _objectSpread(_objectSpread({}, item), {}, {
+                id: (_item$id = item.id) !== null && _item$id !== void 0 ? _item$id : Date.now()
+              });
+              list.push(toAdd);
+              localStorage.setItem(this.key, JSON.stringify(list));
+              return _context2.a(2, toAdd);
+          }
+        }, _callee2, this);
+      }));
+      function create(_x) {
+        return _create.apply(this, arguments);
+      }
+      return create;
+    }()
+  }, {
+    key: "update",
+    value: function () {
+      var _update = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee3(id, patch) {
+        var list, i;
+        return _regenerator().w(function (_context3) {
+          while (1) switch (_context3.n) {
+            case 0:
+              list = this._read();
+              i = list.findIndex(function (x) {
+                return x.id === id;
+              });
+              if (!(i === -1)) {
+                _context3.n = 1;
+                break;
+              }
+              return _context3.a(2, null);
+            case 1:
+              list[i] = _objectSpread(_objectSpread({}, list[i]), patch);
+              localStorage.setItem(this.key, JSON.stringify(list));
+              return _context3.a(2, list[i]);
+          }
+        }, _callee3, this);
+      }));
+      function update(_x2, _x3) {
+        return _update.apply(this, arguments);
+      }
+      return update;
+    }()
+  }, {
+    key: "delete",
+    value: function () {
+      var _delete2 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee4(id) {
+        var list;
+        return _regenerator().w(function (_context4) {
+          while (1) switch (_context4.n) {
+            case 0:
+              list = this._read().filter(function (x) {
+                return x.id !== id;
+              });
+              localStorage.setItem(this.key, JSON.stringify(list));
+              return _context4.a(2, true);
+          }
+        }, _callee4, this);
+      }));
+      function _delete(_x4) {
+        return _delete2.apply(this, arguments);
+      }
+      return _delete;
+    }()
+  }]);
+}();
+var localDB = new LocalDB();
+
+/* Form overlay (left card) */
 var FacultyFullForm = /*#__PURE__*/(0,react__WEBPACK_IMPORTED_MODULE_0__.memo)(function (_ref) {
   var isEdit = _ref.isEdit,
     onSubmit = _ref.onSubmit,
@@ -71954,6 +72336,8 @@ var FacultyFullForm = /*#__PURE__*/(0,react__WEBPACK_IMPORTED_MODULE_0__.memo)(f
     setForm = _ref.setForm;
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
     className: "faculty-form-overlay",
+    role: "dialog",
+    "aria-modal": "true",
     children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("form", {
       className: "faculty-full-form",
       onSubmit: onSubmit,
@@ -71980,8 +72364,6 @@ var FacultyFullForm = /*#__PURE__*/(0,react__WEBPACK_IMPORTED_MODULE_0__.memo)(f
             placeholder: "Department"
           })
         })]
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
-        className: "faculty-form-section-label"
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
         className: "faculty-form-row",
         children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
@@ -72022,24 +72404,6 @@ var FacultyFullForm = /*#__PURE__*/(0,react__WEBPACK_IMPORTED_MODULE_0__.memo)(f
               }));
             },
             placeholder: "Email address"
-          })]
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
-          className: "faculty-form-group",
-          style: {
-            flex: 1
-          },
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("label", {
-            children: "Class"
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("input", {
-            type: "text",
-            required: true,
-            value: form["class"],
-            onChange: function onChange(e) {
-              return setForm(_objectSpread(_objectSpread({}, form), {}, {
-                "class": e.target.value
-              }));
-            },
-            placeholder: "Class"
           })]
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
           className: "faculty-form-group",
@@ -72167,11 +72531,20 @@ var FacultyFullForm = /*#__PURE__*/(0,react__WEBPACK_IMPORTED_MODULE_0__.memo)(f
 function Faculty() {
   var navigate = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_1__.useNavigate)();
 
-  // Default form object to ensure all fields are present
+  // inject Inter font (copied from Student.js)
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
+    var id = "ghcopilot-inter-font";
+    if (!document.getElementById(id)) {
+      var link = document.createElement("link");
+      link.id = id;
+      link.rel = "stylesheet";
+      link.href = "https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap";
+      document.head.appendChild(link);
+    }
+  }, []);
   var defaultForm = {
     name: "",
     subject: "",
-    "class": "",
     email: "",
     age: "",
     gender: "Male",
@@ -72180,25 +72553,10 @@ function Faculty() {
     phone: "",
     department: ""
   };
-
-  // Faculty list state
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
     _useState2 = _slicedToArray(_useState, 2),
     facultyList = _useState2[0],
     setFacultyList = _useState2[1];
-
-  // Fetch faculty list from backend on mount
-  react__WEBPACK_IMPORTED_MODULE_0___default().useEffect(function () {
-    fetch('/api/faculties').then(function (res) {
-      return res.json();
-    }).then(function (data) {
-      return setFacultyList(data);
-    })["catch"](function () {
-      return setFacultyList([]);
-    });
-  }, []);
-
-  // Modal and form state
   var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
     _useState4 = _slicedToArray(_useState3, 2),
     showAdd = _useState4[0],
@@ -72223,182 +72581,331 @@ function Faculty() {
     _useState12 = _slicedToArray(_useState11, 2),
     showFilter = _useState12[0],
     setShowFilter = _useState12[1];
-
-  // Profile view state
   var _useState13 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null),
     _useState14 = _slicedToArray(_useState13, 2),
     selectedUser = _useState14[0],
     setSelectedUser = _useState14[1];
-
-  // Add Faculty
+  var _useState15 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(true),
+    _useState16 = _slicedToArray(_useState15, 2),
+    loading = _useState16[0],
+    setLoading = _useState16[1];
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
+    var mounted = true;
+    _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee5() {
+      var res, json, local, _t, _t2;
+      return _regenerator().w(function (_context5) {
+        while (1) switch (_context5.p = _context5.n) {
+          case 0:
+            _context5.p = 0;
+            _context5.n = 1;
+            return fetch('/api/faculties');
+          case 1:
+            res = _context5.v;
+            if (!res.ok) {
+              _context5.n = 3;
+              break;
+            }
+            _context5.n = 2;
+            return res.json();
+          case 2:
+            json = _context5.v;
+            if (mounted) setFacultyList(Array.isArray(json) ? json : []);
+            _context5.n = 4;
+            break;
+          case 3:
+            throw new Error("no api");
+          case 4:
+            _context5.n = 9;
+            break;
+          case 5:
+            _context5.p = 5;
+            _t = _context5.v;
+            _context5.p = 6;
+            _context5.n = 7;
+            return localDB.readAll();
+          case 7:
+            local = _context5.v;
+            if (mounted) setFacultyList(Array.isArray(local) ? local : []);
+            _context5.n = 9;
+            break;
+          case 8:
+            _context5.p = 8;
+            _t2 = _context5.v;
+            if (mounted) setFacultyList([]);
+          case 9:
+            _context5.p = 9;
+            if (mounted) setLoading(false);
+            return _context5.f(9);
+          case 10:
+            return _context5.a(2);
+        }
+      }, _callee5, null, [[6, 8], [0, 5, 9, 10]]);
+    }))();
+    return function () {
+      mounted = false;
+    };
+  }, []);
   var handleAdd = function handleAdd() {
     setForm(defaultForm);
     setShowAdd(true);
   };
   var handleAddSubmit = /*#__PURE__*/function () {
-    var _ref2 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee(e) {
-      var res, newFaculty, _t;
-      return _regenerator().w(function (_context) {
-        while (1) switch (_context.p = _context.n) {
+    var _ref3 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee6(e) {
+      var payload, res, created, _created, _created2, _t3;
+      return _regenerator().w(function (_context6) {
+        while (1) switch (_context6.p = _context6.n) {
           case 0:
             e.preventDefault();
-            _context.p = 1;
-            _context.n = 2;
+            payload = _objectSpread(_objectSpread({}, form), {}, {
+              avatar: form.avatar || "https://randomuser.me/api/portraits/lego/1.jpg"
+            });
+            _context6.p = 1;
+            _context6.n = 2;
             return fetch('/api/faculties', {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json'
               },
-              body: JSON.stringify(_objectSpread(_objectSpread({}, form), {}, {
-                avatar: form.avatar || "https://randomuser.me/api/portraits/men/34.jpg"
-              }))
+              body: JSON.stringify(payload)
             });
           case 2:
-            res = _context.v;
+            res = _context6.v;
             if (!res.ok) {
-              _context.n = 4;
+              _context6.n = 4;
               break;
             }
-            _context.n = 3;
+            _context6.n = 3;
             return res.json();
           case 3:
-            newFaculty = _context.v;
-            setFacultyList([].concat(_toConsumableArray(facultyList), [newFaculty]));
-            setShowAdd(false);
-          case 4:
-            _context.n = 6;
+            created = _context6.v;
+            setFacultyList(function (prev) {
+              return [].concat(_toConsumableArray(prev), [created]);
+            });
+            _context6.n = 6;
             break;
+          case 4:
+            _context6.n = 5;
+            return localDB.create(payload);
           case 5:
-            _context.p = 5;
-            _t = _context.v;
+            _created = _context6.v;
+            setFacultyList(function (prev) {
+              return [].concat(_toConsumableArray(prev), [_created]);
+            });
           case 6:
-            return _context.a(2);
+            _context6.n = 9;
+            break;
+          case 7:
+            _context6.p = 7;
+            _t3 = _context6.v;
+            _context6.n = 8;
+            return localDB.create(payload);
+          case 8:
+            _created2 = _context6.v;
+            setFacultyList(function (prev) {
+              return [].concat(_toConsumableArray(prev), [_created2]);
+            });
+          case 9:
+            _context6.p = 9;
+            setShowAdd(false);
+            setForm(defaultForm);
+            return _context6.f(9);
+          case 10:
+            return _context6.a(2);
         }
-      }, _callee, null, [[1, 5]]);
+      }, _callee6, null, [[1, 7, 9, 10]]);
     }));
-    return function handleAddSubmit(_x) {
-      return _ref2.apply(this, arguments);
+    return function handleAddSubmit(_x5) {
+      return _ref3.apply(this, arguments);
     };
   }();
-
-  // Edit Faculty
   var handleEdit = function handleEdit(idx) {
     setEditIndex(idx);
     setForm(_objectSpread(_objectSpread({}, defaultForm), facultyList[idx]));
     setShowEdit(true);
   };
   var handleEditSubmit = /*#__PURE__*/function () {
-    var _ref3 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee2(e) {
-      var id, res, updatedFaculty, updated, _t2;
-      return _regenerator().w(function (_context2) {
-        while (1) switch (_context2.p = _context2.n) {
+    var _ref4 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee7(e) {
+      var _facultyList$editInde;
+      var id, payload, res, updated, _updated, _updated2, _t4;
+      return _regenerator().w(function (_context7) {
+        while (1) switch (_context7.p = _context7.n) {
           case 0:
             e.preventDefault();
-            _context2.p = 1;
-            id = facultyList[editIndex].id;
-            _context2.n = 2;
+            if (!(editIndex === null)) {
+              _context7.n = 1;
+              break;
+            }
+            return _context7.a(2);
+          case 1:
+            id = (_facultyList$editInde = facultyList[editIndex]) === null || _facultyList$editInde === void 0 ? void 0 : _facultyList$editInde.id;
+            if (id) {
+              _context7.n = 2;
+              break;
+            }
+            return _context7.a(2);
+          case 2:
+            payload = _objectSpread({}, form);
+            _context7.p = 3;
+            _context7.n = 4;
             return fetch("/api/faculties/".concat(id), {
               method: 'PUT',
               headers: {
                 'Content-Type': 'application/json'
               },
-              body: JSON.stringify(form)
+              body: JSON.stringify(payload)
             });
-          case 2:
-            res = _context2.v;
+          case 4:
+            res = _context7.v;
             if (!res.ok) {
-              _context2.n = 4;
+              _context7.n = 6;
               break;
             }
-            _context2.n = 3;
+            _context7.n = 5;
             return res.json();
-          case 3:
-            updatedFaculty = _context2.v;
-            updated = _toConsumableArray(facultyList);
-            updated[editIndex] = updatedFaculty;
-            setFacultyList(updated);
-            setShowEdit(false);
-          case 4:
-            _context2.n = 6;
-            break;
           case 5:
-            _context2.p = 5;
-            _t2 = _context2.v;
-          case 6:
-            return _context2.a(2);
-        }
-      }, _callee2, null, [[1, 5]]);
-    }));
-    return function handleEditSubmit(_x2) {
-      return _ref3.apply(this, arguments);
-    };
-  }();
-
-  // Delete Faculty
-  var handleDelete = /*#__PURE__*/function () {
-    var _ref4 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee3(idx) {
-      var id, res, _t3;
-      return _regenerator().w(function (_context3) {
-        while (1) switch (_context3.p = _context3.n) {
-          case 0:
-            if (!window.confirm("Are you sure you want to delete this record?")) {
-              _context3.n = 4;
-              break;
-            }
-            id = facultyList[idx].id;
-            _context3.p = 1;
-            _context3.n = 2;
-            return fetch("/api/faculties/".concat(id), {
-              method: 'DELETE'
+            updated = _context7.v;
+            setFacultyList(function (prev) {
+              return prev.map(function (f) {
+                return f.id === updated.id ? updated : f;
+              });
             });
-          case 2:
-            res = _context3.v;
-            if (res.ok) {
-              setFacultyList(facultyList.filter(function (_, i) {
-                return i !== idx;
-              }));
-            }
-            _context3.n = 4;
+            _context7.n = 8;
             break;
-          case 3:
-            _context3.p = 3;
-            _t3 = _context3.v;
-          case 4:
-            return _context3.a(2);
+          case 6:
+            _context7.n = 7;
+            return localDB.update(id, payload);
+          case 7:
+            _updated = _context7.v;
+            setFacultyList(function (prev) {
+              return prev.map(function (f) {
+                return f.id === id ? _updated : f;
+              });
+            });
+          case 8:
+            _context7.n = 11;
+            break;
+          case 9:
+            _context7.p = 9;
+            _t4 = _context7.v;
+            _context7.n = 10;
+            return localDB.update(id, payload);
+          case 10:
+            _updated2 = _context7.v;
+            setFacultyList(function (prev) {
+              return prev.map(function (f) {
+                return f.id === id ? _updated2 : f;
+              });
+            });
+          case 11:
+            _context7.p = 11;
+            setShowEdit(false);
+            setEditIndex(null);
+            setForm(defaultForm);
+            return _context7.f(11);
+          case 12:
+            return _context7.a(2);
         }
-      }, _callee3, null, [[1, 3]]);
+      }, _callee7, null, [[3, 9, 11, 12]]);
     }));
-    return function handleDelete(_x3) {
+    return function handleEditSubmit(_x6) {
       return _ref4.apply(this, arguments);
     };
   }();
-
-  // Filter (demo: just toggles a modal)
+  var handleDelete = /*#__PURE__*/function () {
+    var _ref5 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee8(idx) {
+      var target, res, _t5;
+      return _regenerator().w(function (_context8) {
+        while (1) switch (_context8.p = _context8.n) {
+          case 0:
+            target = facultyList[idx];
+            if (target) {
+              _context8.n = 1;
+              break;
+            }
+            return _context8.a(2);
+          case 1:
+            if (window.confirm("Are you sure you want to delete this record?")) {
+              _context8.n = 2;
+              break;
+            }
+            return _context8.a(2);
+          case 2:
+            _context8.p = 2;
+            _context8.n = 3;
+            return fetch("/api/faculties/".concat(target.id), {
+              method: 'DELETE'
+            });
+          case 3:
+            res = _context8.v;
+            if (!res.ok) {
+              _context8.n = 4;
+              break;
+            }
+            setFacultyList(function (prev) {
+              return prev.filter(function (_, i) {
+                return i !== idx;
+              });
+            });
+            _context8.n = 6;
+            break;
+          case 4:
+            _context8.n = 5;
+            return localDB["delete"](target.id);
+          case 5:
+            setFacultyList(function (prev) {
+              return prev.filter(function (_, i) {
+                return i !== idx;
+              });
+            });
+          case 6:
+            _context8.n = 9;
+            break;
+          case 7:
+            _context8.p = 7;
+            _t5 = _context8.v;
+            _context8.n = 8;
+            return localDB["delete"](target.id);
+          case 8:
+            setFacultyList(function (prev) {
+              return prev.filter(function (_, i) {
+                return i !== idx;
+              });
+            });
+          case 9:
+            if (selectedUser && selectedUser.id === target.id) setSelectedUser(null);
+          case 10:
+            return _context8.a(2);
+        }
+      }, _callee8, null, [[2, 7]]);
+    }));
+    return function handleDelete(_x7) {
+      return _ref5.apply(this, arguments);
+    };
+  }();
   var handleFilter = function handleFilter() {
     return setShowFilter(true);
   };
-
-  // Search
-  var filteredList = facultyList.filter(function (f) {
-    return f.name.toLowerCase().includes(search.toLowerCase()) || f.email.toLowerCase().includes(search.toLowerCase());
-  });
   var handleLogout = function handleLogout() {
-    navigate("/login");
+    return navigate("/login");
   };
-
-  // Profile view
   var handleUserClick = function handleUserClick(user) {
-    setSelectedUser(user);
+    return setSelectedUser(user);
   };
   var handleBackToList = function handleBackToList() {
-    setSelectedUser(null);
+    return setSelectedUser(null);
+  };
+  var filteredList = facultyList.filter(function (f) {
+    return (f.name || "").toLowerCase().includes(search.toLowerCase()) || (f.email || "").toLowerCase().includes(search.toLowerCase());
+  });
+  var fontStyle = {
+    fontFamily: "Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial"
   };
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
-    style: {
+    style: _objectSpread({
       display: "flex",
       minHeight: "100vh",
       background: "#f8fafc"
-    },
+    }, fontStyle),
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_Navbar__WEBPACK_IMPORTED_MODULE_2__["default"], {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("main", {
       className: "faculty-container",
       style: {
@@ -72437,9 +72944,9 @@ function Faculty() {
               strokeLinejoin: "round"
             })]
           })
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
           className: "faculty-actions",
-          children: [!selectedUser && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.Fragment, {
+          children: !selectedUser && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.Fragment, {
             children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
               className: "faculty-add-btn",
               onClick: handleAdd,
@@ -72453,18 +72960,7 @@ function Faculty() {
                 return setSearch(e.target.value);
               }
             })]
-          }), selectedUser && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("input", {
-            className: "faculty-search",
-            type: "text",
-            placeholder: "Search for by name or email",
-            value: search,
-            onChange: function onChange(e) {
-              return setSearch(e.target.value);
-            },
-            style: {
-              display: "none"
-            }
-          })]
+          })
         })]
       }), showAdd && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(FacultyFullForm, {
         isEdit: false,
@@ -72487,8 +72983,8 @@ function Faculty() {
           display: "flex",
           justifyContent: "center",
           alignItems: "flex-start",
-          marginTop: "40px",
-          gap: "60px"
+          marginTop: 40,
+          gap: 60
         },
         children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
           style: {
@@ -72498,7 +72994,7 @@ function Faculty() {
             minWidth: 320
           },
           children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("img", {
-            src: selectedUser.avatar,
+            src: selectedUser.avatar || "https://randomuser.me/api/portraits/lego/1.jpg",
             alt: selectedUser.name,
             style: {
               width: 220,
@@ -72531,79 +73027,41 @@ function Faculty() {
             },
             children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
               style: {
-                background: "#f5f6fa",
+                background: "#0033ff",
                 border: "none",
                 borderRadius: 12,
-                padding: 16,
-                cursor: "pointer"
+                padding: 12,
+                cursor: "pointer",
+                fontFamily: fontStyle.fontFamily,
+                fontWeight: 600,
+                color: "#fff"
               },
-              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("svg", {
-                width: "28",
-                height: "28",
-                fill: "none",
-                stroke: "#2584ff",
-                strokeWidth: "2",
-                viewBox: "0 0 24 24",
-                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("path", {
-                  d: "M21 10.5V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h7.5"
-                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("path", {
-                  d: "M16 2v4"
-                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("path", {
-                  d: "M8 2v4"
-                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("path", {
-                  d: "M3 10h18"
-                })]
-              })
+              onClick: function onClick() {
+                var idx = facultyList.findIndex(function (f) {
+                  return f.id === selectedUser.id;
+                });
+                if (idx !== -1) handleEdit(idx);
+              },
+              children: "Edit"
             }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
               style: {
-                background: "#f5f6fa",
+                background: "#ff2d2d",
                 border: "none",
                 borderRadius: 12,
-                padding: 16,
-                cursor: "pointer"
+                padding: 12,
+                cursor: "pointer",
+                fontFamily: fontStyle.fontFamily,
+                fontWeight: 600,
+                color: "#fff"
               },
-              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("svg", {
-                width: "28",
-                height: "28",
-                fill: "none",
-                stroke: "#2584ff",
-                strokeWidth: "2",
-                viewBox: "0 0 24 24",
-                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("path", {
-                  d: "M22 16.92V19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v2"
-                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("path", {
-                  d: "M16 3v4"
-                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("path", {
-                  d: "M8 3v4"
-                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("path", {
-                  d: "M3 10h18"
-                })]
-              })
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
-              style: {
-                background: "#f5f6fa",
-                border: "none",
-                borderRadius: 12,
-                padding: 16,
-                cursor: "pointer"
+              onClick: function onClick() {
+                var idx = facultyList.findIndex(function (f) {
+                  return f.id === selectedUser.id;
+                });
+                if (idx !== -1) handleDelete(idx);
+                handleBackToList();
               },
-              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("svg", {
-                width: "28",
-                height: "28",
-                fill: "none",
-                stroke: "#2584ff",
-                strokeWidth: "2",
-                viewBox: "0 0 24 24",
-                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("path", {
-                  d: "M21 10.5V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h7.5"
-                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("path", {
-                  d: "M16 2v4"
-                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("path", {
-                  d: "M8 2v4"
-                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("path", {
-                  d: "M3 10h18"
-                })]
-              })
+              children: "Delete"
             })]
           })]
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
@@ -72659,10 +73117,7 @@ function Faculty() {
             })]
           })]
         })]
-      }) :
-      /*#__PURE__*/
-      // Table View
-      (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+      }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
         className: "faculty-table-container",
         children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("table", {
           className: "faculty-table",
@@ -72673,8 +73128,6 @@ function Faculty() {
               }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("th", {
                 children: "Subject"
               }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("th", {
-                children: "Class"
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("th", {
                 children: "Email address"
               }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("th", {
                 children: "Department"
@@ -72682,8 +73135,19 @@ function Faculty() {
                 children: "Gender"
               }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("th", {})]
             })
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("tbody", {
-            children: filteredList.map(function (f, idx) {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("tbody", {
+            children: [!loading && filteredList.length === 0 && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("tr", {
+              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("td", {
+                colSpan: "6",
+                children: "No faculty found."
+              })
+            }), loading && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("tr", {
+              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("td", {
+                colSpan: "6",
+                children: "Loading\u2026"
+              })
+            }), filteredList.map(function (f, idx) {
+              var _f$id;
               return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("tr", {
                 style: {
                   cursor: "pointer"
@@ -72695,7 +73159,7 @@ function Faculty() {
                   children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
                     className: "faculty-avatar-name",
                     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("img", {
-                      src: f.avatar,
+                      src: f.avatar || "https://randomuser.me/api/portraits/lego/1.jpg",
                       alt: f.name,
                       className: "faculty-avatar"
                     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("span", {
@@ -72707,11 +73171,6 @@ function Faculty() {
                     return handleUserClick(f);
                   },
                   children: f.subject
-                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("td", {
-                  onClick: function onClick() {
-                    return handleUserClick(f);
-                  },
-                  children: f["class"]
                 }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("td", {
                   onClick: function onClick() {
                     return handleUserClick(f);
@@ -72776,8 +73235,8 @@ function Faculty() {
                     })
                   })]
                 })]
-              }, idx);
-            })
+              }, (_f$id = f.id) !== null && _f$id !== void 0 ? _f$id : idx);
+            })]
           })]
         })
       }), showFilter && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
@@ -72800,6 +73259,7 @@ function Faculty() {
     })]
   });
 }
+// ...existing code...
 
 /***/ }),
 
@@ -72909,7 +73369,7 @@ function Login() {
   var navigate = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_1__.useNavigate)();
   var handleSubmit = function handleSubmit(e) {
     e.preventDefault();
-    if (username === "admin" && password === "12345") {
+    if (username === "admin" && password === "admin") {
       setError("");
       // alert("Login successful!");
       navigate("/dashboard"); // Redirect to dashboard
@@ -73309,37 +73769,106 @@ function useLocalList(key) {
     archive: archive
   };
 }
-function Settings() {
-  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)('courses'),
+
+// simple profile hook backed by localStorage
+function useProfile() {
+  var key = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'settings_profile';
+  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(function () {
+      try {
+        var raw = localStorage.getItem(key);
+        return raw ? JSON.parse(raw) : {
+          name: '',
+          email: '',
+          avatar: '',
+          role: 'Administrator'
+        };
+      } catch (_unused3) {
+        return {
+          name: '',
+          email: '',
+          avatar: '',
+          role: 'Administrator'
+        };
+      }
+    }),
     _useState4 = _slicedToArray(_useState3, 2),
-    activeTab = _useState4[0],
-    setActiveTab = _useState4[1];
+    profile = _useState4[0],
+    setProfile = _useState4[1];
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
+    try {
+      localStorage.setItem(key, JSON.stringify(profile));
+    } catch (_unused4) {}
+  }, [key, profile]);
+  return {
+    profile: profile,
+    setProfile: setProfile
+  };
+}
+function Settings() {
+  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)('courses'),
+    _useState6 = _slicedToArray(_useState5, 2),
+    activeTab = _useState6[0],
+    setActiveTab = _useState6[1];
   var courses = useLocalList('settings_courses', []);
   var departments = useLocalList('settings_departments', []);
   var years = useLocalList('settings_years', []);
-  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)({
+  var _useProfile = useProfile(),
+    profile = _useProfile.profile,
+    setProfile = _useProfile.setProfile;
+  var _useState7 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)({
       title: '',
       code: ''
     }),
-    _useState6 = _slicedToArray(_useState5, 2),
-    form = _useState6[0],
-    setForm = _useState6[1];
-  var _useState7 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null),
     _useState8 = _slicedToArray(_useState7, 2),
-    editing = _useState8[0],
-    setEditing = _useState8[1];
-  var _useState9 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
+    form = _useState8[0],
+    setForm = _useState8[1];
+  var _useState9 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null),
     _useState0 = _slicedToArray(_useState9, 2),
-    showModal = _useState0[0],
-    setShowModal = _useState0[1];
-  var _useState1 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)('active'),
+    editing = _useState0[0],
+    setEditing = _useState0[1];
+  var _useState1 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
     _useState10 = _slicedToArray(_useState1, 2),
-    filter = _useState10[0],
-    setFilter = _useState10[1]; // active | archived | all
-  var _useState11 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(''),
+    showModal = _useState10[0],
+    setShowModal = _useState10[1];
+  var _useState11 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)('active'),
     _useState12 = _slicedToArray(_useState11, 2),
-    error = _useState12[0],
-    setError = _useState12[1];
+    filter = _useState12[0],
+    setFilter = _useState12[1]; // active | archived | all
+  var _useState13 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(''),
+    _useState14 = _slicedToArray(_useState13, 2),
+    error = _useState14[0],
+    setError = _useState14[1];
+
+  // profile modal state
+  var _useState15 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
+    _useState16 = _slicedToArray(_useState15, 2),
+    showProfileModal = _useState16[0],
+    setShowProfileModal = _useState16[1];
+  var _useState17 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(profile),
+    _useState18 = _slicedToArray(_useState17, 2),
+    profileDraft = _useState18[0],
+    setProfileDraft = _useState18[1];
+
+  // Academic Years specific state
+  var yearDefault = {
+    title: '',
+    start: '',
+    end: '',
+    status: 'Active',
+    description: ''
+  };
+  var _useState19 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
+    _useState20 = _slicedToArray(_useState19, 2),
+    showYearModal = _useState20[0],
+    setShowYearModal = _useState20[1];
+  var _useState21 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(yearDefault),
+    _useState22 = _slicedToArray(_useState21, 2),
+    yearForm = _useState22[0],
+    setYearForm = _useState22[1];
+  var _useState23 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null),
+    _useState24 = _slicedToArray(_useState23, 2),
+    yearEditing = _useState24[0],
+    setYearEditing = _useState24[1];
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
     setForm({
       title: '',
@@ -73349,6 +73878,9 @@ function Settings() {
     setFilter('active');
     setError('');
   }, [activeTab]);
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
+    setProfileDraft(profile);
+  }, [profile, showProfileModal]);
   var current = activeTab === 'courses' ? courses : activeTab === 'departments' ? departments : years;
   var handleSubmit = function handleSubmit(e) {
     e.preventDefault();
@@ -73385,6 +73917,57 @@ function Settings() {
       archived: !item.archived
     });
   };
+  var saveProfile = function saveProfile(e) {
+    e.preventDefault();
+    var cleaned = {
+      name: (profileDraft.name || '').trim(),
+      email: (profileDraft.email || '').trim(),
+      avatar: (profileDraft.avatar || '').trim(),
+      role: (profileDraft.role || '').trim() || 'Administrator'
+    };
+    setProfile(cleaned);
+    setShowProfileModal(false);
+  };
+
+  // Academic Years handlers
+  var openAddYear = function openAddYear() {
+    setYearForm(yearDefault);
+    setYearEditing(null);
+    setShowYearModal(true);
+  };
+  var startEditYear = function startEditYear(item) {
+    setYearEditing(item.id);
+    setYearForm({
+      title: item.title,
+      start: item.start,
+      end: item.end,
+      status: item.status || 'Active',
+      description: item.description || ''
+    });
+    setShowYearModal(true);
+  };
+  var saveYear = function saveYear(e) {
+    e.preventDefault();
+    if (!yearForm.title || yearForm.title.trim().length < 3) return;
+    var payload = _objectSpread({}, yearForm);
+    if (yearEditing) {
+      years.update(yearEditing, payload);
+    } else {
+      years.add(payload);
+    }
+    setShowYearModal(false);
+    setYearForm(yearDefault);
+    setYearEditing(null);
+  };
+  var deleteYear = function deleteYear(id) {
+    if (!window.confirm('Delete this academic year?')) return;
+    years.remove(id);
+  };
+  var filteredList = function filteredList(list) {
+    return list.filter(function (it) {
+      return filter === 'all' ? true : filter === 'archived' ? it.archived : !it.archived;
+    });
+  };
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
     style: {
       display: 'flex',
@@ -73412,178 +73995,151 @@ function Settings() {
         },
         children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("aside", {
           style: {
-            minWidth: 220
+            minWidth: 260
           },
           children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
-            style: {
-              background: '#fff',
-              borderRadius: 12,
-              padding: 16
-            },
+            className: "settings-sidebar",
             children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
-              className: "student-add-btn",
-              style: {
-                width: '100%',
-                marginBottom: 8
-              },
+              className: "settings-tab-btn ".concat(activeTab === 'courses' ? 'active' : ''),
               onClick: function onClick() {
                 return setActiveTab('courses');
               },
               children: "Courses"
             }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
-              className: "student-add-btn",
-              style: {
-                width: '100%',
-                marginBottom: 8
-              },
+              className: "settings-tab-btn ".concat(activeTab === 'departments' ? 'active' : ''),
               onClick: function onClick() {
                 return setActiveTab('departments');
               },
               children: "Departments"
             }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
-              className: "student-add-btn",
-              style: {
-                width: '100%'
-              },
+              className: "settings-tab-btn ".concat(activeTab === 'years' ? 'active' : ''),
               onClick: function onClick() {
                 return setActiveTab('years');
               },
               children: "Academic Years"
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
+              className: "settings-tab-btn ".concat(activeTab === 'profile' ? 'active' : ''),
+              style: {
+                marginTop: 12
+              },
+              onClick: function onClick() {
+                return setActiveTab('profile');
+              },
+              children: "Profile"
             })]
           })
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("section", {
           style: {
             flex: 1
           },
-          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
             className: "student-table-container",
-            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
-              style: {
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center'
-              },
-              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("h3", {
+            children: activeTab === 'profile' ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.Fragment, {
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
                 style: {
-                  marginTop: 0,
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
                   marginBottom: 12
                 },
-                children: activeTab === 'courses' ? 'Courses' : activeTab === 'departments' ? 'Departments' : 'Academic Years'
+                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("h3", {
+                  style: {
+                    marginTop: 0
+                  },
+                  children: "Profile"
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
+                    className: "student-form-submit",
+                    onClick: function onClick() {
+                      setProfileDraft(profile);
+                      setShowProfileModal(true);
+                    },
+                    children: "Edit Profile"
+                  })
+                })]
               }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
                 style: {
                   display: 'flex',
-                  gap: 8,
+                  gap: 20,
                   alignItems: 'center'
                 },
-                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("select", {
-                  value: filter,
-                  onChange: function onChange(e) {
-                    return setFilter(e.target.value);
-                  },
+                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
                   style: {
-                    padding: 8
+                    width: 96,
+                    height: 96,
+                    borderRadius: 12,
+                    overflow: 'hidden',
+                    background: '#f3f6f9',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center'
                   },
-                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("option", {
-                    value: "active",
-                    children: "Active"
-                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("option", {
-                    value: "archived",
-                    children: "Archived"
-                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("option", {
-                    value: "all",
-                    children: "All"
-                  })]
-                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
-                  className: "student-form-submit",
-                  onClick: function onClick() {
-                    setShowModal(true);
-                    setEditing(null);
-                    setForm({
-                      title: '',
-                      code: ''
-                    });
-                  },
-                  children: "Add new"
-                })]
-              })]
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("table", {
-              className: "student-table",
-              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("thead", {
-                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("tr", {
-                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("th", {
-                    children: "Title"
-                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("th", {
-                    children: "Code"
-                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("th", {
-                    children: "Status"
-                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("th", {})]
-                })
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("tbody", {
-                children: [current.list.filter(function (it) {
-                  return filter === 'all' ? true : filter === 'archived' ? it.archived : !it.archived;
-                }).length === 0 && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("tr", {
-                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("td", {
-                    colSpan: "4",
-                    children: "No items."
-                  })
-                }), current.list.filter(function (it) {
-                  return filter === 'all' ? true : filter === 'archived' ? it.archived : !it.archived;
-                }).map(function (item) {
-                  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("tr", {
-                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("td", {
-                      children: item.title || item.name
-                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("td", {
-                      children: item.code || item["class"]
-                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("td", {
-                      children: item.archived ? 'Archived' : 'Active'
-                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("td", {
-                      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
-                        className: "student-icon-btn",
-                        onClick: function onClick() {
-                          return startEdit(item);
-                        },
-                        "aria-label": "Edit",
-                        children: "\u270F\uFE0F"
-                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
-                        className: "student-icon-btn",
-                        onClick: function onClick() {
-                          return toggleArchive(item);
-                        },
-                        "aria-label": "Archive",
-                        children: item.archived ? '↩️' : '🗄️'
-                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
-                        className: "student-icon-btn",
-                        onClick: function onClick() {
-                          return confirmDelete(item.id);
-                        },
-                        "aria-label": "Delete",
-                        children: "\uD83D\uDDD1\uFE0F"
-                      })]
+                  children: profile.avatar ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("img", {
+                    src: profile.avatar,
+                    alt: profile.name,
+                    style: {
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'cover'
+                    }
+                  }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("svg", {
+                    width: "48",
+                    height: "48",
+                    viewBox: "0 0 24 24",
+                    fill: "none",
+                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("path", {
+                      d: "M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4z",
+                      stroke: "#94a3b8",
+                      strokeWidth: "1.5"
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("path", {
+                      d: "M4 20v-1c0-2.8 3.6-4 8-4s8 1.2 8 4v1",
+                      stroke: "#94a3b8",
+                      strokeWidth: "1.5"
                     })]
-                  }, item.id);
-                })]
-              })]
-            }), showModal && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
-              className: "student-form-overlay",
-              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
-                className: "student-full-form",
-                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
-                  className: "student-form-header-row",
-                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("h2", {
-                    className: "student-form-title",
-                    children: editing ? 'Edit item' : 'Add item'
-                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
-                    className: "student-form-cancel",
-                    onClick: function onClick() {
-                      setShowModal(false);
-                      setEditing(null);
-                      setError('');
+                  })
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+                  style: {
+                    flex: 1
+                  },
+                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+                    style: {
+                      fontWeight: 700,
+                      fontSize: 18
                     },
-                    children: "Close"
+                    children: profile.name || 'No name set'
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+                    style: {
+                      color: '#6b7280',
+                      marginTop: 6
+                    },
+                    children: profile.email || 'No email set'
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+                    style: {
+                      color: '#6b7280',
+                      marginTop: 4
+                    },
+                    children: profile.role || 'Administrator'
                   })]
-                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("form", {
-                  onSubmit: handleSubmit,
+                })]
+              }), showProfileModal && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+                className: "student-form-overlay",
+                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("form", {
+                  className: "student-full-form",
+                  onSubmit: saveProfile,
                   children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+                    className: "student-form-header-row",
+                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("h2", {
+                      className: "student-form-title",
+                      children: "Edit Profile"
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
+                      type: "button",
+                      className: "student-form-cancel",
+                      onClick: function onClick() {
+                        return setShowProfileModal(false);
+                      },
+                      children: "Close"
+                    })]
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
                     className: "student-form-row",
                     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
                       className: "student-form-group",
@@ -73591,58 +74147,532 @@ function Settings() {
                         flex: 1
                       },
                       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("label", {
-                        children: "Title"
+                        children: "Full Name"
                       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("input", {
-                        value: form.title,
+                        value: profileDraft.name,
                         onChange: function onChange(e) {
-                          return setForm(_objectSpread(_objectSpread({}, form), {}, {
-                            title: e.target.value
-                          }));
+                          return setProfileDraft(function (p) {
+                            return _objectSpread(_objectSpread({}, p), {}, {
+                              name: e.target.value
+                            });
+                          });
                         },
+                        placeholder: "Full name",
                         required: true
                       })]
                     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
                       className: "student-form-group",
                       style: {
-                        width: 200
+                        width: 300
                       },
                       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("label", {
-                        children: "Code"
+                        children: "Contact Email"
                       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("input", {
-                        value: form.code,
+                        type: "email",
+                        value: profileDraft.email,
                         onChange: function onChange(e) {
-                          return setForm(_objectSpread(_objectSpread({}, form), {}, {
-                            code: e.target.value
-                          }));
-                        }
+                          return setProfileDraft(function (p) {
+                            return _objectSpread(_objectSpread({}, p), {}, {
+                              email: e.target.value
+                            });
+                          });
+                        },
+                        placeholder: "Email"
                       })]
                     })]
-                  }), error && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
-                    style: {
-                      color: 'red',
-                      marginTop: 8
-                    },
-                    children: error
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+                    className: "student-form-row",
+                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+                      className: "student-form-group",
+                      style: {
+                        flex: 1
+                      },
+                      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("label", {
+                        children: "Avatar URL"
+                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("input", {
+                        value: profileDraft.avatar,
+                        onChange: function onChange(e) {
+                          return setProfileDraft(function (p) {
+                            return _objectSpread(_objectSpread({}, p), {}, {
+                              avatar: e.target.value
+                            });
+                          });
+                        },
+                        placeholder: "https://..."
+                      })]
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+                      className: "student-form-group",
+                      style: {
+                        width: 240
+                      },
+                      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("label", {
+                        children: "Role"
+                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("select", {
+                        value: profileDraft.role,
+                        onChange: function onChange(e) {
+                          return setProfileDraft(function (p) {
+                            return _objectSpread(_objectSpread({}, p), {}, {
+                              role: e.target.value
+                            });
+                          });
+                        },
+                        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("option", {
+                          children: "Administrator"
+                        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("option", {
+                          children: "Registrar"
+                        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("option", {
+                          children: "Staff"
+                        })]
+                      })]
+                    })]
                   }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
                     className: "student-form-actions",
                     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
                       type: "submit",
                       className: "student-form-submit",
-                      children: editing ? 'Save changes' : 'Add'
+                      children: "Save Profile"
                     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
                       type: "button",
+                      className: "student-form-cancel",
+                      onClick: function onClick() {
+                        return setShowProfileModal(false);
+                      },
+                      children: "Cancel"
+                    })]
+                  })]
+                })
+              })]
+            }) : activeTab === 'years' ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.Fragment, {
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+                style: {
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center'
+                },
+                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("h3", {
+                  style: {
+                    marginTop: 0,
+                    marginBottom: 12
+                  },
+                  children: "Academic Years"
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+                  style: {
+                    display: 'flex',
+                    gap: 8,
+                    alignItems: 'center'
+                  },
+                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("select", {
+                    value: filter,
+                    onChange: function onChange(e) {
+                      return setFilter(e.target.value);
+                    },
+                    style: {
+                      padding: 8
+                    },
+                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("option", {
+                      value: "active",
+                      children: "Active"
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("option", {
+                      value: "archived",
+                      children: "Archived"
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("option", {
+                      value: "all",
+                      children: "All"
+                    })]
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
+                    className: "student-form-submit",
+                    onClick: openAddYear,
+                    children: "Add new"
+                  })]
+                })]
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("table", {
+                className: "settings-table",
+                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("thead", {
+                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("tr", {
+                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("th", {
+                      children: "Year"
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("th", {
+                      children: "Start Date"
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("th", {
+                      children: "End Date"
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("th", {
+                      children: "Status"
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("th", {})]
+                  })
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("tbody", {
+                  children: [filteredList(years.list).length === 0 && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("tr", {
+                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("td", {
+                      colSpan: "5",
+                      children: "No items."
+                    })
+                  }), filteredList(years.list).map(function (item) {
+                    return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("tr", {
+                      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("td", {
+                        children: item.title
+                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("td", {
+                        children: item.start || '-'
+                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("td", {
+                        children: item.end || '-'
+                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("td", {
+                        children: item.archived ? 'Archived' : item.status || 'Active'
+                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("td", {
+                        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
+                          className: "student-icon-btn",
+                          onClick: function onClick() {
+                            return startEditYear(item);
+                          },
+                          "aria-label": "Edit",
+                          children: "\u270F\uFE0F"
+                        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
+                          className: "student-icon-btn",
+                          onClick: function onClick() {
+                            return years.update(item.id, {
+                              archived: !item.archived
+                            });
+                          },
+                          "aria-label": "Archive",
+                          children: item.archived ? '↩️' : '🗄️'
+                        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
+                          className: "student-icon-btn",
+                          onClick: function onClick() {
+                            return deleteYear(item.id);
+                          },
+                          "aria-label": "Delete",
+                          children: "\uD83D\uDDD1\uFE0F"
+                        })]
+                      })]
+                    }, item.id);
+                  })]
+                })]
+              }), showYearModal && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+                className: "student-form-overlay",
+                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("form", {
+                  className: "student-full-form",
+                  onSubmit: saveYear,
+                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+                    className: "student-form-header-row",
+                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("h2", {
+                      className: "student-form-title",
+                      children: yearEditing ? 'Edit Academic Year' : 'Add Academic Year'
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
+                      type: "button",
+                      className: "student-form-cancel",
+                      onClick: function onClick() {
+                        return setShowYearModal(false);
+                      },
+                      children: "Close"
+                    })]
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+                    className: "student-form-row",
+                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+                      className: "student-form-group",
+                      style: {
+                        flex: 1
+                      },
+                      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("label", {
+                        children: "Academic Year"
+                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("input", {
+                        value: yearForm.title,
+                        onChange: function onChange(e) {
+                          return setYearForm(function (p) {
+                            return _objectSpread(_objectSpread({}, p), {}, {
+                              title: e.target.value
+                            });
+                          });
+                        },
+                        placeholder: "e.g. 2024 - 2025",
+                        required: true
+                      })]
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+                      className: "student-form-group",
+                      style: {
+                        width: 180
+                      },
+                      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("label", {
+                        children: "Start Date"
+                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("input", {
+                        type: "date",
+                        value: yearForm.start,
+                        onChange: function onChange(e) {
+                          return setYearForm(function (p) {
+                            return _objectSpread(_objectSpread({}, p), {}, {
+                              start: e.target.value
+                            });
+                          });
+                        }
+                      })]
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+                      className: "student-form-group",
+                      style: {
+                        width: 180
+                      },
+                      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("label", {
+                        children: "End Date"
+                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("input", {
+                        type: "date",
+                        value: yearForm.end,
+                        onChange: function onChange(e) {
+                          return setYearForm(function (p) {
+                            return _objectSpread(_objectSpread({}, p), {}, {
+                              end: e.target.value
+                            });
+                          });
+                        }
+                      })]
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+                      className: "student-form-group",
+                      style: {
+                        width: 160
+                      },
+                      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("label", {
+                        children: "Status"
+                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("select", {
+                        value: yearForm.status,
+                        onChange: function onChange(e) {
+                          return setYearForm(function (p) {
+                            return _objectSpread(_objectSpread({}, p), {}, {
+                              status: e.target.value
+                            });
+                          });
+                        },
+                        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("option", {
+                          children: "Active"
+                        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("option", {
+                          children: "Offline"
+                        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("option", {
+                          children: "Archived"
+                        })]
+                      })]
+                    })]
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+                    className: "student-form-row",
+                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+                      className: "student-form-group",
+                      style: {
+                        flex: 1
+                      },
+                      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("label", {
+                        children: "Description"
+                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("textarea", {
+                        value: yearForm.description,
+                        onChange: function onChange(e) {
+                          return setYearForm(function (p) {
+                            return _objectSpread(_objectSpread({}, p), {}, {
+                              description: e.target.value
+                            });
+                          });
+                        },
+                        placeholder: "Short notes (optional)",
+                        style: {
+                          minHeight: 80
+                        }
+                      })]
+                    })
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+                    className: "student-form-actions",
+                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
+                      type: "submit",
+                      className: "student-form-submit",
+                      children: yearEditing ? 'Save Changes' : 'Add Academic Year'
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
+                      type: "button",
+                      className: "student-form-cancel",
+                      onClick: function onClick() {
+                        return setShowYearModal(false);
+                      },
+                      children: "Cancel"
+                    })]
+                  })]
+                })
+              })]
+            }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.Fragment, {
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+                style: {
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center'
+                },
+                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("h3", {
+                  style: {
+                    marginTop: 0,
+                    marginBottom: 12
+                  },
+                  children: activeTab === 'courses' ? 'Courses' : 'Departments'
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+                  style: {
+                    display: 'flex',
+                    gap: 8,
+                    alignItems: 'center'
+                  },
+                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("select", {
+                    value: filter,
+                    onChange: function onChange(e) {
+                      return setFilter(e.target.value);
+                    },
+                    style: {
+                      padding: 8
+                    },
+                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("option", {
+                      value: "active",
+                      children: "Active"
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("option", {
+                      value: "archived",
+                      children: "Archived"
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("option", {
+                      value: "all",
+                      children: "All"
+                    })]
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
+                    className: "student-form-submit",
+                    onClick: function onClick() {
+                      setShowModal(true);
+                      setEditing(null);
+                      setForm({
+                        title: '',
+                        code: ''
+                      });
+                    },
+                    children: "Add new"
+                  })]
+                })]
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("table", {
+                className: "student-table",
+                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("thead", {
+                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("tr", {
+                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("th", {
+                      children: "Title"
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("th", {
+                      children: "Code"
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("th", {
+                      children: "Status"
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("th", {})]
+                  })
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("tbody", {
+                  children: [current.list.filter(function (it) {
+                    return filter === 'all' ? true : filter === 'archived' ? it.archived : !it.archived;
+                  }).length === 0 && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("tr", {
+                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("td", {
+                      colSpan: "4",
+                      children: "No items."
+                    })
+                  }), current.list.filter(function (it) {
+                    return filter === 'all' ? true : filter === 'archived' ? it.archived : !it.archived;
+                  }).map(function (item) {
+                    return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("tr", {
+                      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("td", {
+                        children: item.title || item.name
+                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("td", {
+                        children: item.code || item["class"]
+                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("td", {
+                        children: item.archived ? 'Archived' : 'Active'
+                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("td", {
+                        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
+                          className: "student-icon-btn",
+                          onClick: function onClick() {
+                            return startEdit(item);
+                          },
+                          "aria-label": "Edit",
+                          children: "\u270F\uFE0F"
+                        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
+                          className: "student-icon-btn",
+                          onClick: function onClick() {
+                            return toggleArchive(item);
+                          },
+                          "aria-label": "Archive",
+                          children: item.archived ? '↩️' : '🗄️'
+                        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
+                          className: "student-icon-btn",
+                          onClick: function onClick() {
+                            return confirmDelete(item.id);
+                          },
+                          "aria-label": "Delete",
+                          children: "\uD83D\uDDD1\uFE0F"
+                        })]
+                      })]
+                    }, item.id);
+                  })]
+                })]
+              }), showModal && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+                className: "student-form-overlay",
+                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+                  className: "student-full-form",
+                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+                    className: "student-form-header-row",
+                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("h2", {
+                      className: "student-form-title",
+                      children: editing ? 'Edit item' : 'Add item'
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
                       className: "student-form-cancel",
                       onClick: function onClick() {
                         setShowModal(false);
                         setEditing(null);
                         setError('');
                       },
-                      children: "Cancel"
+                      children: "Close"
+                    })]
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("form", {
+                    onSubmit: handleSubmit,
+                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+                      className: "student-form-row",
+                      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+                        className: "student-form-group",
+                        style: {
+                          flex: 1
+                        },
+                        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("label", {
+                          children: "Title"
+                        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("input", {
+                          value: form.title,
+                          onChange: function onChange(e) {
+                            return setForm(_objectSpread(_objectSpread({}, form), {}, {
+                              title: e.target.value
+                            }));
+                          },
+                          required: true
+                        })]
+                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+                        className: "student-form-group",
+                        style: {
+                          width: 200
+                        },
+                        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("label", {
+                          children: "Code"
+                        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("input", {
+                          value: form.code,
+                          onChange: function onChange(e) {
+                            return setForm(_objectSpread(_objectSpread({}, form), {}, {
+                              code: e.target.value
+                            }));
+                          }
+                        })]
+                      })]
+                    }), error && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+                      style: {
+                        color: 'red',
+                        marginTop: 8
+                      },
+                      children: error
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+                      className: "student-form-actions",
+                      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
+                        type: "submit",
+                        className: "student-form-submit",
+                        children: editing ? 'Save changes' : 'Add'
+                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
+                        type: "button",
+                        className: "student-form-cancel",
+                        onClick: function onClick() {
+                          setShowModal(false);
+                          setEditing(null);
+                          setError('');
+                        },
+                        children: "Cancel"
+                      })]
                     })]
                   })]
-                })]
-              })
-            })]
+                })
+              })]
+            })
           })
         })]
       })]
@@ -73695,7 +74725,7 @@ function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e 
 
 
 
-// Simple localStorage-backed database used as a fallback (or primary) storage
+/* Local storage helper */
 
 var LocalDB = /*#__PURE__*/function () {
   function LocalDB() {
@@ -73733,13 +74763,15 @@ var LocalDB = /*#__PURE__*/function () {
     key: "create",
     value: function () {
       var _create = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee2(item) {
+        var _item$id;
         var list, toAdd;
         return _regenerator().w(function (_context2) {
           while (1) switch (_context2.n) {
             case 0:
               list = this._readRaw();
-              toAdd = _objectSpread({}, item);
-              if (!toAdd.id) toAdd.id = Date.now();
+              toAdd = _objectSpread(_objectSpread({}, item), {}, {
+                id: (_item$id = item.id) !== null && _item$id !== void 0 ? _item$id : Date.now()
+              });
               list.push(toAdd);
               localStorage.setItem(this.key, JSON.stringify(list));
               return _context2.a(2, toAdd);
@@ -73784,15 +74816,14 @@ var LocalDB = /*#__PURE__*/function () {
     key: "delete",
     value: function () {
       var _delete2 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee4(id) {
-        var list, newList;
+        var list;
         return _regenerator().w(function (_context4) {
           while (1) switch (_context4.n) {
             case 0:
-              list = this._readRaw();
-              newList = list.filter(function (i) {
+              list = this._readRaw().filter(function (i) {
                 return i.id !== id;
               });
-              localStorage.setItem(this.key, JSON.stringify(newList));
+              localStorage.setItem(this.key, JSON.stringify(list));
               return _context4.a(2, true);
           }
         }, _callee4, this);
@@ -73805,6 +74836,8 @@ var LocalDB = /*#__PURE__*/function () {
   }]);
 }();
 var localDB = new LocalDB();
+
+/* Form component (left narrow card) - copied / adapted from Faculty form */
 var StudentFullForm = /*#__PURE__*/(0,react__WEBPACK_IMPORTED_MODULE_0__.memo)(function (_ref) {
   var isEdit = _ref.isEdit,
     onSubmit = _ref.onSubmit,
@@ -73813,6 +74846,8 @@ var StudentFullForm = /*#__PURE__*/(0,react__WEBPACK_IMPORTED_MODULE_0__.memo)(f
     setForm = _ref.setForm;
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
     className: "student-form-overlay",
+    role: "dialog",
+    "aria-modal": "true",
     children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("form", {
       className: "student-full-form",
       onSubmit: onSubmit,
@@ -73828,7 +74863,8 @@ var StudentFullForm = /*#__PURE__*/(0,react__WEBPACK_IMPORTED_MODULE_0__.memo)(f
           },
           children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("input", {
             type: "text",
-            required: true,
+            name: "department",
+            "aria-label": "Department",
             className: "student-form-designation",
             value: form.department,
             onChange: function onChange(e) {
@@ -73836,11 +74872,10 @@ var StudentFullForm = /*#__PURE__*/(0,react__WEBPACK_IMPORTED_MODULE_0__.memo)(f
                 department: e.target.value
               }));
             },
-            placeholder: "Department"
+            placeholder: "Department",
+            autoComplete: "organization"
           })
         })]
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
-        className: "student-form-section-label"
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
         className: "student-form-row",
         children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
@@ -73852,6 +74887,7 @@ var StudentFullForm = /*#__PURE__*/(0,react__WEBPACK_IMPORTED_MODULE_0__.memo)(f
             children: "Full Name"
           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("input", {
             type: "text",
+            name: "name",
             required: true,
             value: form.name,
             onChange: function onChange(e) {
@@ -73859,7 +74895,8 @@ var StudentFullForm = /*#__PURE__*/(0,react__WEBPACK_IMPORTED_MODULE_0__.memo)(f
                 name: e.target.value
               }));
             },
-            placeholder: "Full Name"
+            placeholder: "Full Name",
+            autoComplete: "name"
           })]
         })
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
@@ -73873,6 +74910,7 @@ var StudentFullForm = /*#__PURE__*/(0,react__WEBPACK_IMPORTED_MODULE_0__.memo)(f
             children: "Email address"
           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("input", {
             type: "email",
+            name: "email",
             required: true,
             value: form.email,
             onChange: function onChange(e) {
@@ -73880,34 +74918,18 @@ var StudentFullForm = /*#__PURE__*/(0,react__WEBPACK_IMPORTED_MODULE_0__.memo)(f
                 email: e.target.value
               }));
             },
-            placeholder: "Email address"
+            placeholder: "Email address",
+            autoComplete: "email"
           })]
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
           className: "student-form-group",
           style: {
-            flex: 1
-          },
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("label", {
-            children: "Class"
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("input", {
-            type: "text",
-            required: true,
-            value: form["class"],
-            onChange: function onChange(e) {
-              return setForm(_objectSpread(_objectSpread({}, form), {}, {
-                "class": e.target.value
-              }));
-            },
-            placeholder: "Class"
-          })]
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
-          className: "student-form-group",
-          style: {
-            flex: 1
+            width: 120
           },
           children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("label", {
             children: "Gender"
           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("select", {
+            name: "gender",
             required: true,
             value: form.gender,
             onChange: function onChange(e) {
@@ -73915,6 +74937,7 @@ var StudentFullForm = /*#__PURE__*/(0,react__WEBPACK_IMPORTED_MODULE_0__.memo)(f
                 gender: e.target.value
               }));
             },
+            "aria-label": "Gender",
             children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("option", {
               value: "",
               children: "Select"
@@ -73935,14 +74958,37 @@ var StudentFullForm = /*#__PURE__*/(0,react__WEBPACK_IMPORTED_MODULE_0__.memo)(f
           children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("label", {
             children: "Phone number"
           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("input", {
-            type: "text",
+            type: "tel",
+            name: "phone",
             value: form.phone,
             onChange: function onChange(e) {
               return setForm(_objectSpread(_objectSpread({}, form), {}, {
                 phone: e.target.value
               }));
             },
-            placeholder: "Phone number"
+            placeholder: "Phone number",
+            autoComplete: "tel"
+          })]
+        })
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+        className: "student-form-row",
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+          className: "student-form-group",
+          style: {
+            flex: 1
+          },
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("label", {
+            children: "Year Level"
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("input", {
+            type: "text",
+            name: "year",
+            value: form.year,
+            onChange: function onChange(e) {
+              return setForm(_objectSpread(_objectSpread({}, form), {}, {
+                year: e.target.value
+              }));
+            },
+            placeholder: "Year Level"
           })]
         })
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
@@ -73956,6 +75002,7 @@ var StudentFullForm = /*#__PURE__*/(0,react__WEBPACK_IMPORTED_MODULE_0__.memo)(f
             children: "Subject"
           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("input", {
             type: "text",
+            name: "subject",
             required: true,
             value: form.subject,
             onChange: function onChange(e) {
@@ -73968,13 +75015,15 @@ var StudentFullForm = /*#__PURE__*/(0,react__WEBPACK_IMPORTED_MODULE_0__.memo)(f
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
           className: "student-form-group",
           style: {
-            flex: 1
+            width: 120
           },
           children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("label", {
             children: "Age"
           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("input", {
             type: "number",
+            name: "age",
             required: true,
+            min: "0",
             value: form.age,
             onChange: function onChange(e) {
               return setForm(_objectSpread(_objectSpread({}, form), {}, {
@@ -73994,6 +75043,7 @@ var StudentFullForm = /*#__PURE__*/(0,react__WEBPACK_IMPORTED_MODULE_0__.memo)(f
           children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("label", {
             children: "About"
           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("textarea", {
+            name: "about",
             required: true,
             value: form.about,
             onChange: function onChange(e) {
@@ -74003,7 +75053,7 @@ var StudentFullForm = /*#__PURE__*/(0,react__WEBPACK_IMPORTED_MODULE_0__.memo)(f
             },
             placeholder: "About this student",
             style: {
-              minHeight: 60
+              minHeight: 80
             }
           })]
         })
@@ -74025,17 +75075,27 @@ var StudentFullForm = /*#__PURE__*/(0,react__WEBPACK_IMPORTED_MODULE_0__.memo)(f
 });
 function Student() {
   var navigate = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_1__.useNavigate)();
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
+    var id = "ghcopilot-inter-font";
+    if (!document.getElementById(id)) {
+      var link = document.createElement("link");
+      link.id = id;
+      link.rel = "stylesheet";
+      link.href = "https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap";
+      document.head.appendChild(link);
+    }
+  }, []);
   var defaultForm = {
     name: "",
     subject: "",
-    "class": "",
     email: "",
     age: "",
     gender: "Male",
     avatar: "",
     about: "",
     phone: "",
-    department: ""
+    department: "",
+    year: ""
   };
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
     _useState2 = _slicedToArray(_useState, 2),
@@ -74069,6 +75129,10 @@ function Student() {
     _useState14 = _slicedToArray(_useState13, 2),
     selectedUser = _useState14[0],
     setSelectedUser = _useState14[1];
+  var _useState15 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(true),
+    _useState16 = _slicedToArray(_useState15, 2),
+    loading = _useState16[0],
+    setLoading = _useState16[1];
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
     var mounted = true;
     _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee5() {
@@ -74110,9 +75174,13 @@ function Student() {
             _t2 = _context5.v;
             if (mounted) setStudentList([]);
           case 8:
+            _context5.p = 8;
+            if (mounted) setLoading(false);
+            return _context5.f(8);
+          case 9:
             return _context5.a(2);
         }
-      }, _callee5, null, [[5, 7], [0, 4]]);
+      }, _callee5, null, [[5, 7], [0, 4, 8, 9]]);
     }))();
     return function () {
       mounted = false;
@@ -74348,6 +75416,8 @@ function Student() {
               });
             });
           case 9:
+            if (selectedUser && selectedUser.id === target.id) setSelectedUser(null);
+          case 10:
             return _context8.a(2);
         }
       }, _callee8, null, [[2, 7]]);
@@ -74356,9 +75426,6 @@ function Student() {
       return _ref5.apply(this, arguments);
     };
   }();
-  var handleFilter = function handleFilter() {
-    return setShowFilter(true);
-  };
   var filteredList = studentList.filter(function (s) {
     return (s.name || "").toLowerCase().includes(search.toLowerCase()) || (s.email || "").toLowerCase().includes(search.toLowerCase());
   });
@@ -74371,17 +75438,20 @@ function Student() {
   var handleBackToList = function handleBackToList() {
     return setSelectedUser(null);
   };
+  var fontStyle = {
+    fontFamily: "Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial"
+  };
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
-    style: {
+    style: _objectSpread({
       display: "flex",
       minHeight: "100vh",
       background: "#f8fafc"
-    },
+    }, fontStyle),
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_Navbar__WEBPACK_IMPORTED_MODULE_2__["default"], {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("main", {
       className: "student-container",
-      style: {
+      style: _objectSpread({
         flex: 1
-      },
+      }, fontStyle),
       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
         className: "dashboard-header",
         children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
@@ -74396,24 +75466,18 @@ function Student() {
           onClick: function onClick() {
             return selectedUser ? handleBackToList() : navigate(-1);
           },
-          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("svg", {
-            width: "28",
-            height: "28",
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("svg", {
+            width: "16",
+            height: "16",
             viewBox: "0 0 24 24",
             fill: "none",
-            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("circle", {
-              cx: "12",
-              cy: "12",
-              r: "12",
-              fill: "#222",
-              opacity: "0.12"
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("path", {
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("path", {
               d: "M14 8l-4 4 4 4",
-              stroke: "#222",
+              stroke: "#111827",
               strokeWidth: "2",
               strokeLinecap: "round",
               strokeLinejoin: "round"
-            })]
+            })
           })
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
           className: "student-actions",
@@ -74457,8 +75521,8 @@ function Student() {
           display: "flex",
           justifyContent: "center",
           alignItems: "flex-start",
-          marginTop: "40px",
-          gap: "60px"
+          marginTop: 40,
+          gap: 60
         },
         children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
           style: {
@@ -74490,9 +75554,36 @@ function Student() {
               color: "#888",
               fontSize: "1rem",
               marginBottom: 24,
-              textAlign: "center"
+              textAlign: "center",
+              letterSpacing: 1
             },
-            children: selectedUser.subject
+            children: (selectedUser.department || "").toUpperCase()
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+            style: {
+              display: "flex",
+              gap: 24,
+              marginTop: 16
+            },
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
+              className: "student-form-submit",
+              onClick: function onClick() {
+                var idx = studentList.findIndex(function (s) {
+                  return s.id === selectedUser.id;
+                });
+                if (idx !== -1) handleEdit(idx);
+              },
+              children: "Edit"
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
+              className: "student-form-cancel",
+              onClick: function onClick() {
+                var idx = studentList.findIndex(function (s) {
+                  return s.id === selectedUser.id;
+                });
+                if (idx !== -1) handleDelete(idx);
+                handleBackToList();
+              },
+              children: "Delete"
+            })]
           })]
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
           style: {
@@ -74524,12 +75615,12 @@ function Student() {
                   color: "#888",
                   fontSize: 13
                 },
-                children: "Age"
+                children: "Year"
               }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
                 style: {
                   fontWeight: 600
                 },
-                children: selectedUser.age
+                children: selectedUser.year
               })]
             }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
               children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
@@ -74545,91 +75636,6 @@ function Student() {
                 children: selectedUser.gender
               })]
             })]
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
-            style: {
-              marginTop: 16
-            },
-            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
-              className: "student-icon-btn",
-              title: "Edit",
-              "aria-label": "Edit student",
-              onClick: function onClick() {
-                var idx = studentList.findIndex(function (s) {
-                  return s.id === selectedUser.id;
-                });
-                if (idx !== -1) handleEdit(idx);
-              },
-              style: {
-                marginRight: 8
-              },
-              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("svg", {
-                viewBox: "0 0 24 24",
-                fill: "none",
-                xmlns: "http://www.w3.org/2000/svg",
-                "aria-hidden": "true",
-                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("path", {
-                  d: "M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25z",
-                  stroke: "#222",
-                  strokeWidth: "1.5",
-                  strokeLinecap: "round",
-                  strokeLinejoin: "round"
-                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("path", {
-                  d: "M20.71 7.04a1 1 0 0 0 0-1.41l-2.34-2.34a1 1 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z",
-                  stroke: "#222",
-                  strokeWidth: "1.5",
-                  strokeLinecap: "round",
-                  strokeLinejoin: "round"
-                })]
-              })
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
-              className: "student-icon-btn",
-              title: "Delete",
-              "aria-label": "Delete student",
-              onClick: function onClick() {
-                var idx = studentList.findIndex(function (s) {
-                  return s.id === selectedUser.id;
-                });
-                if (idx !== -1) handleDelete(idx);
-                handleBackToList();
-              },
-              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("svg", {
-                viewBox: "0 0 24 24",
-                fill: "none",
-                xmlns: "http://www.w3.org/2000/svg",
-                "aria-hidden": "true",
-                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("path", {
-                  d: "M3 6h18",
-                  stroke: "#222",
-                  strokeWidth: "1.5",
-                  strokeLinecap: "round",
-                  strokeLinejoin: "round"
-                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("path", {
-                  d: "M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L6 6",
-                  stroke: "#222",
-                  strokeWidth: "1.5",
-                  strokeLinecap: "round",
-                  strokeLinejoin: "round"
-                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("path", {
-                  d: "M10 11v6",
-                  stroke: "#222",
-                  strokeWidth: "1.5",
-                  strokeLinecap: "round",
-                  strokeLinejoin: "round"
-                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("path", {
-                  d: "M14 11v6",
-                  stroke: "#222",
-                  strokeWidth: "1.5",
-                  strokeLinecap: "round",
-                  strokeLinejoin: "round"
-                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("path", {
-                  d: "M9 6V4a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2",
-                  stroke: "#222",
-                  strokeWidth: "1.5",
-                  strokeLinecap: "round",
-                  strokeLinejoin: "round"
-                })]
-              })
-            })]
           })]
         })]
       }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
@@ -74643,20 +75649,25 @@ function Student() {
               }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("th", {
                 children: "Subject"
               }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("th", {
-                children: "Class"
+                children: "Department"
               }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("th", {
                 children: "Email address"
               }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("th", {
-                children: "Department"
+                children: "Year Level"
               }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("th", {
                 children: "Gender"
               }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("th", {})]
             })
           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("tbody", {
-            children: [filteredList.length === 0 && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("tr", {
+            children: [!loading && filteredList.length === 0 && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("tr", {
               children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("td", {
                 colSpan: "7",
                 children: "No students found."
+              })
+            }), loading && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("tr", {
+              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("td", {
+                colSpan: "7",
+                children: "Loading\u2026"
               })
             }), filteredList.map(function (s, idx) {
               var _s$id;
@@ -74674,8 +75685,19 @@ function Student() {
                       src: s.avatar || "https://randomuser.me/api/portraits/lego/1.jpg",
                       alt: s.name,
                       className: "student-avatar"
-                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("span", {
-                      children: s.name
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+                      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+                        style: {
+                          fontWeight: 600
+                        },
+                        children: s.name
+                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+                        style: {
+                          color: "#888",
+                          fontSize: 13
+                        },
+                        children: s.phone
+                      })]
                     })]
                   })
                 }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("td", {
@@ -74687,7 +75709,7 @@ function Student() {
                   onClick: function onClick() {
                     return handleUserClick(s);
                   },
-                  children: s["class"]
+                  children: s.department
                 }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("td", {
                   onClick: function onClick() {
                     return handleUserClick(s);
@@ -74697,7 +75719,7 @@ function Student() {
                   onClick: function onClick() {
                     return handleUserClick(s);
                   },
-                  children: s.department
+                  children: s.year
                 }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("td", {
                   onClick: function onClick() {
                     return handleUserClick(s);
