@@ -212,6 +212,7 @@
 .student-form-row,
 .course-form-row {
   display: flex;
+  flex-wrap: wrap; /* allow fields to wrap to next line instead of overlapping */
   gap: 24px;
   margin-bottom: 18px;
 }
@@ -221,6 +222,9 @@
   display: flex;
   flex-direction: column;
   gap: 6px;
+  /* make groups flexible with a sensible minimum width to avoid overlap */
+  flex: 1 1 260px;
+  min-width: 240px;
 }
 
 .student-form-group label,
@@ -237,6 +241,8 @@
 .course-form-group input,
 .course-form-group select,
 .course-form-group textarea {
+  width: 100%; /* ensure controls fill their container */
+  box-sizing: border-box; /* include padding/border in width */
   padding: 10px 12px;
   border-radius: 6px;
   border: 1px solid #e6eaf1;

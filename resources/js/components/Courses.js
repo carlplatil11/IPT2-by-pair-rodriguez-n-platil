@@ -36,13 +36,13 @@ const CourseFullForm = memo(({ isEdit, onSubmit, onCancel, form, setForm }) => (
 
             <div className="student-form-row">
                 <div className="student-form-group" style={{ flex: 2 }}>
-                    <label>Instructor Email</label>
+                    <label>Instructor</label>
                     <input
-                        type="email"
+                        type="text"
                         required
-                        value={form.email}
-                        onChange={e => setForm({ ...form, email: e.target.value })}
-                        placeholder="Instructor Email"
+                        value={form.instructor}
+                        onChange={e => setForm({ ...form, instructor: e.target.value })}
+                        placeholder="Instructor"
                     />
                 </div>
                 

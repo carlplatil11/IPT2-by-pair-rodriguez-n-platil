@@ -70105,17 +70105,17 @@ var CourseFullForm = /*#__PURE__*/(0,react__WEBPACK_IMPORTED_MODULE_0__.memo)(fu
             flex: 2
           },
           children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("label", {
-            children: "Instructor Email"
+            children: "Instructor"
           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("input", {
-            type: "email",
+            type: "text",
             required: true,
-            value: form.email,
+            value: form.instructor,
             onChange: function onChange(e) {
               return setForm(_objectSpread(_objectSpread({}, form), {}, {
-                email: e.target.value
+                instructor: e.target.value
               }));
             },
-            placeholder: "Instructor Email"
+            placeholder: "Instructor"
           })]
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
           className: "student-form-group",
@@ -74924,7 +74924,7 @@ var StudentFullForm = /*#__PURE__*/(0,react__WEBPACK_IMPORTED_MODULE_0__.memo)(f
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
           className: "student-form-group",
           style: {
-            width: 120
+            flex: 1
           },
           children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("label", {
             children: "Gender"
@@ -75015,7 +75015,7 @@ var StudentFullForm = /*#__PURE__*/(0,react__WEBPACK_IMPORTED_MODULE_0__.memo)(f
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
           className: "student-form-group",
           style: {
-            width: 120
+            flex: 1
           },
           children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("label", {
             children: "Age"

@@ -126,67 +126,72 @@
 }
 .student-icon-btn:hover { background: #f5f6fa; transform: translateY(-1px); }
 
-/* form overlay (keeps page background visible and shows card at left) */
+/* form overlay (full-screen, consistent with Faculty) */
 .student-form-overlay {
   position: fixed;
-  inset: 0;
-  background: rgba(248,250,252,0.85); /* softened page background */
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: #f8fafc;
   z-index: 1001;
   display: flex;
-  align-items: flex-start;
-  justify-content: flex-start;
-  padding: 40px;
+  flex-direction: column;
+  min-height: 100vh;
+  width: 100vw;
   overflow-y: auto;
 }
 
-/* narrow card form (matches screenshot left card) */
+/* centered wide card form (matches Faculty form) */
 .student-full-form {
-  width: 420px;
+  max-width: 900px;
+  margin: 48px auto 0 auto;
   background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 8px 30px rgba(15, 30, 60, 0.06);
-  padding: 26px 26px 20px 26px;
+  border-radius: 18px;
+  box-shadow: 0 2px 16px #e6eaf1;
+  padding: 40px 48px 32px 48px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  margin-left: 8px;
+  gap: 0;
 }
 
 /* header and title */
 .student-form-header-row {
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: space-between;
-  gap: 12px;
+  margin-bottom: 18px;
 }
 
 .student-form-title {
-  font-size: 24px;
+  font-size: 2rem;
   font-weight: 700;
   margin: 0;
 }
 
 /* department pill at top-right */
 .student-form-designation {
-  width: 220px;
-  padding: 10px 12px;
-  border-radius: 8px;
-  border: 1px solid #eef2f6;
-  font-size: 14px;
+  min-width: 260px;
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid #e6eaf1;
+  font-size: 1rem;
+  margin-left: 16px;
   background: #fafbfd;
 }
 
 /* compact form rows and inputs (as in screenshot) */
 .student-form-row {
   display: flex;
-  gap: 12px;
-  margin-bottom: 6px;
+  flex-wrap: wrap; /* prevent overlap on smaller widths */
+  gap: 24px;
+  margin-bottom: 18px;
 }
 
 .student-form-group {
   display: flex;
   flex-direction: column;
   gap: 6px;
+  /* flexible groups with sensible min width */
+  flex: 1 1 260px;
+  min-width: 240px;
 }
 
 .student-form-group label {
@@ -198,10 +203,12 @@
 .student-form-group input,
 .student-form-group select,
 .student-form-group textarea {
+  width: 100%;
+  box-sizing: border-box;
   padding: 10px 12px;
-  border-radius: 8px;
-  border: 1px solid #eef2f6;
-  font-size: 14px;
+  border-radius: 6px;
+  border: 1px solid #e6eaf1;
+  font-size: 1rem;
   background: #fff;
 }
 
@@ -239,5 +246,8 @@
 @media (max-width: 900px) {
   .student-container { padding: 16px; }
   .student-search { min-width: 160px; }
-  .student-full-form { width: 94%; margin: 0 auto; border-radius: 10px; }
+  .student-full-form { padding: 24px 8px 16px 8px; max-width: 99vw; border-radius: 10px; margin: 16px auto 0 auto; }
+  .student-form-header-row { flex-direction: column; align-items: flex-start; gap: 8px; }
+  .student-form-designation { min-width: unset; width: 100%; margin-left: 0; }
+  .student-form-row { flex-direction: column; gap: 8px; }
 }

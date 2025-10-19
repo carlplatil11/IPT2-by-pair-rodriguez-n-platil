@@ -63,7 +63,7 @@ const StudentFullForm = memo(({ isEdit, onSubmit, onCancel, form, setForm }) => 
           />
         </div>
 
-        <div className="student-form-group" style={{ width: 120 }}>
+        <div className="student-form-group" style={{ flex: 1 }}>
           <label>Gender</label>
           <select
             name="gender"
@@ -119,7 +119,7 @@ const StudentFullForm = memo(({ isEdit, onSubmit, onCancel, form, setForm }) => 
           />
         </div>
 
-        <div className="student-form-group" style={{ width: 120 }}>
+        <div className="student-form-group" style={{ flex: 1 }}>
           <label>Age</label>
           <input
             type="number"
