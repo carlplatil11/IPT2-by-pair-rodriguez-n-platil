@@ -8,6 +8,8 @@ import Dashboard from "./Dashboard";
 import Faculty from "./Faculty";
 import Student from "./Student";
 import Department from "./Department";
+import Courses from "./Courses";
+import Settings from "./Settings";
 
 
 
@@ -22,6 +24,8 @@ export default function Routers() {
                     <Route path="/faculty" element={<Faculty />} />
                     <Route path="/student" element={<Student />} />
                     <Route path="/department" element={<Department />} />
+                    <Route path="/courses" element={<Courses />} />
+                    <Route path="/settings" element={<Settings />} />
 
 
 

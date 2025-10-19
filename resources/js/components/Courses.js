@@ -2,58 +2,11 @@ import React, { useState, useEffect, memo } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "./Navbar";
 
-// Simple localStorage-backed database used as a fallback (or primary) storage
-class LocalDB {
-    constructor(key = "students") {
-        this.key = key;
-    }
-
-    _readRaw() {
-        try {
-            const raw = localStorage.getItem(this.key);
-            return raw ? JSON.parse(raw) : [];
-        } catch (e) {
-            return [];
-        }
-    }
-
-    async readAll() {
-        return this._readRaw();
-    }
-
-    async create(item) {
-        const list = this._readRaw();
-        const toAdd = { ...item };
-        if (!toAdd.id) toAdd.id = Date.now();
-        list.push(toAdd);
-        localStorage.setItem(this.key, JSON.stringify(list));
-        return toAdd;
-    }
-
-    async update(id, item) {
-        const list = this._readRaw();
-        const idx = list.findIndex(i => i.id === id);
-        if (idx === -1) return null;
-        list[idx] = { ...list[idx], ...item };
-        localStorage.setItem(this.key, JSON.stringify(list));
-        return list[idx];
-    }
-
-    async delete(id) {
-        const list = this._readRaw();
-        const newList = list.filter(i => i.id !== id);
-        localStorage.setItem(this.key, JSON.stringify(newList));
-        return true;
-    }
-}
-
-const localDB = new LocalDB();
-
-const StudentFullForm = memo(({ isEdit, onSubmit, onCancel, form, setForm }) => (
+const CourseFullForm = memo(({ isEdit, onSubmit, onCancel, form, setForm }) => (
     <div className="student-form-overlay">
         <form className="student-full-form" onSubmit={onSubmit}>
             <div className="student-form-header-row">
-                <h2 className="student-form-title">{isEdit ? "Edit Student" : "Add Student"}</h2>
+                <h2 className="student-form-title">{isEdit ? "Edit Course" : "Add Course"}</h2>
                 <div className="student-form-group" style={{ minWidth: 260 }}>
                     <input
                         type="text"
@@ -70,26 +23,26 @@ const StudentFullForm = memo(({ isEdit, onSubmit, onCancel, form, setForm }) => 
 
             <div className="student-form-row">
                 <div className="student-form-group" style={{ flex: 1 }}>
-                    <label>Full Name</label>
+                    <label>Course Name</label>
                     <input
                         type="text"
                         required
                         value={form.name}
                         onChange={e => setForm({ ...form, name: e.target.value })}
-                        placeholder="Full Name"
+                        placeholder="Course Name"
                     />
                 </div>
             </div>
 
             <div className="student-form-row">
                 <div className="student-form-group" style={{ flex: 2 }}>
-                    <label>Email address</label>
+                    <label>Instructor Email</label>
                     <input
                         type="email"
                         required
                         value={form.email}
                         onChange={e => setForm({ ...form, email: e.target.value })}
-                        placeholder="Email address"
+                        placeholder="Instructor Email"
                     />
                 </div>
                 <div className="student-form-group" style={{ flex: 1 }}>
@@ -103,27 +56,27 @@ const StudentFullForm = memo(({ isEdit, onSubmit, onCancel, form, setForm }) => 
                     />
                 </div>
                 <div className="student-form-group" style={{ flex: 1 }}>
-                    <label>Gender</label>
+                    <label>Level</label>
                     <select
                         required
                         value={form.gender}
                         onChange={e => setForm({ ...form, gender: e.target.value })}
                     >
                         <option value="">Select</option>
-                        <option>Male</option>
-                        <option>Female</option>
+                        <option>Undergraduate</option>
+                        <option>Postgraduate</option>
                     </select>
                 </div>
             </div>
 
             <div className="student-form-row">
                 <div className="student-form-group" style={{ flex: 1 }}>
-                    <label>Phone number</label>
+                    <label>Contact number</label>
                     <input
                         type="text"
                         value={form.phone}
                         onChange={e => setForm({ ...form, phone: e.target.value })}
-                        placeholder="Phone number"
+                        placeholder="Contact number"
                     />
                 </div>
             </div>
@@ -140,13 +93,13 @@ const StudentFullForm = memo(({ isEdit, onSubmit, onCancel, form, setForm }) => 
                     />
                 </div>
                 <div className="student-form-group" style={{ flex: 1 }}>
-                    <label>Age</label>
+                    <label>Credits</label>
                     <input
                         type="number"
                         required
                         value={form.age}
                         onChange={e => setForm({ ...form, age: e.target.value })}
-                        placeholder="Age"
+                        placeholder="Credits"
                     />
                 </div>
             </div>
@@ -158,7 +111,7 @@ const StudentFullForm = memo(({ isEdit, onSubmit, onCancel, form, setForm }) => 
                         required
                         value={form.about}
                         onChange={e => setForm({ ...form, about: e.target.value })}
-                        placeholder="About this student"
+                        placeholder="About this course"
                         style={{ minHeight: 60 }}
                     />
                 </div>
@@ -166,7 +119,7 @@ const StudentFullForm = memo(({ isEdit, onSubmit, onCancel, form, setForm }) => 
 
             <div className="student-form-actions">
                 <button type="submit" className="student-form-submit">
-                    {isEdit ? "Save Changes" : "Add Student"}
+                    {isEdit ? "Save Changes" : "Add Course"}
                 </button>
                 <button type="button" className="student-form-cancel" onClick={onCancel}>
                     Cancel
@@ -176,7 +129,7 @@ const StudentFullForm = memo(({ isEdit, onSubmit, onCancel, form, setForm }) => 
     </div>
 ));
 
-export default function Student() {
+export default function Courses() {
     const navigate = useNavigate();
 
     const defaultForm = {
@@ -185,38 +138,32 @@ export default function Student() {
         class: "",
         email: "",
         age: "",
-        gender: "Male",
+        gender: "Undergraduate",
         avatar: "",
         about: "",
         phone: "",
         department: ""
     };
 
-    const [studentList, setStudentList] = useState([]);
+    const [courseList, setCourseList] = useState([]);
     const [showAdd, setShowAdd] = useState(false);
     const [showEdit, setShowEdit] = useState(false);
     const [editIndex, setEditIndex] = useState(null);
     const [form, setForm] = useState(defaultForm);
     const [search, setSearch] = useState("");
     const [showFilter, setShowFilter] = useState(false);
-    const [selectedUser, setSelectedUser] = useState(null);
+    const [selectedCourse, setSelectedCourse] = useState(null);
 
     useEffect(() => {
         let mounted = true;
         (async () => {
             try {
-                const res = await fetch("/api/students");
+                const res = await fetch("/api/courses");
                 if (!res.ok) throw new Error("API error");
                 const data = await res.json();
-                if (mounted) setStudentList(Array.isArray(data) ? data : []);
+                if (mounted) setCourseList(Array.isArray(data) ? data : []);
             } catch {
-                // fallback to local DB
-                try {
-                    const local = await localDB.readAll();
-                    if (mounted) setStudentList(Array.isArray(local) ? local : []);
-                } catch {
-                    if (mounted) setStudentList([]);
-                }
+                if (mounted) setCourseList([]);
             }
         })();
         return () => { mounted = false; };
@@ -235,23 +182,19 @@ export default function Student() {
             avatar: form.avatar || "https://randomuser.me/api/portraits/men/34.jpg"
         };
         try {
-            const res = await fetch("/api/students", {
+            const res = await fetch("/api/courses", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(payload)
             });
             if (res.ok) {
-                const newStudent = await res.json();
-                setStudentList(prev => [...prev, newStudent]);
+                const newCourse = await res.json();
+                setCourseList(prev => [...prev, newCourse]);
             } else {
-                // fallback: store locally
-                const created = await localDB.create({ ...payload });
-                setStudentList(prev => [...prev, created]);
+                setCourseList(prev => [...prev, { ...payload, id: Date.now() }]);
             }
         } catch {
-            // network error -> save locally
-            const created = await localDB.create({ ...payload });
-            setStudentList(prev => [...prev, created]);
+            setCourseList(prev => [...prev, { ...payload, id: Date.now() }]);
         } finally {
             setShowAdd(false);
             setForm(defaultForm);
@@ -260,34 +203,38 @@ export default function Student() {
 
     const handleEdit = (idx) => {
         setEditIndex(idx);
-        setForm({ ...defaultForm, ...studentList[idx] });
+        setForm({ ...defaultForm, ...courseList[idx] });
         setShowEdit(true);
     };
 
     const handleEditSubmit = async (e) => {
         e.preventDefault();
         if (editIndex === null) return;
-        const id = studentList[editIndex]?.id;
+        const id = courseList[editIndex]?.id;
         if (!id) return;
         const payload = { ...form, age: form.age === "" ? null : Number(form.age) };
         try {
-            const res = await fetch(`/api/students/${id}`, {
+            const res = await fetch(`/api/courses/${id}`, {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(payload)
             });
             if (res.ok) {
                 const updated = await res.json();
-                setStudentList(prev => prev.map(s => s.id === updated.id ? updated : s));
+                setCourseList(prev => prev.map(s => s.id === updated.id ? updated : s));
             } else {
-                // fallback: update local DB
-                const updated = await localDB.update(id, payload);
-                setStudentList(prev => prev.map(s => s.id === id ? updated : s));
+                setCourseList(prev => {
+                    const copy = [...prev];
+                    copy[editIndex] = { ...copy[editIndex], ...payload };
+                    return copy;
+                });
             }
         } catch {
-            // network error -> update local DB
-            const updated = await localDB.update(id, payload);
-            setStudentList(prev => prev.map(s => s.id === id ? updated : s));
+            setCourseList(prev => {
+                const copy = [...prev];
+                copy[editIndex] = { ...copy[editIndex], ...payload };
+                return copy;
+            });
         } finally {
             setShowEdit(false);
             setEditIndex(null);
@@ -296,36 +243,32 @@ export default function Student() {
     };
 
     const handleDelete = async (idx) => {
-        const target = studentList[idx];
+        const target = courseList[idx];
         if (!target) return;
         if (!window.confirm("Are you sure you want to delete this record?")) return;
         try {
-            const res = await fetch(`/api/students/${target.id}`, { method: "DELETE" });
+            const res = await fetch(`/api/courses/${target.id}`, { method: "DELETE" });
             if (res.ok) {
-                setStudentList(prev => prev.filter((_, i) => i !== idx));
+                setCourseList(prev => prev.filter((_, i) => i !== idx));
             } else {
-                // fallback: delete from local DB
-                await localDB.delete(target.id);
-                setStudentList(prev => prev.filter((_, i) => i !== idx));
+                setCourseList(prev => prev.filter((_, i) => i !== idx));
             }
         } catch {
-            // network error -> delete from local DB
-            await localDB.delete(target.id);
-            setStudentList(prev => prev.filter((_, i) => i !== idx));
+            setCourseList(prev => prev.filter((_, i) => i !== idx));
         }
     };
 
     const handleFilter = () => setShowFilter(true);
 
-    const filteredList = studentList.filter(s =>
+    const filteredList = courseList.filter(s =>
         (s.name || "").toLowerCase().includes(search.toLowerCase()) ||
         (s.email || "").toLowerCase().includes(search.toLowerCase())
     );
 
     const handleLogout = () => navigate("/login");
 
-    const handleUserClick = (user) => setSelectedUser(user);
-    const handleBackToList = () => setSelectedUser(null);
+    const handleCourseClick = (course) => setSelectedCourse(course);
+    const handleBackToList = () => setSelectedCourse(null);
 
     return (
         <div style={{ display: "flex", minHeight: "100vh", background: "#f8fafc" }}>
@@ -336,16 +279,16 @@ export default function Student() {
                 </div>
 
                 <div className="student-header">
-                    <button className="student-back-btn" onClick={() => selectedUser ? handleBackToList() : navigate(-1)}>
+                    <button className="student-back-btn" onClick={() => selectedCourse ? handleBackToList() : navigate(-1)}>
                         <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
                             <circle cx="12" cy="12" r="12" fill="#222" opacity="0.12"/>
                             <path d="M14 8l-4 4 4 4" stroke="#222" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                         </svg>
                     </button>
                     <div className="student-actions">
-                        {!selectedUser && (
+                        {!selectedCourse && (
                             <>
-                                <button className="student-add-btn" onClick={handleAdd}>Add Student</button>
+                                <button className="student-add-btn" onClick={handleAdd}>Add Course</button>
                                 <input
                                     className="student-search"
                                     type="text"
@@ -359,7 +302,7 @@ export default function Student() {
                 </div>
 
                 {showAdd && (
-                    <StudentFullForm
+                    <CourseFullForm
                         isEdit={false}
                         onSubmit={handleAddSubmit}
                         onCancel={() => { setShowAdd(false); setForm(defaultForm); }}
@@ -369,7 +312,7 @@ export default function Student() {
                 )}
 
                 {showEdit && (
-                    <StudentFullForm
+                    <CourseFullForm
                         isEdit={true}
                         onSubmit={handleEditSubmit}
                         onCancel={() => { setShowEdit(false); setForm(defaultForm); setEditIndex(null); }}
@@ -378,7 +321,7 @@ export default function Student() {
                     />
                 )}
 
-                {!showAdd && !showEdit && selectedUser ? (
+                {!showAdd && !showEdit && selectedCourse ? (
                     <div style={{
                         display: "flex",
                         justifyContent: "center",
@@ -388,29 +331,29 @@ export default function Student() {
                     }}>
                         <div style={{ display: "flex", flexDirection: "column", alignItems: "center", minWidth: 320 }}>
                             <img
-                                src={selectedUser.avatar || "https://randomuser.me/api/portraits/lego/1.jpg"}
-                                alt={selectedUser.name}
+                                src={selectedCourse.avatar || "https://randomuser.me/api/portraits/lego/1.jpg"}
+                                alt={selectedCourse.name}
                                 style={{ width: 220, height: 220, borderRadius: "50%", objectFit: "cover", boxShadow: "0 4px 24px #e6eaf1" }}
                             />
                             <div style={{ marginTop: 24, fontWeight: 700, fontSize: "1.3rem", textAlign: "center" }}>
-                                {selectedUser.name}
+                                {selectedCourse.name}
                             </div>
                             <div style={{ color: "#888", fontSize: "1rem", marginBottom: 24, textAlign: "center" }}>
-                                {selectedUser.subject}
+                                {selectedCourse.subject}
                             </div>
                         </div>
 
                         <div style={{ minWidth: 320, maxWidth: 400 }}>
                             <div style={{ fontWeight: 700, fontSize: "1.1rem", marginBottom: 8 }}>About</div>
-                            <div style={{ color: "#555", marginBottom: 24, lineHeight: 1.6 }}>{selectedUser.about}</div>
+                            <div style={{ color: "#555", marginBottom: 24, lineHeight: 1.6 }}>{selectedCourse.about}</div>
                             <div style={{ display: "flex", gap: 40 }}>
                                 <div>
-                                    <div style={{ color: "#888", fontSize: 13 }}>Age</div>
-                                    <div style={{ fontWeight: 600 }}>{selectedUser.age}</div>
+                                    <div style={{ color: "#888", fontSize: 13 }}>Credits</div>
+                                    <div style={{ fontWeight: 600 }}>{selectedCourse.age}</div>
                                 </div>
                                 <div>
-                                    <div style={{ color: "#888", fontSize: 13 }}>Gender</div>
-                                    <div style={{ fontWeight: 600 }}>{selectedUser.gender}</div>
+                                    <div style={{ color: "#888", fontSize: 13 }}>Level</div>
+                                    <div style={{ fontWeight: 600 }}>{selectedCourse.gender}</div>
                                 </div>
                             </div>
 
@@ -418,9 +361,9 @@ export default function Student() {
                                 <button
                                     className="student-icon-btn"
                                     title="Edit"
-                                    aria-label="Edit student"
+                                    aria-label="Edit course"
                                     onClick={() => {
-                                        const idx = studentList.findIndex(s => s.id === selectedUser.id);
+                                        const idx = courseList.findIndex(s => s.id === selectedCourse.id);
                                         if (idx !== -1) handleEdit(idx);
                                     }}
                                     style={{ marginRight: 8 }}
@@ -433,9 +376,9 @@ export default function Student() {
                                 <button
                                     className="student-icon-btn"
                                     title="Delete"
-                                    aria-label="Delete student"
+                                    aria-label="Delete course"
                                     onClick={() => {
-                                        const idx = studentList.findIndex(s => s.id === selectedUser.id);
+                                        const idx = courseList.findIndex(s => s.id === selectedCourse.id);
                                         if (idx !== -1) handleDelete(idx);
                                         handleBackToList();
                                     }}
@@ -459,34 +402,34 @@ export default function Student() {
                                     <th>Name</th>
                                     <th>Subject</th>
                                     <th>Class</th>
-                                    <th>Email address</th>
+                                    <th>Instructor Email</th>
                                     <th>Department</th>
-                                    <th>Gender</th>
+                                    <th>Level</th>
                                     <th></th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {filteredList.length === 0 && (
-                                    <tr><td colSpan="7">No students found.</td></tr>
+                                    <tr><td colSpan="7">No courses found.</td></tr>
                                 )}
                                 {filteredList.map((s, idx) => (
                                     <tr key={s.id ?? idx} style={{ cursor: "pointer" }}>
-                                        <td onClick={() => handleUserClick(s)}>
+                                        <td onClick={() => handleCourseClick(s)}>
                                             <div className="student-avatar-name">
                                                 <img src={s.avatar || "https://randomuser.me/api/portraits/lego/1.jpg"} alt={s.name} className="student-avatar" />
                                                 <span>{s.name}</span>
                                             </div>
                                         </td>
-                                        <td onClick={() => handleUserClick(s)}>{s.subject}</td>
-                                        <td onClick={() => handleUserClick(s)}>{s.class}</td>
-                                        <td onClick={() => handleUserClick(s)}>{s.email}</td>
-                                        <td onClick={() => handleUserClick(s)}>{s.department}</td>
-                                        <td onClick={() => handleUserClick(s)}>{s.gender}</td>
+                                        <td onClick={() => handleCourseClick(s)}>{s.subject}</td>
+                                        <td onClick={() => handleCourseClick(s)}>{s.class}</td>
+                                        <td onClick={() => handleCourseClick(s)}>{s.email}</td>
+                                        <td onClick={() => handleCourseClick(s)}>{s.department}</td>
+                                        <td onClick={() => handleCourseClick(s)}>{s.gender}</td>
                                         <td>
                                             <button
                                                 className="student-icon-btn"
                                                 title="Edit"
-                                                aria-label="Edit student"
+                                                aria-label="Edit course"
                                                 onClick={e => { e.stopPropagation(); handleEdit(idx); }}
                                             >
                                                 <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -497,7 +440,7 @@ export default function Student() {
                                             <button
                                                 className="student-icon-btn"
                                                 title="Delete"
-                                                aria-label="Delete student"
+                                                aria-label="Delete course"
                                                 onClick={e => { e.stopPropagation(); handleDelete(idx); }}
                                             >
                                                 <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">

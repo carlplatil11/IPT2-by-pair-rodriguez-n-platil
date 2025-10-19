@@ -187,6 +187,52 @@
       color: #888;
     }
   }
+
+  /* Simple bar chart styles */
+  .simple-bar-chart {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 8px 0;
+    max-height: 320px;
+    overflow: auto;
+  }
+  .bar-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .bar-label {
+    width: 160px;
+    font-size: 14px;
+    color: #25406b;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .bar-track {
+    flex: 1;
+    height: 14px;
+    background: #f1f5f9;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #4e8cff, #6fb1ff);
+  }
+  .bar-value {
+    width: 56px;
+    text-align: right;
+    font-weight: 700;
+    color: #183153;
+  }
+
+  .empty-chart {
+    color: #999;
+    padding: 32px 12px;
+    text-align: center;
+  }
 }
 
 // Responsive

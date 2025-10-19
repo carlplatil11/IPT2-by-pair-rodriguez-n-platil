@@ -25,3 +25,11 @@ Route::get('faculties/{id}', [App\Http\Controllers\FacultyController::class, 'sh
 Route::put('faculties/{id}', [App\Http\Controllers\FacultyController::class, 'update']); // Update
 Route::patch('faculties/{id}', [App\Http\Controllers\FacultyController::class, 'update']); // Partial update
 Route::delete('faculties/{id}', [App\Http\Controllers\FacultyController::class, 'destroy']); // Delete
+
+// Courses CRUD API (explicit routes)
+Route::get('courses', [App\Http\Controllers\CourseController::class, 'index']); // List all
+Route::post('courses', [App\Http\Controllers\CourseController::class, 'store']); // Create
+Route::get('courses/{id}', [App\Http\Controllers\CourseController::class, 'show']); // Read
+Route::put('courses/{id}', [App\Http\Controllers\CourseController::class, 'update']); // Update
+Route::patch('courses/{id}', [App\Http\Controllers\CourseController::class, 'update']); // Partial update
+Route::delete('courses/{id}', [App\Http\Controllers\CourseController::class, 'destroy']); // Delete

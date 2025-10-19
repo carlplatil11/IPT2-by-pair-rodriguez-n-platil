@@ -20,16 +20,16 @@ export default function Navbar() {
                         <NavLink to="/faculty" className={({ isActive }) => isActive ? "active" : ""}>Faculty</NavLink>
                     </li>
                     <li>
-                        <NavLink to="/student" className={({ isActive }) => isActive ? "active" : ""}>Students/Classes</NavLink>
+                        <NavLink to="/student" className={({ isActive }) => isActive ? "active" : ""}>Students / Classes</NavLink>  
                     </li>
                     <li>
-                        <NavLink to="/settings" className={({ isActive }) => isActive ? "active" : ""}>Settings and profile</NavLink>
-                    </li>
-                    <li>
-                        <NavLink to="/department" className={({ isActive }) => isActive ? "active" : ""}>Department</NavLink>
+                        <NavLink to="/department" className={({ isActive }) => isActive ? "active" : ""}>Departments</NavLink>
                     </li>
                     <li>
                         <NavLink to="/courses" className={({ isActive }) => isActive ? "active" : ""}>Courses</NavLink>
+                    </li>
+                    <li>
+                        <NavLink to="/settings" className={({ isActive }) => isActive ? "active" : ""}>Settings & Profile</NavLink>
                     </li>
                 </ul>
             </nav>
