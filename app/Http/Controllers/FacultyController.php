@@ -63,6 +63,7 @@ class FacultyController extends Controller
             'phone' => 'nullable|string',
             'department' => 'nullable|string',
             'class' => 'nullable|string',
+            'archived' => 'nullable|boolean',
         ]);
 
         // Handle avatar upload

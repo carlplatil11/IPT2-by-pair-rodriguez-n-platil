@@ -16,9 +16,16 @@ class DashboardController extends Controller
      */
     public function stats()
     {
-        // Count all students and faculty
-        $totalStudents = Student::count();
-        $totalFaculty = Faculty::count();
+        // Count only non-archived students and faculty
+        $totalStudents = Student::where(function($query) {
+            $query->where('archived', false)
+                  ->orWhereNull('archived');
+        })->count();
+        
+        $totalFaculty = Faculty::where(function($query) {
+            $query->where('archived', false)
+                  ->orWhereNull('archived');
+        })->count();
 
         return response()->json([
             'students' => $totalStudents,
@@ -35,6 +42,10 @@ class DashboardController extends Controller
     {
         $data = Student::select('course', DB::raw('count(*) as count'))
             ->whereNotNull('course')
+            ->where(function($query) {
+                $query->where('archived', false)
+                      ->orWhereNull('archived');
+            })
             ->groupBy('course')
             ->orderBy('count', 'desc')
             ->get()
@@ -57,6 +68,10 @@ class DashboardController extends Controller
     {
         $data = Faculty::select('department', DB::raw('count(*) as count'))
             ->whereNotNull('department')
+            ->where(function($query) {
+                $query->where('archived', false)
+                      ->orWhereNull('archived');
+            })
             ->groupBy('department')
             ->orderBy('count', 'desc')
             ->get()

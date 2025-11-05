@@ -1,6 +1,23 @@
 import React, { useState, useEffect, memo } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "./Navbar";
+import logger from "../utils/logger";
+
+// Text highlighting component
+const HighlightText = ({ text, highlight }) => {
+  if (!highlight || !text) return <>{text}</>;
+  
+  const parts = String(text).split(new RegExp(`(${highlight.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi'));
+  return (
+    <>
+      {parts.map((part, i) => 
+        part.toLowerCase() === highlight.toLowerCase() ? 
+          <span key={i} style={{ backgroundColor: '#fef08a', fontWeight: 600 }}>{part}</span> : 
+          part
+      )}
+    </>
+  );
+};
 
 /* Local storage helper */
 class LocalDB {
@@ -206,59 +223,127 @@ export default function Student() {
   const [showFilter, setShowFilter] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  
+  // Sorting state
+  const [sortField, setSortField] = useState(null);
+  const [sortDirection, setSortDirection] = useState('asc');
+  
+  // Checkbox selections for bulk operations
+  const [selectedStudents, setSelectedStudents] = useState([]);
+
+  // Function to fetch students
+  const fetchStudents = async () => {
+    try {
+      const res = await fetch("/api/students");
+      if (!res.ok) throw new Error("API error");
+      const data = await res.json();
+      // Filter out archived students (check for both true and 1)
+      const activeStudents = Array.isArray(data) ? data.filter(s => !s.archived && s.archived !== 1) : [];
+      setStudentList(activeStudents);
+    } catch {
+      try {
+        const local = await localDB.readAll();
+        const activeStudents = Array.isArray(local) ? local.filter(s => !s.archived && s.archived !== 1) : [];
+        setStudentList(activeStudents);
+      } catch {
+        setStudentList([]);
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     let mounted = true;
     (async () => {
-      try {
-        const res = await fetch("/api/students");
-        if (!res.ok) throw new Error("API error");
-        const data = await res.json();
-        if (mounted) setStudentList(Array.isArray(data) ? data : []);
-      } catch {
-        try {
-          const local = await localDB.readAll();
-          if (mounted) setStudentList(Array.isArray(local) ? local : []);
-        } catch {
-          if (mounted) setStudentList([]);
-        }
-      } finally {
-        if (mounted) setLoading(false);
-      }
+      if (mounted) await fetchStudents();
     })();
-    return () => { mounted = false; };
+    
+    // Refresh every 15 seconds to check for archived students
+    const interval = setInterval(() => {
+      if (mounted && !document.hidden) fetchStudents();
+    }, 15000);
+    
+    return () => { 
+      mounted = false; 
+      clearInterval(interval);
+    };
   }, []);
 
   // fetch departments for dropdown
   useEffect(() => {
-    let mounted = true;
-    (async () => {
+    let isFetching = false;
+    
+    const fetchDepartments = async () => {
+      if (document.hidden || isFetching) return;
+      isFetching = true;
+      
       try {
         const res = await fetch('/api/departments');
         if (!res.ok) throw new Error('no api');
         const json = await res.json();
-        if (mounted) setDepartments(Array.isArray(json) ? json : []);
+        // Filter out archived departments
+        const activeDepts = Array.isArray(json) ? json.filter(d => !d.archived && d.archived !== 1 && d.status !== 'Archived') : [];
+        setDepartments(activeDepts);
       } catch {
-        if (mounted) setDepartments([]);
+        setDepartments([]);
+      } finally {
+        isFetching = false;
       }
-    })();
-    return () => { mounted = false; };
+    };
+
+    fetchDepartments();
+    // Reduced polling to 60 seconds to prevent rate limiting
+    const interval = setInterval(fetchDepartments, 60000);
+    
+    // Refetch when page becomes visible
+    const handleVisibilityChange = () => {
+      if (!document.hidden) fetchDepartments();
+    };
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    
+    return () => {
+      clearInterval(interval);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
   }, []);
 
   // fetch courses for dropdown
   useEffect(() => {
-    let mounted = true;
-    (async () => {
+    let isFetching = false;
+    
+    const fetchCourses = async () => {
+      if (document.hidden || isFetching) return;
+      isFetching = true;
+      
       try {
         const res = await fetch('/api/courses');
         if (!res.ok) throw new Error('no api');
         const json = await res.json();
-        if (mounted) setCourses(Array.isArray(json) ? json : []);
+        // Filter out archived courses
+        const activeCourses = Array.isArray(json) ? json.filter(c => !c.archived && c.archived !== 1 && c.status !== 'archived') : [];
+        setCourses(activeCourses);
       } catch {
-        if (mounted) setCourses([]);
+        setCourses([]);
+      } finally {
+        isFetching = false;
       }
-    })();
-    return () => { mounted = false; };
+    };
+
+    fetchCourses();
+    // Reduced polling to 60 seconds to prevent rate limiting
+    const interval = setInterval(fetchCourses, 60000);
+    
+    // Refetch when page becomes visible
+    const handleVisibilityChange = () => {
+      if (!document.hidden) fetchCourses();
+    };
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    
+    return () => {
+      clearInterval(interval);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
   }, []);
 
   const handleAdd = () => { setForm(defaultForm); setShowAdd(true); };
@@ -267,7 +352,11 @@ export default function Student() {
     const payload = { ...form, age: form.age === "" ? null : Number(form.age), avatar: form.avatar || "https://randomuser.me/api/portraits/men/34.jpg" };
     try {
       const res = await fetch("/api/students", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
-      if (res.ok) { const newStudent = await res.json(); setStudentList(prev => [...prev, newStudent]); }
+      if (res.ok) { 
+        const newStudent = await res.json(); 
+        setStudentList(prev => [...prev, newStudent]); 
+        logger.logCreate('Student', `Added student: ${payload.name}`);
+      }
       else { const created = await localDB.create({ ...payload }); setStudentList(prev => [...prev, created]); }
     } catch { const created = await localDB.create({ ...payload }); setStudentList(prev => [...prev, created]); }
     finally { setShowAdd(false); setForm(defaultForm); }
@@ -289,7 +378,11 @@ export default function Student() {
     const payload = { ...form, age: form.age === "" ? null : Number(form.age) };
     try {
       const res = await fetch(`/api/students/${id}`, { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
-      if (res.ok) { const updated = await res.json(); setStudentList(prev => prev.map(s => s.id === updated.id ? updated : s)); }
+      if (res.ok) { 
+        const updated = await res.json(); 
+        setStudentList(prev => prev.map(s => s.id === updated.id ? updated : s)); 
+        logger.logUpdate('Student', `Updated student: ${payload.name}`);
+      }
       else { const updated = await localDB.update(id, payload); setStudentList(prev => prev.map(s => s.id === id ? updated : s)); }
     } catch { const updated = await localDB.update(id, payload); setStudentList(prev => prev.map(s => s.id === id ? updated : s)); }
     finally { setShowEdit(false); setEditIndex(null); setForm(defaultForm); }
@@ -300,10 +393,78 @@ export default function Student() {
     if (!window.confirm("Are you sure you want to delete this record?")) return;
     try {
       const res = await fetch(`/api/students/${item.id}`, { method: "DELETE" });
-      if (res.ok) setStudentList(prev => prev.filter(s => s.id !== item.id));
+      if (res.ok) {
+        setStudentList(prev => prev.filter(s => s.id !== item.id));
+        logger.logDelete('Student', `Deleted student: ${item.name}`);
+      }
       else { await localDB.delete(item.id); setStudentList(prev => prev.filter(s => s.id !== item.id)); }
     } catch { await localDB.delete(item.id); setStudentList(prev => prev.filter(s => s.id !== item.id)); }
     if (selectedUser && selectedUser.id === item.id) setSelectedUser(null);
+  };
+
+  // Bulk archive all selected
+  const handleArchiveAll = async () => {
+    if (selectedStudents.length === 0) {
+      alert('Please select students to archive');
+      return;
+    }
+    
+    if (!window.confirm(`Archive ${selectedStudents.length} selected student(s)?`)) return;
+    
+    try {
+      for (const id of selectedStudents) {
+        const res = await fetch(`/api/students/${id}`, { 
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ archived: true })
+        });
+        if (res.ok) {
+          const student = studentList.find(s => s.id === id);
+          logger.logArchive('Student', `Archived student: ${student?.name || 'Unknown'}`);
+        }
+      }
+      // Refresh the list
+      await fetchStudents();
+      setSelectedStudents([]);
+    } catch (error) {
+      console.error('Error archiving students:', error);
+    }
+  };
+
+  // Bulk restore all selected
+  const handleRestoreAll = async () => {
+    if (selectedStudents.length === 0) {
+      alert('Please select students to restore');
+      return;
+    }
+    
+    if (!window.confirm(`Restore ${selectedStudents.length} selected student(s)?`)) return;
+    
+    try {
+      for (const id of selectedStudents) {
+        const res = await fetch(`/api/students/${id}`, { 
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ archived: false })
+        });
+        if (res.ok) {
+          const student = studentList.find(s => s.id === id);
+          logger.logRestore('Student', `Restored student: ${student?.name || 'Unknown'}`);
+        }
+      }
+      // Refresh the list
+      await fetchStudents();
+      setSelectedStudents([]);
+    } catch (error) {
+      console.error('Error restoring students:', error);
+    }
+  };
+
+  // Toggle checkbox
+  const handleCheckboxToggle = (id) => {
+    setSelectedStudents(prev => 
+      prev.includes(id) ? prev.filter(i => i !== id) : [...prev, id]
+    );
   };
 
   const filteredList = studentList.filter(s => {
@@ -313,6 +474,39 @@ export default function Student() {
     const matchesCourse = courseFilter === "All Courses" || s.course === courseFilter;
     return matchesSearch && matchesDepartment && matchesCourse;
   });
+
+  // Handle column sorting
+  const handleSort = (field) => {
+    if (sortField === field) {
+      setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
+    } else {
+      setSortField(field);
+      setSortDirection('asc');
+    }
+  };
+
+  // Apply sorting
+  const sortedList = [...filteredList].sort((a, b) => {
+    if (!sortField) return 0;
+    
+    let aVal = a[sortField] || '';
+    let bVal = b[sortField] || '';
+    
+    // Convert to string for comparison
+    aVal = String(aVal).toLowerCase();
+    bVal = String(bVal).toLowerCase();
+    
+    if (aVal < bVal) return sortDirection === 'asc' ? -1 : 1;
+    if (aVal > bVal) return sortDirection === 'asc' ? 1 : -1;
+    return 0;
+  });
+
+  // Select all toggle
+  const handleSelectAllToggle = () => {
+    setSelectedStudents(prev => 
+      prev.length === sortedList.length ? [] : sortedList.map(s => s.id)
+    );
+  };
 
   const handleLogout = () => navigate("/login");
   const handleUserClick = (user) => setSelectedUser(user);
@@ -408,6 +602,27 @@ export default function Student() {
                 <option key={d.id ?? d.name} value={d.name}>{d.name}</option>
               ))}
             </select>
+            {selectedStudents.length > 0 && (
+              <button 
+                onClick={handleArchiveAll}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 8,
+                  padding: '10px 16px',
+                  background: '#fef3c7',
+                  color: '#ca8a04',
+                  border: 'none',
+                  borderRadius: 8,
+                  fontSize: 13,
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                  whiteSpace: 'nowrap'
+                }}
+              >
+                📦 Archive Selected ({selectedStudents.length})
+              </button>
+            )}
             <button 
               onClick={handleAdd}
               style={{
@@ -477,32 +692,61 @@ export default function Student() {
             <table className="student-table">
               <thead>
                 <tr>
-                  <th>Name</th>
-                  <th>Course</th>
-                  <th>Department</th>
-                  <th>Email address</th>
-                  <th>Year Level</th>
-                  <th>Gender</th>
+                  <th style={{ width: 40, textAlign: 'center' }}>
+                    <input
+                      type="checkbox"
+                      checked={sortedList.length > 0 && selectedStudents.length === sortedList.length}
+                      onChange={handleSelectAllToggle}
+                      style={{ cursor: 'pointer', width: 16, height: 16 }}
+                    />
+                  </th>
+                  <th onClick={() => handleSort('name')} style={{ cursor: 'pointer', userSelect: 'none' }}>
+                    Name {sortField === 'name' && (sortDirection === 'asc' ? '↑' : '↓')}
+                  </th>
+                  <th onClick={() => handleSort('course')} style={{ cursor: 'pointer', userSelect: 'none' }}>
+                    Course {sortField === 'course' && (sortDirection === 'asc' ? '↑' : '↓')}
+                  </th>
+                  <th onClick={() => handleSort('department')} style={{ cursor: 'pointer', userSelect: 'none' }}>
+                    Department {sortField === 'department' && (sortDirection === 'asc' ? '↑' : '↓')}
+                  </th>
+                  <th onClick={() => handleSort('email')} style={{ cursor: 'pointer', userSelect: 'none' }}>
+                    Email address {sortField === 'email' && (sortDirection === 'asc' ? '↑' : '↓')}
+                  </th>
+                  <th onClick={() => handleSort('year')} style={{ cursor: 'pointer', userSelect: 'none' }}>
+                    Year Level {sortField === 'year' && (sortDirection === 'asc' ? '↑' : '↓')}
+                  </th>
+                  <th onClick={() => handleSort('gender')} style={{ cursor: 'pointer', userSelect: 'none' }}>
+                    Gender {sortField === 'gender' && (sortDirection === 'asc' ? '↑' : '↓')}
+                  </th>
                   <th></th>
                 </tr>
               </thead>
               <tbody>
-                {(!loading && filteredList.length === 0) && <tr><td colSpan="7">No students found.</td></tr>}
-                {(loading) && <tr><td colSpan="7">Loading…</td></tr>}
-                {filteredList.map((s, idx) => (
+                {(!loading && sortedList.length === 0) && <tr><td colSpan="8">No students found.</td></tr>}
+                {(loading) && <tr><td colSpan="8">Loading…</td></tr>}
+                {sortedList.map((s, idx) => (
                   <tr key={s.id ?? idx} style={{ cursor: "pointer" }}>
+                    <td style={{ textAlign: 'center' }} onClick={e => e.stopPropagation()}>
+                      <input
+                        type="checkbox"
+                        checked={selectedStudents.includes(s.id)}
+                        onChange={() => handleCheckboxToggle(s.id)}
+                        style={{ cursor: 'pointer', width: 16, height: 16 }}
+                        onClick={e => e.stopPropagation()}
+                      />
+                    </td>
                     <td onClick={() => handleUserClick(s)}>
                       <div className="student-avatar-name">
                         <img src={s.avatar || "https://randomuser.me/api/portraits/lego/1.jpg"} alt={s.name} className="student-avatar" />
                         <div>
-                          <div style={{ fontWeight: 600 }}>{s.name}</div>
+                          <div style={{ fontWeight: 600 }}><HighlightText text={s.name} highlight={search} /></div>
                           <div style={{ color: "#888", fontSize: 13 }}>{s.phone}</div>
                         </div>
                       </div>
                     </td>
-                    <td onClick={() => handleUserClick(s)}>{s.course}</td>
-                    <td onClick={() => handleUserClick(s)}>{s.department}</td>
-                    <td onClick={() => handleUserClick(s)}>{s.email}</td>
+                    <td onClick={() => handleUserClick(s)}><HighlightText text={s.course} highlight={search} /></td>
+                    <td onClick={() => handleUserClick(s)}><HighlightText text={s.department} highlight={search} /></td>
+                    <td onClick={() => handleUserClick(s)}><HighlightText text={s.email} highlight={search} /></td>
                     <td onClick={() => handleUserClick(s)}>{s.year}</td>
                     <td onClick={() => handleUserClick(s)}>{s.gender}</td>
                     <td>

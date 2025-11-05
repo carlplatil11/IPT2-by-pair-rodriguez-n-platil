@@ -2,6 +2,23 @@
 import React, { useState, useEffect, memo } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "./Navbar";
+import logger from "../utils/logger";
+
+// Text highlighting component
+const HighlightText = ({ text, highlight }) => {
+  if (!highlight || !text) return <>{text}</>;
+  
+  const parts = String(text).split(new RegExp(`(${highlight.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi'));
+  return (
+    <>
+      {parts.map((part, i) => 
+        part.toLowerCase() === highlight.toLowerCase() ? 
+          <span key={i} style={{ backgroundColor: '#fef08a', fontWeight: 600 }}>{part}</span> : 
+          part
+      )}
+    </>
+  );
+};
 
 /* Local storage helper */
 class LocalDB {
@@ -144,66 +161,128 @@ export default function Faculty() {
   const [showFilter, setShowFilter] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  
+  // Sorting state
+  const [sortField, setSortField] = useState(null);
+  const [sortDirection, setSortDirection] = useState('asc');
+  
+  // Checkbox selections for bulk operations
+  const [selectedFaculty, setSelectedFaculty] = useState([]);
+
+  // Function to fetch faculty
+  const fetchFaculty = async () => {
+    try {
+      const res = await fetch('/api/faculties');
+      if (res.ok) {
+        const json = await res.json();
+        // Filter out archived faculty (check for both true and 1)
+        const activeFaculty = Array.isArray(json) ? json.filter(f => !f.archived && f.archived !== 1) : [];
+        setFacultyList(activeFaculty);
+      } else throw new Error("no api");
+    } catch {
+      try {
+        const local = await localDB.readAll();
+        const activeFaculty = Array.isArray(local) ? local.filter(f => !f.archived && f.archived !== 1) : [];
+        setFacultyList(activeFaculty);
+      } catch {
+        setFacultyList([]);
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     let mounted = true;
     (async () => {
-      try {
-        const res = await fetch('/api/faculties');
-        if (res.ok) {
-          const json = await res.json();
-          if (mounted) setFacultyList(Array.isArray(json) ? json : []);
-        } else throw new Error("no api");
-      } catch {
-        try {
-          const local = await localDB.readAll();
-          if (mounted) setFacultyList(Array.isArray(local) ? local : []);
-        } catch {
-          if (mounted) setFacultyList([]);
-        }
-      } finally {
-        if (mounted) setLoading(false);
-      }
+      if (mounted) await fetchFaculty();
     })();
-    return () => { mounted = false; };
+    
+    // Refresh every 15 seconds to check for archived faculty
+    const interval = setInterval(() => {
+      if (mounted && !document.hidden) fetchFaculty();
+    }, 15000);
+    
+    return () => { 
+      mounted = false; 
+      clearInterval(interval);
+    };
   }, []);
 
   // fetch departments for dropdown
   useEffect(() => {
-    let mounted = true;
-    (async () => {
+    let isFetching = false;
+    
+    const fetchDepartments = async () => {
+      if (document.hidden || isFetching) return;
+      isFetching = true;
+      
       try {
         const res = await fetch('/api/departments');
         if (!res.ok) throw new Error('no api');
         const json = await res.json();
-        if (mounted) setDepartments(Array.isArray(json) ? json : []);
+        // Filter out archived departments
+        const activeDepts = Array.isArray(json) ? json.filter(d => !d.archived && d.archived !== 1 && d.status !== 'Archived') : [];
+        setDepartments(activeDepts);
       } catch {
-        try {
-          // fallback to local DB keys if available
-          const local = await localDB.readAll();
-          if (mounted) setDepartments([]);
-        } catch {
-          if (mounted) setDepartments([]);
-        }
+        setDepartments([]);
+      } finally {
+        isFetching = false;
       }
-    })();
-    return () => { mounted = false; };
+    };
+
+    fetchDepartments();
+    // Reduced polling to 60 seconds to prevent rate limiting
+    const interval = setInterval(fetchDepartments, 60000);
+    
+    // Refetch when page becomes visible
+    const handleVisibilityChange = () => {
+      if (!document.hidden) fetchDepartments();
+    };
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    
+    return () => {
+      clearInterval(interval);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
   }, []);
 
   // fetch courses for dropdown
   useEffect(() => {
-    let mounted = true;
-    (async () => {
+    let isFetching = false;
+    
+    const fetchCourses = async () => {
+      if (document.hidden || isFetching) return;
+      isFetching = true;
+      
       try {
         const res = await fetch('/api/courses');
         if (!res.ok) throw new Error('no api');
         const json = await res.json();
-        if (mounted) setCourses(Array.isArray(json) ? json : []);
+        // Filter out archived courses
+        const activeCourses = Array.isArray(json) ? json.filter(c => !c.archived && c.archived !== 1 && c.status !== 'archived') : [];
+        setCourses(activeCourses);
       } catch {
-        if (mounted) setCourses([]);
+        setCourses([]);
+      } finally {
+        isFetching = false;
       }
-    })();
-    return () => { mounted = false; };
+    };
+
+    fetchCourses();
+    // Reduced polling to 60 seconds to prevent rate limiting
+    const interval = setInterval(fetchCourses, 60000);
+    
+    // Refetch when page becomes visible
+    const handleVisibilityChange = () => {
+      if (!document.hidden) fetchCourses();
+    };
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    
+    return () => {
+      clearInterval(interval);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
   }, []);
 
   const handleAdd = () => { setForm(defaultForm); setShowAdd(true); };
@@ -215,6 +294,7 @@ export default function Faculty() {
       if (res.ok) {
         const created = await res.json();
         setFacultyList(prev => [...prev, created]);
+        logger.logCreate('Faculty', `Added faculty: ${payload.name}`);
       } else {
         const created = await localDB.create(payload);
         setFacultyList(prev => [...prev, created]);
@@ -247,6 +327,7 @@ export default function Faculty() {
       if (res.ok) {
         const updated = await res.json();
         setFacultyList(prev => prev.map(f => f.id === updated.id ? updated : f));
+        logger.logUpdate('Faculty', `Updated faculty: ${payload.name}`);
       } else {
         const updated = await localDB.update(id, payload);
         setFacultyList(prev => prev.map(f => f.id === id ? updated : f));
@@ -266,19 +347,82 @@ export default function Faculty() {
     if (!window.confirm("Are you sure you want to delete this record?")) return;
     try {
       const res = await fetch(`/api/faculties/${item.id}`, { method: 'DELETE' });
-      if (res.ok) setFacultyList(prev => prev.filter(f => f.id !== item.id));
+      if (res.ok) {
+        setFacultyList(prev => prev.filter(f => f.id !== item.id));
+        logger.logDelete('Faculty', `Deleted faculty: ${item.name}`);
+      }
       else { await localDB.delete(item.id); setFacultyList(prev => prev.filter(f => f.id !== item.id)); }
     } catch {
       await localDB.delete(item.id);
       setFacultyList(prev => prev.filter(f => f.id !== item.id));
     }
-    if (selectedUser && selectedUser.id === target.id) setSelectedUser(null);
+    if (selectedUser && selectedUser.id === item.id) setSelectedUser(null);
   };
 
-  const handleFilter = () => setShowFilter(true);
-  const handleLogout = () => navigate("/login");
-  const handleUserClick = (user) => setSelectedUser(user);
-  const handleBackToList = () => setSelectedUser(null);
+  // Bulk archive all selected
+  const handleArchiveAll = async () => {
+    if (selectedFaculty.length === 0) {
+      alert('Please select faculty members to archive');
+      return;
+    }
+    
+    if (!window.confirm(`Archive ${selectedFaculty.length} selected faculty member(s)?`)) return;
+    
+    try {
+      for (const id of selectedFaculty) {
+        const res = await fetch(`/api/faculties/${id}`, { 
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ archived: true })
+        });
+        if (res.ok) {
+          const faculty = facultyList.find(f => f.id === id);
+          logger.logArchive('Faculty', `Archived faculty: ${faculty?.name || 'Unknown'}`);
+        }
+      }
+      // Refresh the list
+      await fetchFaculty();
+      setSelectedFaculty([]);
+    } catch (error) {
+      console.error('Error archiving faculty:', error);
+    }
+  };
+
+  // Bulk restore all selected (for when viewing archived - though this component shows active)
+  const handleRestoreAll = async () => {
+    if (selectedFaculty.length === 0) {
+      alert('Please select faculty members to restore');
+      return;
+    }
+    
+    if (!window.confirm(`Restore ${selectedFaculty.length} selected faculty member(s)?`)) return;
+    
+    try {
+      for (const id of selectedFaculty) {
+        const res = await fetch(`/api/faculties/${id}`, { 
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ archived: false })
+        });
+        if (res.ok) {
+          const faculty = facultyList.find(f => f.id === id);
+          logger.logRestore('Faculty', `Restored faculty: ${faculty?.name || 'Unknown'}`);
+        }
+      }
+      // Refresh the list
+      await fetchFaculty();
+      setSelectedFaculty([]);
+    } catch (error) {
+      console.error('Error restoring faculty:', error);
+    }
+  };
+
+  // Toggle checkbox
+  const handleCheckboxToggle = (id) => {
+    setSelectedFaculty(prev => 
+      prev.includes(id) ? prev.filter(i => i !== id) : [...prev, id]
+    );
+  };
 
   const filteredList = facultyList.filter(f => {
     const matchesSearch = (f.name || "").toLowerCase().includes(search.toLowerCase()) ||
@@ -286,6 +430,44 @@ export default function Faculty() {
     const matchesDepartment = departmentFilter === "All Departments" || f.department === departmentFilter;
     return matchesSearch && matchesDepartment;
   });
+
+  // Handle column sorting
+  const handleSort = (field) => {
+    if (sortField === field) {
+      setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
+    } else {
+      setSortField(field);
+      setSortDirection('asc');
+    }
+  };
+
+  // Apply sorting
+  const sortedList = [...filteredList].sort((a, b) => {
+    if (!sortField) return 0;
+    
+    let aVal = a[sortField] || '';
+    let bVal = b[sortField] || '';
+    
+    // Convert to string for comparison
+    aVal = String(aVal).toLowerCase();
+    bVal = String(bVal).toLowerCase();
+    
+    if (aVal < bVal) return sortDirection === 'asc' ? -1 : 1;
+    if (aVal > bVal) return sortDirection === 'asc' ? 1 : -1;
+    return 0;
+  });
+
+  // Select all toggle
+  const handleSelectAllToggle = () => {
+    setSelectedFaculty(prev => 
+      prev.length === sortedList.length ? [] : sortedList.map(f => f.id)
+    );
+  };
+
+  const handleFilter = () => setShowFilter(true);
+  const handleLogout = () => navigate("/login");
+  const handleUserClick = (user) => setSelectedUser(user);
+  const handleBackToList = () => setSelectedUser(null);
 
   const fontStyle = { fontFamily: "Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial" };
 
@@ -353,6 +535,27 @@ export default function Faculty() {
                 <option key={d.id ?? d.name} value={d.name}>{d.name}</option>
               ))}
             </select>
+            {selectedFaculty.length > 0 && (
+              <button 
+                onClick={handleArchiveAll}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 8,
+                  padding: '10px 16px',
+                  background: '#fef3c7',
+                  color: '#ca8a04',
+                  border: 'none',
+                  borderRadius: 8,
+                  fontSize: 13,
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                  whiteSpace: 'nowrap'
+                }}
+              >
+                📦 Archive Selected ({selectedFaculty.length})
+              </button>
+            )}
             <button 
               onClick={handleAdd}
               style={{
@@ -425,28 +628,55 @@ export default function Faculty() {
             <table className="faculty-table">
               <thead>
                 <tr>
-                  <th>Name</th>
-                  <th>Course</th>
-                  <th>Email address</th>
-                  <th>Department</th>
-                  <th>Gender</th>
+                  <th style={{ width: 40, textAlign: 'center' }}>
+                    <input
+                      type="checkbox"
+                      checked={sortedList.length > 0 && selectedFaculty.length === sortedList.length}
+                      onChange={handleSelectAllToggle}
+                      style={{ cursor: 'pointer', width: 16, height: 16 }}
+                    />
+                  </th>
+                  <th onClick={() => handleSort('name')} style={{ cursor: 'pointer', userSelect: 'none' }}>
+                    Name {sortField === 'name' && (sortDirection === 'asc' ? '↑' : '↓')}
+                  </th>
+                  <th onClick={() => handleSort('subject')} style={{ cursor: 'pointer', userSelect: 'none' }}>
+                    Course {sortField === 'subject' && (sortDirection === 'asc' ? '↑' : '↓')}
+                  </th>
+                  <th onClick={() => handleSort('email')} style={{ cursor: 'pointer', userSelect: 'none' }}>
+                    Email address {sortField === 'email' && (sortDirection === 'asc' ? '↑' : '↓')}
+                  </th>
+                  <th onClick={() => handleSort('department')} style={{ cursor: 'pointer', userSelect: 'none' }}>
+                    Department {sortField === 'department' && (sortDirection === 'asc' ? '↑' : '↓')}
+                  </th>
+                  <th onClick={() => handleSort('gender')} style={{ cursor: 'pointer', userSelect: 'none' }}>
+                    Gender {sortField === 'gender' && (sortDirection === 'asc' ? '↑' : '↓')}
+                  </th>
                   <th></th>
                 </tr>
               </thead>
               <tbody>
-                {(!loading && filteredList.length === 0) && <tr><td colSpan="6">No faculty found.</td></tr>}
-                {(loading) && <tr><td colSpan="6">Loading…</td></tr>}
-                {filteredList.map((f, idx) => (
+                {(!loading && sortedList.length === 0) && <tr><td colSpan="7">No faculty found.</td></tr>}
+                {(loading) && <tr><td colSpan="7">Loading…</td></tr>}
+                {sortedList.map((f, idx) => (
                   <tr key={f.id ?? idx} style={{ cursor: "pointer" }}>
+                    <td style={{ textAlign: 'center' }} onClick={e => e.stopPropagation()}>
+                      <input
+                        type="checkbox"
+                        checked={selectedFaculty.includes(f.id)}
+                        onChange={() => handleCheckboxToggle(f.id)}
+                        style={{ cursor: 'pointer', width: 16, height: 16 }}
+                        onClick={e => e.stopPropagation()}
+                      />
+                    </td>
                     <td onClick={() => handleUserClick(f)}>
                       <div className="faculty-avatar-name">
                         <img src={f.avatar || "https://randomuser.me/api/portraits/lego/1.jpg"} alt={f.name} className="faculty-avatar" />
-                        <span>{f.name}</span>
+                        <span><HighlightText text={f.name} highlight={search} /></span>
                       </div>
                     </td>
-                    <td onClick={() => handleUserClick(f)}>{f.subject}</td>
-                    <td onClick={() => handleUserClick(f)}>{f.email}</td>
-                    <td onClick={() => handleUserClick(f)}>{f.department}</td>
+                    <td onClick={() => handleUserClick(f)}><HighlightText text={f.subject} highlight={search} /></td>
+                    <td onClick={() => handleUserClick(f)}><HighlightText text={f.email} highlight={search} /></td>
+                    <td onClick={() => handleUserClick(f)}><HighlightText text={f.department} highlight={search} /></td>
                     <td onClick={() => handleUserClick(f)}>{f.gender}</td>
                     <td>
                       <button className="faculty-icon-btn" title="Edit" onClick={e => { e.stopPropagation(); handleEdit(f); }}>

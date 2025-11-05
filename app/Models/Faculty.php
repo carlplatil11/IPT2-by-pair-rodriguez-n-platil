@@ -20,5 +20,6 @@ class Faculty extends Model
         'about',
         'phone',
         'department',
+        'archived',
     ];
 }

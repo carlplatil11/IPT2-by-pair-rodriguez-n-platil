@@ -20,7 +20,7 @@ export default function Navbar() {
                         <NavLink to="/faculty" className={({ isActive }) => isActive ? "active" : ""}>Faculty</NavLink>
                     </li>
                     <li>
-                        <NavLink to="/student" className={({ isActive }) => isActive ? "active" : ""}>Students / Classes</NavLink>  
+                        <NavLink to="/student" className={({ isActive }) => isActive ? "active" : ""}>Students</NavLink>  
                     </li>
                     <li>
                         <NavLink to="/department" className={({ isActive }) => isActive ? "active" : ""}>Departments</NavLink>
@@ -29,7 +29,7 @@ export default function Navbar() {
                         <NavLink to="/courses" className={({ isActive }) => isActive ? "active" : ""}>Courses</NavLink>
                     </li>
                     <li>
-                        <NavLink to="/settings" className={({ isActive }) => isActive ? "active" : ""}>Settings & Profile</NavLink>
+                        <NavLink to="/settings" className={({ isActive }) => isActive ? "active" : ""}>Settings</NavLink>
                     </li>
                 </ul>
             </nav>

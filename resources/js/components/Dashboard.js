@@ -259,6 +259,9 @@ export default function Dashboard() {
         let mounted = true;
 
         async function fetchData() {
+            // Only fetch if the document is visible (tab is active)
+            if (document.hidden) return;
+            
             try {
                 const [tRes, sRes, fRes] = await Promise.allSettled([
                     fetch('/api/stats/totals'),
@@ -307,8 +310,16 @@ export default function Dashboard() {
         }
 
         fetchData();
+        
+        // Refresh dashboard every 15 seconds to reflect archive/restore changes
+        const interval = setInterval(() => {
+            if (mounted) fetchData();
+        }, 15000);
 
-        return () => { mounted = false; };
+        return () => { 
+            mounted = false;
+            clearInterval(interval);
+        };
     }, []);
 
     return (
@@ -342,6 +353,64 @@ export default function Dashboard() {
                 <div style={{ padding: '32px 40px', background: '#f8fafc' }}>
                     {/* Top Metrics - Two Cards Side by Side */}
                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: 28, marginBottom: 36 }}>
+                        {/* Total Faculty Card */}
+                        <div style={{
+                            background: 'linear-gradient(135deg, #10b981 0%, #047857 100%)',
+                            borderRadius: 20,
+                            padding: '36px',
+                            boxShadow: '0 10px 25px rgba(16, 185, 129, 0.4)',
+                            color: 'white',
+                            position: 'relative',
+                            overflow: 'hidden',
+                            transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+                            cursor: 'pointer'
+                        }}
+                        onMouseEnter={(e) => {
+                            e.currentTarget.style.transform = 'translateY(-4px)';
+                            e.currentTarget.style.boxShadow = '0 15px 35px rgba(16, 185, 129, 0.5)';
+                        }}
+                        onMouseLeave={(e) => {
+                            e.currentTarget.style.transform = 'translateY(0)';
+                            e.currentTarget.style.boxShadow = '0 10px 25px rgba(16, 185, 129, 0.4)';
+                        }}>
+                            {/* Background decoration */}
+                            <div style={{
+                                position: 'absolute',
+                                top: -20,
+                                right: -20,
+                                width: 140,
+                                height: 140,
+                                borderRadius: '50%',
+                                background: 'rgba(255, 255, 255, 0.1)',
+                                filter: 'blur(40px)'
+                            }} />
+                            <div style={{ 
+                                position: 'absolute', 
+                                top: 24, 
+                                right: 24,
+                                width: 56,
+                                height: 56,
+                                background: 'rgba(255, 255, 255, 0.25)',
+                                borderRadius: 16,
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                backdropFilter: 'blur(10px)'
+                            }}>
+                                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5">
+                                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                                    <circle cx="12" cy="7" r="4"/>
+                                </svg>
+                            </div>
+                            <div style={{ fontSize: 15, opacity: 0.95, marginBottom: 12, fontWeight: 600, letterSpacing: '0.5px' }}>
+                                TOTAL FACULTY
+                            </div>
+                            <div style={{ fontSize: 56, fontWeight: 800, marginBottom: 12, lineHeight: 1, textShadow: '0 2px 4px rgba(0,0,0,0.1)' }}>
+                                {loading ? '—' : (totals.faculty ?? 0)}
+                            </div>
+                            <div style={{ fontSize: 14, opacity: 0.9, fontWeight: 500 }}>Active faculty members</div>
+                        </div>
+
                         {/* Total Students Card */}
                         <div style={{
                             background: 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)',
@@ -400,64 +469,6 @@ export default function Dashboard() {
                                 {loading ? '—' : (totals.students ?? 0)}
                             </div>
                             <div style={{ fontSize: 14, opacity: 0.9, fontWeight: 500 }}>Active students enrolled</div>
-                        </div>
-
-                        {/* Total Faculty Card */}
-                        <div style={{
-                            background: 'linear-gradient(135deg, #10b981 0%, #047857 100%)',
-                            borderRadius: 20,
-                            padding: '36px',
-                            boxShadow: '0 10px 25px rgba(16, 185, 129, 0.4)',
-                            color: 'white',
-                            position: 'relative',
-                            overflow: 'hidden',
-                            transition: 'transform 0.3s ease, box-shadow 0.3s ease',
-                            cursor: 'pointer'
-                        }}
-                        onMouseEnter={(e) => {
-                            e.currentTarget.style.transform = 'translateY(-4px)';
-                            e.currentTarget.style.boxShadow = '0 15px 35px rgba(16, 185, 129, 0.5)';
-                        }}
-                        onMouseLeave={(e) => {
-                            e.currentTarget.style.transform = 'translateY(0)';
-                            e.currentTarget.style.boxShadow = '0 10px 25px rgba(16, 185, 129, 0.4)';
-                        }}>
-                            {/* Background decoration */}
-                            <div style={{
-                                position: 'absolute',
-                                top: -20,
-                                right: -20,
-                                width: 140,
-                                height: 140,
-                                borderRadius: '50%',
-                                background: 'rgba(255, 255, 255, 0.1)',
-                                filter: 'blur(40px)'
-                            }} />
-                            <div style={{ 
-                                position: 'absolute', 
-                                top: 24, 
-                                right: 24,
-                                width: 56,
-                                height: 56,
-                                background: 'rgba(255, 255, 255, 0.25)',
-                                borderRadius: 16,
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                backdropFilter: 'blur(10px)'
-                            }}>
-                                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5">
-                                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-                                    <circle cx="12" cy="7" r="4"/>
-                                </svg>
-                            </div>
-                            <div style={{ fontSize: 15, opacity: 0.95, marginBottom: 12, fontWeight: 600, letterSpacing: '0.5px' }}>
-                                TOTAL FACULTY
-                            </div>
-                            <div style={{ fontSize: 56, fontWeight: 800, marginBottom: 12, lineHeight: 1, textShadow: '0 2px 4px rgba(0,0,0,0.1)' }}>
-                                {loading ? '—' : (totals.faculty ?? 0)}
-                            </div>
-                            <div style={{ fontSize: 14, opacity: 0.9, fontWeight: 500 }}>Active faculty members</div>
                         </div>
                     </div>
 

@@ -70015,8 +70015,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router/dist/index.js");
 /* harmony import */ var _Navbar__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Navbar */ "./resources/js/components/Navbar.js");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var _utils_logger__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../utils/logger */ "./resources/js/utils/logger.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
+function _regeneratorValues(e) { if (null != e) { var t = e["function" == typeof Symbol && Symbol.iterator || "@@iterator"], r = 0; if (t) return t.call(e); if ("function" == typeof e.next) return e; if (!isNaN(e.length)) return { next: function next() { return e && r >= e.length && (e = void 0), { value: e && e[r++], done: !e }; } }; } throw new TypeError(_typeof(e) + " is not iterable"); }
+function _createForOfIteratorHelper(r, e) { var t = "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (!t) { if (Array.isArray(r) || (t = _unsupportedIterableToArray(r)) || e && r && "number" == typeof r.length) { t && (r = t); var _n = 0, F = function F() {}; return { s: F, n: function n() { return _n >= r.length ? { done: !0 } : { done: !1, value: r[_n++] }; }, e: function e(r) { throw r; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var o, a = !0, u = !1; return { s: function s() { t = t.call(r); }, n: function n() { var r = t.next(); return a = r.done, r; }, e: function e(r) { u = !0, o = r; }, f: function f() { try { a || null == t["return"] || t["return"](); } finally { if (u) throw o; } } }; }
 function _toConsumableArray(r) { return _arrayWithoutHoles(r) || _iterableToArray(r) || _unsupportedIterableToArray(r) || _nonIterableSpread(); }
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 function _iterableToArray(r) { if ("undefined" != typeof Symbol && null != r[Symbol.iterator] || null != r["@@iterator"]) return Array.from(r); }
@@ -70040,33 +70043,55 @@ function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e 
 
 
 
-var CourseFullForm = /*#__PURE__*/(0,react__WEBPACK_IMPORTED_MODULE_0__.memo)(function (_ref) {
-  var isEdit = _ref.isEdit,
-    onSubmit = _ref.onSubmit,
-    onCancel = _ref.onCancel,
-    form = _ref.form,
-    setForm = _ref.setForm,
-    _ref$departments = _ref.departments,
-    departments = _ref$departments === void 0 ? [] : _ref$departments;
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+
+// Text highlighting component
+
+var HighlightText = function HighlightText(_ref) {
+  var text = _ref.text,
+    highlight = _ref.highlight;
+  if (!highlight || !text) return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.Fragment, {
+    children: text
+  });
+  var parts = String(text).split(new RegExp("(".concat(highlight.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), ")"), 'gi'));
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.Fragment, {
+    children: parts.map(function (part, i) {
+      return part.toLowerCase() === highlight.toLowerCase() ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("span", {
+        style: {
+          backgroundColor: '#fef08a',
+          fontWeight: 600
+        },
+        children: part
+      }, i) : part;
+    })
+  });
+};
+var CourseFullForm = /*#__PURE__*/(0,react__WEBPACK_IMPORTED_MODULE_0__.memo)(function (_ref2) {
+  var isEdit = _ref2.isEdit,
+    onSubmit = _ref2.onSubmit,
+    onCancel = _ref2.onCancel,
+    form = _ref2.form,
+    setForm = _ref2.setForm,
+    _ref2$departments = _ref2.departments,
+    departments = _ref2$departments === void 0 ? [] : _ref2$departments;
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
     className: "student-form-overlay",
-    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("form", {
+    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("form", {
       className: "student-full-form",
       onSubmit: onSubmit,
-      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
         className: "student-form-header-row",
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("h2", {
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("h2", {
           className: "student-form-title",
           children: isEdit ? "Edit Course" : "Add Course"
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
           className: "student-form-group",
           style: {
             minWidth: 260
           },
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("label", {
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("label", {
             className: "sr-only",
             children: "Department"
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("select", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("select", {
             required: true,
             className: "student-form-designation",
             value: form.department,
@@ -70075,32 +70100,32 @@ var CourseFullForm = /*#__PURE__*/(0,react__WEBPACK_IMPORTED_MODULE_0__.memo)(fu
                 department: e.target.value
               }));
             },
-            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("option", {
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("option", {
               value: "",
               children: "Select department"
             }), departments.filter(function (d) {
               return d && d.name;
             }).map(function (d) {
               var _d$id;
-              return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("option", {
+              return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("option", {
                 value: d.name,
                 children: d.name
               }, (_d$id = d.id) !== null && _d$id !== void 0 ? _d$id : d.name);
             })]
           })]
         })]
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
         className: "student-form-section-label"
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
         className: "student-form-row",
-        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
           className: "student-form-group",
           style: {
             flex: 1
           },
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("label", {
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("label", {
             children: "Course Name"
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("input", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", {
             type: "text",
             required: true,
             value: form.name,
@@ -70112,16 +70137,16 @@ var CourseFullForm = /*#__PURE__*/(0,react__WEBPACK_IMPORTED_MODULE_0__.memo)(fu
             placeholder: "Course Name"
           })]
         })
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
         className: "student-form-row",
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
           className: "student-form-group",
           style: {
             flex: 1
           },
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("label", {
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("label", {
             children: "Level"
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("select", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("select", {
             required: true,
             value: form.gender,
             onChange: function onChange(e) {
@@ -70129,23 +70154,23 @@ var CourseFullForm = /*#__PURE__*/(0,react__WEBPACK_IMPORTED_MODULE_0__.memo)(fu
                 gender: e.target.value
               }));
             },
-            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("option", {
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("option", {
               value: "",
               children: "Select"
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("option", {
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("option", {
               children: "Undergraduate"
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("option", {
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("option", {
               children: "Postgraduate"
             })]
           })]
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
           className: "student-form-group",
           style: {
             flex: 1
           },
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("label", {
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("label", {
             children: "Credits"
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("input", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", {
             type: "number",
             required: true,
             value: form.age,
@@ -70157,16 +70182,16 @@ var CourseFullForm = /*#__PURE__*/(0,react__WEBPACK_IMPORTED_MODULE_0__.memo)(fu
             placeholder: "Credits"
           })]
         })]
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
         className: "student-form-row",
-        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
           className: "student-form-group",
           style: {
             flex: 1
           },
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("label", {
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("label", {
             children: "About"
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("textarea", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("textarea", {
             required: true,
             value: form.about,
             onChange: function onChange(e) {
@@ -70180,13 +70205,13 @@ var CourseFullForm = /*#__PURE__*/(0,react__WEBPACK_IMPORTED_MODULE_0__.memo)(fu
             }
           })]
         })
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
         className: "student-form-actions",
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
           type: "submit",
           className: "student-form-submit",
           children: isEdit ? "Save Changes" : "Add Course"
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
           type: "button",
           className: "student-form-cancel",
           onClick: onCancel,
@@ -70246,6 +70271,22 @@ function Courses() {
     _useState16 = _slicedToArray(_useState15, 2),
     selectedCourse = _useState16[0],
     setSelectedCourse = _useState16[1];
+
+  // Sorting state
+  var _useState17 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null),
+    _useState18 = _slicedToArray(_useState17, 2),
+    sortField = _useState18[0],
+    setSortField = _useState18[1];
+  var _useState19 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)('asc'),
+    _useState20 = _slicedToArray(_useState19, 2),
+    sortDirection = _useState20[0],
+    setSortDirection = _useState20[1];
+
+  // Checkbox selections for bulk operations
+  var _useState21 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
+    _useState22 = _slicedToArray(_useState21, 2),
+    selectedCourses = _useState22[0],
+    setSelectedCourses = _useState22[1];
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
     var mounted = true;
     _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee() {
@@ -70329,7 +70370,7 @@ function Courses() {
     setShowAdd(true);
   };
   var handleAddSubmit = /*#__PURE__*/function () {
-    var _ref4 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee3(e) {
+    var _ref5 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee3(e) {
       var payload, res, newCourse, _t3;
       return _regenerator().w(function (_context3) {
         while (1) switch (_context3.p = _context3.n) {
@@ -70360,6 +70401,7 @@ function Courses() {
             setCourseList(function (prev) {
               return [].concat(_toConsumableArray(prev), [newCourse]);
             });
+            _utils_logger__WEBPACK_IMPORTED_MODULE_3__["default"].logCreate('Course', "Added course: ".concat(payload.name));
             _context3.n = 5;
             break;
           case 4:
@@ -70390,7 +70432,7 @@ function Courses() {
       }, _callee3, null, [[1, 6, 7, 8]]);
     }));
     return function handleAddSubmit(_x) {
-      return _ref4.apply(this, arguments);
+      return _ref5.apply(this, arguments);
     };
   }();
   var handleEdit = function handleEdit(idx) {
@@ -70400,7 +70442,7 @@ function Courses() {
     setShowEdit(true);
   };
   var handleEditSubmit = /*#__PURE__*/function () {
-    var _ref5 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee4(e) {
+    var _ref6 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee4(e) {
       var course, id, payload, res, updated, _t4;
       return _regenerator().w(function (_context4) {
         while (1) switch (_context4.p = _context4.n) {
@@ -70447,6 +70489,7 @@ function Courses() {
                 return s.id === updated.id ? updated : s;
               });
             });
+            _utils_logger__WEBPACK_IMPORTED_MODULE_3__["default"].logUpdate('Course', "Updated course: ".concat(payload.name));
             _context4.n = 7;
             break;
           case 6:
@@ -70478,12 +70521,12 @@ function Courses() {
       }, _callee4, null, [[3, 8, 9, 10]]);
     }));
     return function handleEditSubmit(_x2) {
-      return _ref5.apply(this, arguments);
+      return _ref6.apply(this, arguments);
     };
   }();
   var handleDelete = /*#__PURE__*/function () {
-    var _ref6 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee5(idx) {
-      var target, res, updated, _t5;
+    var _ref7 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee5(idx) {
+      var target, res, updated, studentsRes, allStudents, studentsToArchive, _iterator, _step, student, facultiesRes, allFaculties, facultiesToArchive, _iterator2, _step2, faculty, _t5, _t6, _t7;
       return _regenerator().w(function (_context5) {
         while (1) switch (_context5.p = _context5.n) {
           case 0:
@@ -70494,7 +70537,7 @@ function Courses() {
             }
             return _context5.a(2);
           case 1:
-            if (window.confirm("Archive this course?")) {
+            if (window.confirm("Archive this course? All students and faculty teaching this course will also be archived.")) {
               _context5.n = 2;
               break;
             }
@@ -70515,7 +70558,7 @@ function Courses() {
           case 3:
             res = _context5.v;
             if (!res.ok) {
-              _context5.n = 5;
+              _context5.n = 25;
               break;
             }
             _context5.n = 4;
@@ -70527,23 +70570,114 @@ function Courses() {
                 return c.id === target.id ? updated : c;
               });
             });
-            _context5.n = 6;
-            break;
+            _utils_logger__WEBPACK_IMPORTED_MODULE_3__["default"].logArchive('Course', "Archived course: ".concat(target.name));
+
+            // Archive all students enrolled in this course
+            _context5.n = 5;
+            return fetch('/api/students');
           case 5:
-            setCourseList(function (prev) {
-              return prev.map(function (c) {
-                return c.id === target.id ? _objectSpread(_objectSpread({}, c), {}, {
-                  status: 'archived',
-                  archived: true
-                }) : c;
-              });
-            });
+            studentsRes = _context5.v;
+            if (!studentsRes.ok) {
+              _context5.n = 14;
+              break;
+            }
+            _context5.n = 6;
+            return studentsRes.json();
           case 6:
+            allStudents = _context5.v;
+            studentsToArchive = allStudents.filter(function (s) {
+              return s.course === target.name;
+            });
+            _iterator = _createForOfIteratorHelper(studentsToArchive);
+            _context5.p = 7;
+            _iterator.s();
+          case 8:
+            if ((_step = _iterator.n()).done) {
+              _context5.n = 11;
+              break;
+            }
+            student = _step.value;
+            _context5.n = 9;
+            return fetch("/api/students/".concat(student.id), {
+              method: 'PUT',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                archived: true
+              })
+            });
+          case 9:
+            _utils_logger__WEBPACK_IMPORTED_MODULE_3__["default"].logArchive('Student', "Auto-archived student: ".concat(student.name, " (course archived)"));
+          case 10:
             _context5.n = 8;
             break;
-          case 7:
-            _context5.p = 7;
+          case 11:
+            _context5.n = 13;
+            break;
+          case 12:
+            _context5.p = 12;
             _t5 = _context5.v;
+            _iterator.e(_t5);
+          case 13:
+            _context5.p = 13;
+            _iterator.f();
+            return _context5.f(13);
+          case 14:
+            _context5.n = 15;
+            return fetch('/api/faculties');
+          case 15:
+            facultiesRes = _context5.v;
+            if (!facultiesRes.ok) {
+              _context5.n = 24;
+              break;
+            }
+            _context5.n = 16;
+            return facultiesRes.json();
+          case 16:
+            allFaculties = _context5.v;
+            facultiesToArchive = allFaculties.filter(function (f) {
+              return f.subject === target.name;
+            });
+            _iterator2 = _createForOfIteratorHelper(facultiesToArchive);
+            _context5.p = 17;
+            _iterator2.s();
+          case 18:
+            if ((_step2 = _iterator2.n()).done) {
+              _context5.n = 21;
+              break;
+            }
+            faculty = _step2.value;
+            _context5.n = 19;
+            return fetch("/api/faculties/".concat(faculty.id), {
+              method: 'PUT',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                archived: true
+              })
+            });
+          case 19:
+            _utils_logger__WEBPACK_IMPORTED_MODULE_3__["default"].logArchive('Faculty', "Auto-archived faculty: ".concat(faculty.name, " (course archived)"));
+          case 20:
+            _context5.n = 18;
+            break;
+          case 21:
+            _context5.n = 23;
+            break;
+          case 22:
+            _context5.p = 22;
+            _t6 = _context5.v;
+            _iterator2.e(_t6);
+          case 23:
+            _context5.p = 23;
+            _iterator2.f();
+            return _context5.f(23);
+          case 24:
+            _context5.n = 26;
+            break;
+          case 25:
             setCourseList(function (prev) {
               return prev.map(function (c) {
                 return c.id === target.id ? _objectSpread(_objectSpread({}, c), {}, {
@@ -70552,13 +70686,27 @@ function Courses() {
                 }) : c;
               });
             });
-          case 8:
+          case 26:
+            _context5.n = 28;
+            break;
+          case 27:
+            _context5.p = 27;
+            _t7 = _context5.v;
+            setCourseList(function (prev) {
+              return prev.map(function (c) {
+                return c.id === target.id ? _objectSpread(_objectSpread({}, c), {}, {
+                  status: 'archived',
+                  archived: true
+                }) : c;
+              });
+            });
+          case 28:
             return _context5.a(2);
         }
-      }, _callee5, null, [[2, 7]]);
+      }, _callee5, null, [[17, 22, 23, 24], [7, 12, 13, 14], [2, 27]]);
     }));
     return function handleDelete(_x3) {
-      return _ref6.apply(this, arguments);
+      return _ref7.apply(this, arguments);
     };
   }();
   var handleFilter = function handleFilter() {
@@ -70566,6 +70714,30 @@ function Courses() {
   };
   var filteredList = activeCourseList.filter(function (s) {
     return (s.name || "").toLowerCase().includes(search.toLowerCase()) || (s.email || "").toLowerCase().includes(search.toLowerCase());
+  });
+
+  // Handle column sorting
+  var handleSort = function handleSort(field) {
+    if (sortField === field) {
+      setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
+    } else {
+      setSortField(field);
+      setSortDirection('asc');
+    }
+  };
+
+  // Apply sorting
+  var sortedList = _toConsumableArray(filteredList).sort(function (a, b) {
+    if (!sortField) return 0;
+    var aVal = a[sortField] || '';
+    var bVal = b[sortField] || '';
+
+    // Convert to string for comparison
+    aVal = String(aVal).toLowerCase();
+    bVal = String(bVal).toLowerCase();
+    if (aVal < bVal) return sortDirection === 'asc' ? -1 : 1;
+    if (aVal > bVal) return sortDirection === 'asc' ? 1 : -1;
+    return 0;
   });
   var handleLogout = function handleLogout() {
     return navigate("/login");
@@ -70576,30 +70748,154 @@ function Courses() {
   var handleBackToList = function handleBackToList() {
     return setSelectedCourse(null);
   };
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+
+  // Bulk archive all selected
+  var handleArchiveAll = /*#__PURE__*/function () {
+    var _ref8 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee6() {
+      var _iterator3, _step3, _loop, res, data, _t8, _t9;
+      return _regenerator().w(function (_context7) {
+        while (1) switch (_context7.p = _context7.n) {
+          case 0:
+            if (!(selectedCourses.length === 0)) {
+              _context7.n = 1;
+              break;
+            }
+            alert('Please select courses to archive');
+            return _context7.a(2);
+          case 1:
+            if (window.confirm("Archive ".concat(selectedCourses.length, " selected course(s)?"))) {
+              _context7.n = 2;
+              break;
+            }
+            return _context7.a(2);
+          case 2:
+            _context7.p = 2;
+            _iterator3 = _createForOfIteratorHelper(selectedCourses);
+            _context7.p = 3;
+            _loop = /*#__PURE__*/_regenerator().m(function _loop() {
+              var id, res, course;
+              return _regenerator().w(function (_context6) {
+                while (1) switch (_context6.n) {
+                  case 0:
+                    id = _step3.value;
+                    _context6.n = 1;
+                    return fetch("/api/courses/".concat(id), {
+                      method: 'PUT',
+                      headers: {
+                        'Content-Type': 'application/json'
+                      },
+                      body: JSON.stringify({
+                        status: 'archived',
+                        archived: true
+                      })
+                    });
+                  case 1:
+                    res = _context6.v;
+                    if (res.ok) {
+                      course = courseList.find(function (c) {
+                        return c.id === id;
+                      });
+                      _utils_logger__WEBPACK_IMPORTED_MODULE_3__["default"].logArchive('Course', "Archived course: ".concat((course === null || course === void 0 ? void 0 : course.name) || 'Unknown'));
+                    }
+                  case 2:
+                    return _context6.a(2);
+                }
+              }, _loop);
+            });
+            _iterator3.s();
+          case 4:
+            if ((_step3 = _iterator3.n()).done) {
+              _context7.n = 6;
+              break;
+            }
+            return _context7.d(_regeneratorValues(_loop()), 5);
+          case 5:
+            _context7.n = 4;
+            break;
+          case 6:
+            _context7.n = 8;
+            break;
+          case 7:
+            _context7.p = 7;
+            _t8 = _context7.v;
+            _iterator3.e(_t8);
+          case 8:
+            _context7.p = 8;
+            _iterator3.f();
+            return _context7.f(8);
+          case 9:
+            _context7.n = 10;
+            return fetch("/api/courses");
+          case 10:
+            res = _context7.v;
+            if (!res.ok) {
+              _context7.n = 12;
+              break;
+            }
+            _context7.n = 11;
+            return res.json();
+          case 11:
+            data = _context7.v;
+            setCourseList(Array.isArray(data) ? data : []);
+          case 12:
+            setSelectedCourses([]);
+            _context7.n = 14;
+            break;
+          case 13:
+            _context7.p = 13;
+            _t9 = _context7.v;
+            console.error('Error archiving courses:', _t9);
+          case 14:
+            return _context7.a(2);
+        }
+      }, _callee6, null, [[3, 7, 8, 9], [2, 13]]);
+    }));
+    return function handleArchiveAll() {
+      return _ref8.apply(this, arguments);
+    };
+  }();
+
+  // Toggle checkbox
+  var handleCheckboxToggle = function handleCheckboxToggle(id) {
+    setSelectedCourses(function (prev) {
+      return prev.includes(id) ? prev.filter(function (i) {
+        return i !== id;
+      }) : [].concat(_toConsumableArray(prev), [id]);
+    });
+  };
+
+  // Select all toggle
+  var handleSelectAllToggle = function handleSelectAllToggle() {
+    setSelectedCourses(function (prev) {
+      return prev.length === sortedList.length ? [] : sortedList.map(function (c) {
+        return c.id;
+      });
+    });
+  };
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
     style: {
       display: "flex",
       minHeight: "100vh",
       background: "#f8fafc"
     },
-    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_Navbar__WEBPACK_IMPORTED_MODULE_2__["default"], {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("main", {
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_Navbar__WEBPACK_IMPORTED_MODULE_2__["default"], {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("main", {
       className: "student-container",
       style: {
         flex: 1
       },
-      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
         className: "dashboard-header",
-        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
           className: "logout-btn",
           onClick: handleLogout,
           children: "Log out"
         })
-      }), !selectedCourse && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+      }), !selectedCourse && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
         style: {
           padding: '24px 40px',
           borderBottom: '1px solid #e5e7eb'
         },
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("h1", {
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("h1", {
           style: {
             fontSize: 28,
             fontWeight: 700,
@@ -70608,7 +70904,7 @@ function Courses() {
             marginBottom: 4
           },
           children: "Courses"
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("p", {
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("p", {
           style: {
             fontSize: 14,
             color: '#6b7280',
@@ -70616,20 +70912,20 @@ function Courses() {
           },
           children: "Manage course information"
         })]
-      }), !selectedCourse && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+      }), !selectedCourse && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
         style: {
           display: 'flex',
           gap: 16,
           padding: '20px 40px',
           borderBottom: '1px solid #e5e7eb'
         },
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
           style: {
             position: 'relative',
             flex: 1,
             maxWidth: 400
           },
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("svg", {
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("svg", {
             style: {
               position: 'absolute',
               left: 12,
@@ -70642,14 +70938,14 @@ function Courses() {
             fill: "none",
             stroke: "#9ca3af",
             strokeWidth: "2",
-            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("circle", {
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("circle", {
               cx: "11",
               cy: "11",
               r: "8"
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("path", {
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("path", {
               d: "m21 21-4.35-4.35"
             })]
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("input", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", {
             type: "text",
             placeholder: "Search courses...",
             value: search,
@@ -70665,7 +70961,24 @@ function Courses() {
               outline: 'none'
             }
           })]
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("button", {
+        }), selectedCourses.length > 0 && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("button", {
+          onClick: handleArchiveAll,
+          style: {
+            display: 'flex',
+            alignItems: 'center',
+            gap: 8,
+            padding: '10px 16px',
+            background: '#fef3c7',
+            color: '#ca8a04',
+            border: 'none',
+            borderRadius: 8,
+            fontSize: 13,
+            fontWeight: 600,
+            cursor: 'pointer',
+            whiteSpace: 'nowrap'
+          },
+          children: ["\uD83D\uDCE6 Archive Selected (", selectedCourses.length, ")"]
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("button", {
           onClick: handleAdd,
           style: {
             padding: '10px 20px',
@@ -70681,7 +70994,7 @@ function Courses() {
             gap: 6,
             whiteSpace: 'nowrap'
           },
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("span", {
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("span", {
             style: {
               fontSize: 18,
               lineHeight: 1
@@ -70689,23 +71002,23 @@ function Courses() {
             children: "+"
           }), "Add Course"]
         })]
-      }), selectedCourse && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+      }), selectedCourse && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
         className: "student-header",
-        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
           className: "student-back-btn",
           onClick: handleBackToList,
-          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("svg", {
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("svg", {
             width: "28",
             height: "28",
             viewBox: "0 0 24 24",
             fill: "none",
-            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("circle", {
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("circle", {
               cx: "12",
               cy: "12",
               r: "12",
               fill: "#222",
               opacity: "0.12"
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("path", {
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("path", {
               d: "M14 8l-4 4 4 4",
               stroke: "#222",
               strokeWidth: "2",
@@ -70714,7 +71027,7 @@ function Courses() {
             })]
           })
         })
-      }), showAdd && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(CourseFullForm, {
+      }), showAdd && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(CourseFullForm, {
         isEdit: false,
         onSubmit: handleAddSubmit,
         onCancel: function onCancel() {
@@ -70724,7 +71037,7 @@ function Courses() {
         form: form,
         setForm: setForm,
         departments: departments
-      }), showEdit && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(CourseFullForm, {
+      }), showEdit && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(CourseFullForm, {
         isEdit: true,
         onSubmit: handleEditSubmit,
         onCancel: function onCancel() {
@@ -70735,7 +71048,7 @@ function Courses() {
         form: form,
         setForm: setForm,
         departments: departments
-      }), !showAdd && !showEdit && selectedCourse ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+      }), !showAdd && !showEdit && selectedCourse ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
         style: {
           display: "flex",
           justifyContent: "center",
@@ -70743,82 +71056,82 @@ function Courses() {
           marginTop: "40px",
           gap: "60px"
         },
-        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
           style: {
             minWidth: 320,
             maxWidth: 600
           },
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
             style: {
               marginBottom: 24
             },
-            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
               style: {
                 fontWeight: 700,
                 fontSize: "1.5rem",
                 marginBottom: 8
               },
               children: selectedCourse.name
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
               style: {
                 color: "#888",
                 fontSize: "1rem"
               },
               children: selectedCourse.department
             })]
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
             style: {
               fontWeight: 700,
               fontSize: "1.1rem",
               marginBottom: 8
             },
             children: "About"
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
             style: {
               color: "#555",
               marginBottom: 24,
               lineHeight: 1.6
             },
             children: selectedCourse.about
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
             style: {
               display: "flex",
               gap: 40,
               marginBottom: 24
             },
-            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
-              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
                 style: {
                   color: "#888",
                   fontSize: 13
                 },
                 children: "Credits"
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
                 style: {
                   fontWeight: 600
                 },
                 children: selectedCourse.age
               })]
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
-              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
                 style: {
                   color: "#888",
                   fontSize: 13
                 },
                 children: "Level"
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
                 style: {
                   fontWeight: 600
                 },
                 children: selectedCourse.gender
               })]
             })]
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
             style: {
               display: "flex",
               gap: 8
             },
-            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
               className: "student-icon-btn",
               title: "Edit",
               "aria-label": "Edit course",
@@ -70828,18 +71141,18 @@ function Courses() {
                 });
                 if (idx !== -1) handleEdit(idx);
               },
-              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("svg", {
+              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("svg", {
                 viewBox: "0 0 24 24",
                 fill: "none",
                 xmlns: "http://www.w3.org/2000/svg",
                 "aria-hidden": "true",
-                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("path", {
+                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("path", {
                   d: "M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25z",
                   stroke: "#222",
                   strokeWidth: "1.5",
                   strokeLinecap: "round",
                   strokeLinejoin: "round"
-                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("path", {
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("path", {
                   d: "M20.71 7.04a1 1 0 0 0 0-1.41l-2.34-2.34a1 1 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z",
                   stroke: "#222",
                   strokeWidth: "1.5",
@@ -70847,7 +71160,7 @@ function Courses() {
                   strokeLinejoin: "round"
                 })]
               })
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
               className: "student-icon-btn",
               title: "Archive",
               "aria-label": "Archive course",
@@ -70858,24 +71171,24 @@ function Courses() {
                 if (idx !== -1) handleDelete(idx);
                 handleBackToList();
               },
-              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("svg", {
+              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("svg", {
                 viewBox: "0 0 24 24",
                 fill: "none",
                 xmlns: "http://www.w3.org/2000/svg",
                 "aria-hidden": "true",
-                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("path", {
+                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("path", {
                   d: "M3 3h18v4H3z",
                   stroke: "#222",
                   strokeWidth: "1.5",
                   strokeLinecap: "round",
                   strokeLinejoin: "round"
-                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("path", {
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("path", {
                   d: "M3 7v11a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V7",
                   stroke: "#222",
                   strokeWidth: "1.5",
                   strokeLinecap: "round",
                   strokeLinejoin: "round"
-                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("path", {
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("path", {
                   d: "M9 11h6",
                   stroke: "#222",
                   strokeWidth: "1.5",
@@ -70886,56 +71199,127 @@ function Courses() {
             })]
           })]
         })
-      }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+      }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
         className: "student-table-container",
-        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("table", {
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("table", {
           className: "student-table",
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("thead", {
-            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("tr", {
-              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("th", {
-                children: "Course Name"
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("th", {
-                children: "Department"
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("th", {
-                children: "Level"
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("th", {
-                children: "Credits"
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("th", {})]
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("thead", {
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("tr", {
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("th", {
+                style: {
+                  width: 40,
+                  textAlign: 'center'
+                },
+                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", {
+                  type: "checkbox",
+                  checked: sortedList.length > 0 && selectedCourses.length === sortedList.length,
+                  onChange: handleSelectAllToggle,
+                  style: {
+                    cursor: 'pointer',
+                    width: 16,
+                    height: 16
+                  }
+                })
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("th", {
+                onClick: function onClick() {
+                  return handleSort('name');
+                },
+                style: {
+                  cursor: 'pointer',
+                  userSelect: 'none'
+                },
+                children: ["Course Name ", sortField === 'name' && (sortDirection === 'asc' ? '↑' : '↓')]
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("th", {
+                onClick: function onClick() {
+                  return handleSort('department');
+                },
+                style: {
+                  cursor: 'pointer',
+                  userSelect: 'none'
+                },
+                children: ["Department ", sortField === 'department' && (sortDirection === 'asc' ? '↑' : '↓')]
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("th", {
+                onClick: function onClick() {
+                  return handleSort('gender');
+                },
+                style: {
+                  cursor: 'pointer',
+                  userSelect: 'none'
+                },
+                children: ["Level ", sortField === 'gender' && (sortDirection === 'asc' ? '↑' : '↓')]
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("th", {
+                onClick: function onClick() {
+                  return handleSort('age');
+                },
+                style: {
+                  cursor: 'pointer',
+                  userSelect: 'none'
+                },
+                children: ["Credits ", sortField === 'age' && (sortDirection === 'asc' ? '↑' : '↓')]
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("th", {})]
             })
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("tbody", {
-            children: [filteredList.length === 0 && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("tr", {
-              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("td", {
-                colSpan: "5",
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("tbody", {
+            children: [sortedList.length === 0 && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("tr", {
+              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("td", {
+                colSpan: "6",
                 children: "No courses found."
               })
-            }), filteredList.map(function (s, idx) {
+            }), sortedList.map(function (s, idx) {
               var _s$id;
-              return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("tr", {
+              return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("tr", {
                 style: {
                   cursor: "pointer"
                 },
-                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("td", {
+                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("td", {
+                  style: {
+                    textAlign: 'center'
+                  },
+                  onClick: function onClick(e) {
+                    return e.stopPropagation();
+                  },
+                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", {
+                    type: "checkbox",
+                    checked: selectedCourses.includes(s.id),
+                    onChange: function onChange() {
+                      return handleCheckboxToggle(s.id);
+                    },
+                    style: {
+                      cursor: 'pointer',
+                      width: 16,
+                      height: 16
+                    },
+                    onClick: function onClick(e) {
+                      return e.stopPropagation();
+                    }
+                  })
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("td", {
                   onClick: function onClick() {
                     return handleCourseClick(s);
                   },
-                  children: s.name
-                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("td", {
+                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(HighlightText, {
+                    text: s.name,
+                    highlight: search
+                  })
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("td", {
                   onClick: function onClick() {
                     return handleCourseClick(s);
                   },
-                  children: s.department
-                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("td", {
+                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(HighlightText, {
+                    text: s.department,
+                    highlight: search
+                  })
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("td", {
                   onClick: function onClick() {
                     return handleCourseClick(s);
                   },
                   children: s.gender
-                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("td", {
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("td", {
                   onClick: function onClick() {
                     return handleCourseClick(s);
                   },
                   children: s.age
-                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("td", {
-                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("td", {
+                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
                     className: "student-icon-btn",
                     title: "Edit",
                     "aria-label": "Edit course",
@@ -70943,18 +71327,18 @@ function Courses() {
                       e.stopPropagation();
                       handleEdit(idx);
                     },
-                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("svg", {
+                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("svg", {
                       viewBox: "0 0 24 24",
                       fill: "none",
                       xmlns: "http://www.w3.org/2000/svg",
                       "aria-hidden": "true",
-                      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("path", {
+                      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("path", {
                         d: "M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25z",
                         stroke: "#222",
                         strokeWidth: "1.5",
                         strokeLinecap: "round",
                         strokeLinejoin: "round"
-                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("path", {
+                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("path", {
                         d: "M20.71 7.04a1 1 0 0 0 0-1.41l-2.34-2.34a1 1 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z",
                         stroke: "#222",
                         strokeWidth: "1.5",
@@ -70962,7 +71346,7 @@ function Courses() {
                         strokeLinejoin: "round"
                       })]
                     })
-                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
                     className: "student-icon-btn",
                     title: "Archive",
                     "aria-label": "Archive course",
@@ -70970,24 +71354,24 @@ function Courses() {
                       e.stopPropagation();
                       handleDelete(idx);
                     },
-                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("svg", {
+                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("svg", {
                       viewBox: "0 0 24 24",
                       fill: "none",
                       xmlns: "http://www.w3.org/2000/svg",
                       "aria-hidden": "true",
-                      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("path", {
+                      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("path", {
                         d: "M3 3h18v4H3z",
                         stroke: "#222",
                         strokeWidth: "1.5",
                         strokeLinecap: "round",
                         strokeLinejoin: "round"
-                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("path", {
+                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("path", {
                         d: "M3 7v11a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V7",
                         stroke: "#222",
                         strokeWidth: "1.5",
                         strokeLinecap: "round",
                         strokeLinejoin: "round"
-                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("path", {
+                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("path", {
                         d: "M9 11h6",
                         stroke: "#222",
                         strokeWidth: "1.5",
@@ -71001,15 +71385,15 @@ function Courses() {
             })]
           })]
         })
-      }), showFilter && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+      }), showFilter && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
         className: "modal-overlay",
-        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
           className: "modal",
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("h3", {
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("h3", {
             children: "Filter (Demo)"
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("p", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("p", {
             children: "Here you can add filter options."
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
             className: "student-filter-btn",
             onClick: function onClick() {
               return setShowFilter(false);
@@ -71343,7 +71727,7 @@ function SimplePieChart(_ref2) {
   });
 }
 function Dashboard() {
-  var _totals$students, _totals$faculty;
+  var _totals$faculty, _totals$students;
   var navigate = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_1__.useNavigate)();
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)({
       students: null,
@@ -71378,73 +71762,79 @@ function Dashboard() {
         return _regenerator().w(function (_context) {
           while (1) switch (_context.p = _context.n) {
             case 0:
-              _context.p = 0;
-              _context.n = 1;
-              return Promise.allSettled([fetch('/api/stats/totals'), fetch('/api/stats/students-by-course'), fetch('/api/stats/faculty-by-department')]);
+              if (!document.hidden) {
+                _context.n = 1;
+                break;
+              }
+              return _context.a(2);
             case 1:
+              _context.p = 1;
+              _context.n = 2;
+              return Promise.allSettled([fetch('/api/stats/totals'), fetch('/api/stats/students-by-course'), fetch('/api/stats/faculty-by-department')]);
+            case 2:
               _yield$Promise$allSet = _context.v;
               _yield$Promise$allSet2 = _slicedToArray(_yield$Promise$allSet, 3);
               tRes = _yield$Promise$allSet2[0];
               sRes = _yield$Promise$allSet2[1];
               fRes = _yield$Promise$allSet2[2];
               if (mounted) {
-                _context.n = 2;
+                _context.n = 3;
                 break;
               }
               return _context.a(2);
-            case 2:
+            case 3:
               if (!(tRes.status === "fulfilled" && tRes.value.ok)) {
-                _context.n = 4;
+                _context.n = 5;
                 break;
               }
-              _context.n = 3;
+              _context.n = 4;
               return tRes.value.json();
-            case 3:
+            case 4:
               json = _context.v;
               setTotals({
                 students: (_ref3 = (_json$students = json.students) !== null && _json$students !== void 0 ? _json$students : json.total_students) !== null && _ref3 !== void 0 ? _ref3 : 0,
                 faculty: (_ref4 = (_json$faculty = json.faculty) !== null && _json$faculty !== void 0 ? _json$faculty : json.total_faculty) !== null && _ref4 !== void 0 ? _ref4 : 0
               });
-              _context.n = 5;
+              _context.n = 6;
               break;
-            case 4:
+            case 5:
               setTotals({
                 students: 0,
                 faculty: 0
               });
-            case 5:
+            case 6:
               if (!(sRes.status === "fulfilled" && sRes.value.ok)) {
-                _context.n = 7;
+                _context.n = 8;
                 break;
               }
-              _context.n = 6;
+              _context.n = 7;
               return sRes.value.json();
-            case 6:
+            case 7:
               _json = _context.v;
               setStudentsByCourse(Array.isArray(_json) ? _json : []);
-              _context.n = 8;
+              _context.n = 9;
               break;
-            case 7:
-              setStudentsByCourse([]);
             case 8:
+              setStudentsByCourse([]);
+            case 9:
               if (!(fRes.status === "fulfilled" && fRes.value.ok)) {
-                _context.n = 10;
+                _context.n = 11;
                 break;
               }
-              _context.n = 9;
+              _context.n = 10;
               return fRes.value.json();
-            case 9:
+            case 10:
               _json2 = _context.v;
               setFacultyByDept(Array.isArray(_json2) ? _json2 : []);
-              _context.n = 11;
+              _context.n = 12;
               break;
-            case 10:
-              setFacultyByDept([]);
             case 11:
-              _context.n = 13;
-              break;
+              setFacultyByDept([]);
             case 12:
-              _context.p = 12;
+              _context.n = 14;
+              break;
+            case 13:
+              _context.p = 13;
               _t = _context.v;
               console.error('Error fetching dashboard data:', _t);
               if (mounted) {
@@ -71455,20 +71845,26 @@ function Dashboard() {
                 setStudentsByCourse([]);
                 setFacultyByDept([]);
               }
-            case 13:
-              _context.p = 13;
-              if (mounted) setLoading(false);
-              return _context.f(13);
             case 14:
+              _context.p = 14;
+              if (mounted) setLoading(false);
+              return _context.f(14);
+            case 15:
               return _context.a(2);
           }
-        }, _callee, null, [[0, 12, 13, 14]]);
+        }, _callee, null, [[1, 13, 14, 15]]);
       }));
       return _fetchData.apply(this, arguments);
     }
     fetchData();
+
+    // Refresh dashboard every 15 seconds to reflect archive/restore changes
+    var interval = setInterval(function () {
+      if (mounted) fetchData();
+    }, 15000);
     return function () {
       mounted = false;
+      clearInterval(interval);
     };
   }, []);
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
@@ -71561,6 +71957,92 @@ function Dashboard() {
           },
           children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
             style: {
+              background: 'linear-gradient(135deg, #10b981 0%, #047857 100%)',
+              borderRadius: 20,
+              padding: '36px',
+              boxShadow: '0 10px 25px rgba(16, 185, 129, 0.4)',
+              color: 'white',
+              position: 'relative',
+              overflow: 'hidden',
+              transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+              cursor: 'pointer'
+            },
+            onMouseEnter: function onMouseEnter(e) {
+              e.currentTarget.style.transform = 'translateY(-4px)';
+              e.currentTarget.style.boxShadow = '0 15px 35px rgba(16, 185, 129, 0.5)';
+            },
+            onMouseLeave: function onMouseLeave(e) {
+              e.currentTarget.style.transform = 'translateY(0)';
+              e.currentTarget.style.boxShadow = '0 10px 25px rgba(16, 185, 129, 0.4)';
+            },
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+              style: {
+                position: 'absolute',
+                top: -20,
+                right: -20,
+                width: 140,
+                height: 140,
+                borderRadius: '50%',
+                background: 'rgba(255, 255, 255, 0.1)',
+                filter: 'blur(40px)'
+              }
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+              style: {
+                position: 'absolute',
+                top: 24,
+                right: 24,
+                width: 56,
+                height: 56,
+                background: 'rgba(255, 255, 255, 0.25)',
+                borderRadius: 16,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                backdropFilter: 'blur(10px)'
+              },
+              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("svg", {
+                width: "28",
+                height: "28",
+                viewBox: "0 0 24 24",
+                fill: "none",
+                stroke: "white",
+                strokeWidth: "2.5",
+                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("path", {
+                  d: "M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("circle", {
+                  cx: "12",
+                  cy: "7",
+                  r: "4"
+                })]
+              })
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+              style: {
+                fontSize: 15,
+                opacity: 0.95,
+                marginBottom: 12,
+                fontWeight: 600,
+                letterSpacing: '0.5px'
+              },
+              children: "TOTAL FACULTY"
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+              style: {
+                fontSize: 56,
+                fontWeight: 800,
+                marginBottom: 12,
+                lineHeight: 1,
+                textShadow: '0 2px 4px rgba(0,0,0,0.1)'
+              },
+              children: loading ? '—' : (_totals$faculty = totals.faculty) !== null && _totals$faculty !== void 0 ? _totals$faculty : 0
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+              style: {
+                fontSize: 14,
+                opacity: 0.9,
+                fontWeight: 500
+              },
+              children: "Active faculty members"
+            })]
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+            style: {
               background: 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)',
               borderRadius: 20,
               padding: '36px',
@@ -71648,92 +72130,6 @@ function Dashboard() {
                 fontWeight: 500
               },
               children: "Active students enrolled"
-            })]
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
-            style: {
-              background: 'linear-gradient(135deg, #10b981 0%, #047857 100%)',
-              borderRadius: 20,
-              padding: '36px',
-              boxShadow: '0 10px 25px rgba(16, 185, 129, 0.4)',
-              color: 'white',
-              position: 'relative',
-              overflow: 'hidden',
-              transition: 'transform 0.3s ease, box-shadow 0.3s ease',
-              cursor: 'pointer'
-            },
-            onMouseEnter: function onMouseEnter(e) {
-              e.currentTarget.style.transform = 'translateY(-4px)';
-              e.currentTarget.style.boxShadow = '0 15px 35px rgba(16, 185, 129, 0.5)';
-            },
-            onMouseLeave: function onMouseLeave(e) {
-              e.currentTarget.style.transform = 'translateY(0)';
-              e.currentTarget.style.boxShadow = '0 10px 25px rgba(16, 185, 129, 0.4)';
-            },
-            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
-              style: {
-                position: 'absolute',
-                top: -20,
-                right: -20,
-                width: 140,
-                height: 140,
-                borderRadius: '50%',
-                background: 'rgba(255, 255, 255, 0.1)',
-                filter: 'blur(40px)'
-              }
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
-              style: {
-                position: 'absolute',
-                top: 24,
-                right: 24,
-                width: 56,
-                height: 56,
-                background: 'rgba(255, 255, 255, 0.25)',
-                borderRadius: 16,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                backdropFilter: 'blur(10px)'
-              },
-              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("svg", {
-                width: "28",
-                height: "28",
-                viewBox: "0 0 24 24",
-                fill: "none",
-                stroke: "white",
-                strokeWidth: "2.5",
-                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("path", {
-                  d: "M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"
-                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("circle", {
-                  cx: "12",
-                  cy: "7",
-                  r: "4"
-                })]
-              })
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
-              style: {
-                fontSize: 15,
-                opacity: 0.95,
-                marginBottom: 12,
-                fontWeight: 600,
-                letterSpacing: '0.5px'
-              },
-              children: "TOTAL FACULTY"
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
-              style: {
-                fontSize: 56,
-                fontWeight: 800,
-                marginBottom: 12,
-                lineHeight: 1,
-                textShadow: '0 2px 4px rgba(0,0,0,0.1)'
-              },
-              children: loading ? '—' : (_totals$faculty = totals.faculty) !== null && _totals$faculty !== void 0 ? _totals$faculty : 0
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
-              style: {
-                fontSize: 14,
-                opacity: 0.9,
-                fontWeight: 500
-              },
-              children: "Active faculty members"
             })]
           })]
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
@@ -71884,8 +72280,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router/dist/index.js");
 /* harmony import */ var _Navbar__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Navbar */ "./resources/js/components/Navbar.js");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var _utils_logger__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../utils/logger */ "./resources/js/utils/logger.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
+function _regeneratorValues(e) { if (null != e) { var t = e["function" == typeof Symbol && Symbol.iterator || "@@iterator"], r = 0; if (t) return t.call(e); if ("function" == typeof e.next) return e; if (!isNaN(e.length)) return { next: function next() { return e && r >= e.length && (e = void 0), { value: e && e[r++], done: !e }; } }; } throw new TypeError(_typeof(e) + " is not iterable"); }
 function _regenerator() { /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/babel/babel/blob/main/packages/babel-helpers/LICENSE */ var e, t, r = "function" == typeof Symbol ? Symbol : {}, n = r.iterator || "@@iterator", o = r.toStringTag || "@@toStringTag"; function i(r, n, o, i) { var c = n && n.prototype instanceof Generator ? n : Generator, u = Object.create(c.prototype); return _regeneratorDefine2(u, "_invoke", function (r, n, o) { var i, c, u, f = 0, p = o || [], y = !1, G = { p: 0, n: 0, v: e, a: d, f: d.bind(e, 4), d: function d(t, r) { return i = t, c = 0, u = e, G.n = r, a; } }; function d(r, n) { for (c = r, u = n, t = 0; !y && f && !o && t < p.length; t++) { var o, i = p[t], d = G.p, l = i[2]; r > 3 ? (o = l === n) && (u = i[(c = i[4]) ? 5 : (c = 3, 3)], i[4] = i[5] = e) : i[0] <= d && ((o = r < 2 && d < i[1]) ? (c = 0, G.v = n, G.n = i[1]) : d < l && (o = r < 3 || i[0] > n || n > l) && (i[4] = r, i[5] = n, G.n = l, c = 0)); } if (o || r > 1) return a; throw y = !0, n; } return function (o, p, l) { if (f > 1) throw TypeError("Generator is already running"); for (y && 1 === p && d(p, l), c = p, u = l; (t = c < 2 ? e : u) || !y;) { i || (c ? c < 3 ? (c > 1 && (G.n = -1), d(c, u)) : G.n = u : G.v = u); try { if (f = 2, i) { if (c || (o = "next"), t = i[o]) { if (!(t = t.call(i, u))) throw TypeError("iterator result is not an object"); if (!t.done) return t; u = t.value, c < 2 && (c = 0); } else 1 === c && (t = i["return"]) && t.call(i), c < 2 && (u = TypeError("The iterator does not provide a '" + o + "' method"), c = 1); i = e; } else if ((t = (y = G.n < 0) ? u : r.call(n, G)) !== a) break; } catch (t) { i = e, c = 1, u = t; } finally { f = 1; } } return { value: t, done: y }; }; }(r, o, i), !0), u; } var a = {}; function Generator() {} function GeneratorFunction() {} function GeneratorFunctionPrototype() {} t = Object.getPrototypeOf; var c = [][n] ? t(t([][n]())) : (_regeneratorDefine2(t = {}, n, function () { return this; }), t), u = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(c); function f(e) { return Object.setPrototypeOf ? Object.setPrototypeOf(e, GeneratorFunctionPrototype) : (e.__proto__ = GeneratorFunctionPrototype, _regeneratorDefine2(e, o, "GeneratorFunction")), e.prototype = Object.create(u), e; } return GeneratorFunction.prototype = GeneratorFunctionPrototype, _regeneratorDefine2(u, "constructor", GeneratorFunctionPrototype), _regeneratorDefine2(GeneratorFunctionPrototype, "constructor", GeneratorFunction), GeneratorFunction.displayName = "GeneratorFunction", _regeneratorDefine2(GeneratorFunctionPrototype, o, "GeneratorFunction"), _regeneratorDefine2(u), _regeneratorDefine2(u, o, "Generator"), _regeneratorDefine2(u, n, function () { return this; }), _regeneratorDefine2(u, "toString", function () { return "[object Generator]"; }), (_regenerator = function _regenerator() { return { w: i, m: f }; })(); }
 function _regeneratorDefine2(e, r, n, t) { var i = Object.defineProperty; try { i({}, "", {}); } catch (e) { i = 0; } _regeneratorDefine2 = function _regeneratorDefine(e, r, n, t) { function o(r, n) { _regeneratorDefine2(e, r, function (e) { return this._invoke(r, n, e); }); } r ? i ? i(e, r, { value: n, enumerable: !t, configurable: !t, writable: !t }) : e[r] = n : (o("next", 0), o("throw", 1), o("return", 2)); }, _regeneratorDefine2(e, r, n, t); }
 function _toConsumableArray(r) { return _arrayWithoutHoles(r) || _iterableToArray(r) || _unsupportedIterableToArray(r) || _nonIterableSpread(); }
@@ -71910,28 +72308,50 @@ function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e 
 
 
 
-var DepartmentFullForm = /*#__PURE__*/(0,react__WEBPACK_IMPORTED_MODULE_0__.memo)(function (_ref) {
-  var isEdit = _ref.isEdit,
-    onSubmit = _ref.onSubmit,
-    onCancel = _ref.onCancel,
-    form = _ref.form,
-    setForm = _ref.setForm;
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+
+var HighlightText = function HighlightText(_ref) {
+  var text = _ref.text,
+    highlight = _ref.highlight;
+  if (!highlight || !text) return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.Fragment, {
+    children: text
+  });
+  var escapedHighlight = highlight.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  var regex = new RegExp("(".concat(escapedHighlight, ")"), 'gi');
+  var parts = String(text).split(regex);
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.Fragment, {
+    children: parts.map(function (part, i) {
+      return regex.test(part) ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("span", {
+        style: {
+          backgroundColor: '#fef08a',
+          fontWeight: 600
+        },
+        children: part
+      }, i) : part;
+    })
+  });
+};
+var DepartmentFullForm = /*#__PURE__*/(0,react__WEBPACK_IMPORTED_MODULE_0__.memo)(function (_ref2) {
+  var isEdit = _ref2.isEdit,
+    onSubmit = _ref2.onSubmit,
+    onCancel = _ref2.onCancel,
+    form = _ref2.form,
+    setForm = _ref2.setForm;
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
     className: "department-form-overlay",
-    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("form", {
+    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("form", {
       className: "department-full-form",
       onSubmit: onSubmit,
-      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
         className: "department-form-header-row",
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("h2", {
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("h2", {
           className: "department-form-title",
           children: isEdit ? "Edit Department" : "Add Department"
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
           className: "department-form-group",
           style: {
             minWidth: 260
           },
-          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("input", {
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", {
             type: "text",
             required: true,
             className: "department-form-name",
@@ -71944,16 +72364,16 @@ var DepartmentFullForm = /*#__PURE__*/(0,react__WEBPACK_IMPORTED_MODULE_0__.memo
             placeholder: "Department Name"
           })
         })]
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
         className: "department-form-row",
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
           className: "department-form-group",
           style: {
             flex: 1
           },
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("label", {
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("label", {
             children: "Head of Department"
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("input", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", {
             type: "text",
             value: form.head,
             onChange: function onChange(e) {
@@ -71963,14 +72383,14 @@ var DepartmentFullForm = /*#__PURE__*/(0,react__WEBPACK_IMPORTED_MODULE_0__.memo
             },
             placeholder: "Complete Name"
           })]
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
           className: "department-form-group",
           style: {
             flex: 1
           },
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("label", {
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("label", {
             children: "Contact Email"
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("input", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", {
             type: "email",
             value: form.email,
             onChange: function onChange(e) {
@@ -71980,14 +72400,14 @@ var DepartmentFullForm = /*#__PURE__*/(0,react__WEBPACK_IMPORTED_MODULE_0__.memo
             },
             placeholder: "Contact email"
           })]
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
           className: "department-form-group",
           style: {
             width: 160
           },
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("label", {
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("label", {
             children: "Status"
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("select", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("select", {
             value: form.status,
             onChange: function onChange(e) {
               return setForm(_objectSpread(_objectSpread({}, form), {}, {
@@ -71995,25 +72415,25 @@ var DepartmentFullForm = /*#__PURE__*/(0,react__WEBPACK_IMPORTED_MODULE_0__.memo
               }));
             },
             className: "department-form-status",
-            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("option", {
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("option", {
               value: "Active",
               children: "Active"
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("option", {
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("option", {
               value: "Deactivated",
               children: "Deactivate"
             })]
           })]
         })]
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
         className: "department-form-row",
-        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
           className: "department-form-group",
           style: {
             flex: 1
           },
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("label", {
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("label", {
             children: "Description"
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("textarea", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("textarea", {
             value: form.description,
             onChange: function onChange(e) {
               return setForm(_objectSpread(_objectSpread({}, form), {}, {
@@ -72026,13 +72446,13 @@ var DepartmentFullForm = /*#__PURE__*/(0,react__WEBPACK_IMPORTED_MODULE_0__.memo
             }
           })]
         })
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
         className: "department-form-actions",
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
           type: "submit",
           className: "department-form-submit",
           children: isEdit ? "Save Changes" : "Add Department"
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
           type: "button",
           className: "department-form-cancel",
           onClick: onCancel,
@@ -72107,6 +72527,8 @@ function Department() {
     try {
       for (_iterator.s(); !(_step = _iterator.n()).done;) {
         var s = _step.value;
+        // Skip archived students
+        if (s.archived) continue;
         var name = (s.department || "").toString();
         if (!name) continue;
         map[name] = (map[name] || 0) + 1;
@@ -72125,6 +72547,8 @@ function Department() {
     try {
       for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
         var f = _step2.value;
+        // Skip archived faculties
+        if (f.archived) continue;
         var name = (f.department || "").toString();
         if (!name) continue;
         map[name] = (map[name] || 0) + 1;
@@ -72160,12 +72584,28 @@ function Department() {
     _useState16 = _slicedToArray(_useState15, 2),
     selectedDept = _useState16[0],
     setSelectedDept = _useState16[1];
+
+  // Sorting state
+  var _useState17 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null),
+    _useState18 = _slicedToArray(_useState17, 2),
+    sortField = _useState18[0],
+    setSortField = _useState18[1];
+  var _useState19 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)('asc'),
+    _useState20 = _slicedToArray(_useState19, 2),
+    sortDirection = _useState20[0],
+    setSortDirection = _useState20[1];
+
+  // Checkbox selections for bulk operations
+  var _useState21 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
+    _useState22 = _slicedToArray(_useState21, 2),
+    selectedDepartments = _useState22[0],
+    setSelectedDepartments = _useState22[1];
   var handleAdd = function handleAdd() {
     setForm(defaultForm);
     setShowAdd(true);
   };
   var handleAddSubmit = /*#__PURE__*/function () {
-    var _ref2 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee(e) {
+    var _ref3 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee(e) {
       var payload, res, newDept, _t;
       return _regenerator().w(function (_context) {
         while (1) switch (_context.p = _context.n) {
@@ -72194,6 +72634,7 @@ function Department() {
             setDepartments(function (prev) {
               return [].concat(_toConsumableArray(prev), [newDept]);
             });
+            _utils_logger__WEBPACK_IMPORTED_MODULE_3__["default"].logCreate('Department', "Added department: ".concat(payload.name));
             setShowAdd(false);
             _context.n = 5;
             break;
@@ -72222,7 +72663,7 @@ function Department() {
       }, _callee, null, [[1, 6]]);
     }));
     return function handleAddSubmit(_x) {
-      return _ref2.apply(this, arguments);
+      return _ref3.apply(this, arguments);
     };
   }();
   var handleEdit = function handleEdit(idx) {
@@ -72232,7 +72673,7 @@ function Department() {
     setShowEdit(true);
   };
   var handleEditSubmit = /*#__PURE__*/function () {
-    var _ref3 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee2(e) {
+    var _ref4 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee2(e) {
       var dept, id, payload, res, updated, _id, _t2;
       return _regenerator().w(function (_context2) {
         while (1) switch (_context2.p = _context2.n) {
@@ -72277,6 +72718,7 @@ function Department() {
                 return d.id === id ? updated : d;
               });
             });
+            _utils_logger__WEBPACK_IMPORTED_MODULE_3__["default"].logUpdate('Department', "Updated department: ".concat(payload.name));
             setShowEdit(false);
             _context2.n = 6;
             break;
@@ -72311,16 +72753,16 @@ function Department() {
       }, _callee2, null, [[2, 7, 8, 9]]);
     }));
     return function handleEditSubmit(_x2) {
-      return _ref3.apply(this, arguments);
+      return _ref4.apply(this, arguments);
     };
   }();
   var handleDelete = /*#__PURE__*/function () {
-    var _ref4 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee3(idx) {
-      var dept, id, deptName, res, updated, coursesRes, allCourses, coursesToArchive, _iterator3, _step3, course, _t3, _t4;
+    var _ref5 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee3(idx) {
+      var dept, id, deptName, res, updated, coursesRes, allCourses, coursesToArchive, _iterator3, _step3, course, studentsRes, allStudents, studentsToArchive, _iterator4, _step4, student, updatedStudents, data, facultiesRes, allFaculties, facultiesToArchive, _iterator5, _step5, faculty, updatedFaculties, _data, _t3, _t4, _t5, _t6;
       return _regenerator().w(function (_context3) {
         while (1) switch (_context3.p = _context3.n) {
           case 0:
-            if (window.confirm('Archive this department? All courses in this department will also be archived.')) {
+            if (window.confirm('Archive this department? All courses, students, and faculty in this department will also be archived.')) {
               _context3.n = 1;
               break;
             }
@@ -72362,32 +72804,45 @@ function Department() {
                 return d.id === id ? updated : d;
               });
             });
-          case 6:
+            _utils_logger__WEBPACK_IMPORTED_MODULE_3__["default"].logArchive('Department', "Archived department: ".concat(deptName));
             _context3.n = 7;
-            return fetch('/api/courses');
+            break;
+          case 6:
+            // Fallback if API fails
+            setDepartments(function (prev) {
+              return prev.map(function (d) {
+                return d.id === id ? _objectSpread(_objectSpread({}, d), {}, {
+                  status: 'Archived',
+                  archived: true
+                }) : d;
+              });
+            });
           case 7:
+            _context3.n = 8;
+            return fetch('/api/courses');
+          case 8:
             coursesRes = _context3.v;
             if (!coursesRes.ok) {
-              _context3.n = 15;
+              _context3.n = 17;
               break;
             }
-            _context3.n = 8;
+            _context3.n = 9;
             return coursesRes.json();
-          case 8:
+          case 9:
             allCourses = _context3.v;
             coursesToArchive = allCourses.filter(function (c) {
               return c.department === deptName && c.status !== 'archived' && c.archived !== true;
             }); // Archive each course
             _iterator3 = _createForOfIteratorHelper(coursesToArchive);
-            _context3.p = 9;
+            _context3.p = 10;
             _iterator3.s();
-          case 10:
+          case 11:
             if ((_step3 = _iterator3.n()).done) {
-              _context3.n = 12;
+              _context3.n = 14;
               break;
             }
             course = _step3.value;
-            _context3.n = 11;
+            _context3.n = 12;
             return fetch("/api/courses/".concat(course.id), {
               method: 'PUT',
               headers: {
@@ -72398,26 +72853,160 @@ function Department() {
                 archived: true
               })
             });
-          case 11:
-            _context3.n = 10;
-            break;
           case 12:
-            _context3.n = 14;
-            break;
+            _utils_logger__WEBPACK_IMPORTED_MODULE_3__["default"].logArchive('Course', "Auto-archived course: ".concat(course.name, " (department archived)"));
           case 13:
-            _context3.p = 13;
+            _context3.n = 11;
+            break;
+          case 14:
+            _context3.n = 16;
+            break;
+          case 15:
+            _context3.p = 15;
             _t3 = _context3.v;
             _iterator3.e(_t3);
-          case 14:
-            _context3.p = 14;
-            _iterator3.f();
-            return _context3.f(14);
-          case 15:
-            _context3.n = 17;
-            break;
           case 16:
             _context3.p = 16;
+            _iterator3.f();
+            return _context3.f(16);
+          case 17:
+            _context3.n = 18;
+            return fetch('/api/students');
+          case 18:
+            studentsRes = _context3.v;
+            if (!studentsRes.ok) {
+              _context3.n = 30;
+              break;
+            }
+            _context3.n = 19;
+            return studentsRes.json();
+          case 19:
+            allStudents = _context3.v;
+            studentsToArchive = allStudents.filter(function (s) {
+              return s.department === deptName && !s.archived && s.archived !== 1;
+            });
+            _iterator4 = _createForOfIteratorHelper(studentsToArchive);
+            _context3.p = 20;
+            _iterator4.s();
+          case 21:
+            if ((_step4 = _iterator4.n()).done) {
+              _context3.n = 24;
+              break;
+            }
+            student = _step4.value;
+            _context3.n = 22;
+            return fetch("/api/students/".concat(student.id), {
+              method: 'PUT',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                archived: true
+              })
+            });
+          case 22:
+            _utils_logger__WEBPACK_IMPORTED_MODULE_3__["default"].logArchive('Student', "Auto-archived student: ".concat(student.name, " (department archived)"));
+          case 23:
+            _context3.n = 21;
+            break;
+          case 24:
+            _context3.n = 26;
+            break;
+          case 25:
+            _context3.p = 25;
             _t4 = _context3.v;
+            _iterator4.e(_t4);
+          case 26:
+            _context3.p = 26;
+            _iterator4.f();
+            return _context3.f(26);
+          case 27:
+            _context3.n = 28;
+            return fetch('/api/students');
+          case 28:
+            updatedStudents = _context3.v;
+            if (!updatedStudents.ok) {
+              _context3.n = 30;
+              break;
+            }
+            _context3.n = 29;
+            return updatedStudents.json();
+          case 29:
+            data = _context3.v;
+            setStudents(Array.isArray(data) ? data : []);
+          case 30:
+            _context3.n = 31;
+            return fetch('/api/faculties');
+          case 31:
+            facultiesRes = _context3.v;
+            if (!facultiesRes.ok) {
+              _context3.n = 43;
+              break;
+            }
+            _context3.n = 32;
+            return facultiesRes.json();
+          case 32:
+            allFaculties = _context3.v;
+            facultiesToArchive = allFaculties.filter(function (f) {
+              return f.department === deptName && !f.archived && f.archived !== 1;
+            });
+            _iterator5 = _createForOfIteratorHelper(facultiesToArchive);
+            _context3.p = 33;
+            _iterator5.s();
+          case 34:
+            if ((_step5 = _iterator5.n()).done) {
+              _context3.n = 37;
+              break;
+            }
+            faculty = _step5.value;
+            _context3.n = 35;
+            return fetch("/api/faculties/".concat(faculty.id), {
+              method: 'PUT',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                archived: true
+              })
+            });
+          case 35:
+            _utils_logger__WEBPACK_IMPORTED_MODULE_3__["default"].logArchive('Faculty', "Auto-archived faculty: ".concat(faculty.name, " (department archived)"));
+          case 36:
+            _context3.n = 34;
+            break;
+          case 37:
+            _context3.n = 39;
+            break;
+          case 38:
+            _context3.p = 38;
+            _t5 = _context3.v;
+            _iterator5.e(_t5);
+          case 39:
+            _context3.p = 39;
+            _iterator5.f();
+            return _context3.f(39);
+          case 40:
+            _context3.n = 41;
+            return fetch('/api/faculties');
+          case 41:
+            updatedFaculties = _context3.v;
+            if (!updatedFaculties.ok) {
+              _context3.n = 43;
+              break;
+            }
+            _context3.n = 42;
+            return updatedFaculties.json();
+          case 42:
+            _data = _context3.v;
+            setFaculties(Array.isArray(_data) ? _data : []);
+          case 43:
+            _context3.n = 45;
+            break;
+          case 44:
+            _context3.p = 44;
+            _t6 = _context3.v;
+            console.error('Error archiving department and related items:', _t6);
+            // Fallback if API fails
             setDepartments(function (prev) {
               return prev.map(function (d) {
                 return d.id === id ? _objectSpread(_objectSpread({}, d), {}, {
@@ -72426,16 +73015,16 @@ function Department() {
                 }) : d;
               });
             });
-          case 17:
+          case 45:
             // if archiving currently selected, clear view
             if (selectedDept && selectedDept.id === id) setSelectedDept(null);
-          case 18:
+          case 46:
             return _context3.a(2);
         }
-      }, _callee3, null, [[9, 13, 14, 15], [3, 16]]);
+      }, _callee3, null, [[33, 38, 39, 40], [20, 25, 26, 27], [10, 15, 16, 17], [3, 44]]);
     }));
     return function handleDelete(_x3) {
-      return _ref4.apply(this, arguments);
+      return _ref5.apply(this, arguments);
     };
   }();
   var handleUserClick = function handleUserClick(dept) {
@@ -72444,35 +73033,382 @@ function Department() {
   var handleBackToList = function handleBackToList() {
     setSelectedDept(null);
   };
+
+  // Handle column sorting
+  var handleSort = function handleSort(field) {
+    if (sortField === field) {
+      setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
+    } else {
+      setSortField(field);
+      setSortDirection('asc');
+    }
+  };
   var filtered = activeDepartments.filter(function (d) {
     return (d.name || "").toLowerCase().includes(search.toLowerCase()) || (d.head || "").toLowerCase().includes(search.toLowerCase());
   });
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+
+  // Apply sorting
+  var sortedFiltered = _toConsumableArray(filtered).sort(function (a, b) {
+    if (!sortField) return 0;
+    var aVal = a[sortField] || '';
+    var bVal = b[sortField] || '';
+
+    // Special handling for counts
+    if (sortField === 'faculties') {
+      var _ref6, _facultiesCount$a$nam, _ref7, _facultiesCount$b$nam;
+      aVal = (_ref6 = (_facultiesCount$a$nam = facultiesCount[a.name]) !== null && _facultiesCount$a$nam !== void 0 ? _facultiesCount$a$nam : a.faculties) !== null && _ref6 !== void 0 ? _ref6 : 0;
+      bVal = (_ref7 = (_facultiesCount$b$nam = facultiesCount[b.name]) !== null && _facultiesCount$b$nam !== void 0 ? _facultiesCount$b$nam : b.faculties) !== null && _ref7 !== void 0 ? _ref7 : 0;
+    } else if (sortField === 'students') {
+      var _ref8, _studentsCount$a$name, _ref9, _studentsCount$b$name;
+      aVal = (_ref8 = (_studentsCount$a$name = studentsCount[a.name]) !== null && _studentsCount$a$name !== void 0 ? _studentsCount$a$name : a.students) !== null && _ref8 !== void 0 ? _ref8 : 0;
+      bVal = (_ref9 = (_studentsCount$b$name = studentsCount[b.name]) !== null && _studentsCount$b$name !== void 0 ? _studentsCount$b$name : b.students) !== null && _ref9 !== void 0 ? _ref9 : 0;
+    }
+
+    // Convert to string for comparison
+    aVal = String(aVal).toLowerCase();
+    bVal = String(bVal).toLowerCase();
+    if (aVal < bVal) return sortDirection === 'asc' ? -1 : 1;
+    if (aVal > bVal) return sortDirection === 'asc' ? 1 : -1;
+    return 0;
+  });
+
+  // Bulk archive all selected
+  var handleArchiveAll = /*#__PURE__*/function () {
+    var _ref0 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee4() {
+      var _iterator6, _step6, _loop, deptRes, data, studRes, _data2, facRes, _data3, _t0, _t1;
+      return _regenerator().w(function (_context5) {
+        while (1) switch (_context5.p = _context5.n) {
+          case 0:
+            if (!(selectedDepartments.length === 0)) {
+              _context5.n = 1;
+              break;
+            }
+            alert('Please select departments to archive');
+            return _context5.a(2);
+          case 1:
+            if (window.confirm("Archive ".concat(selectedDepartments.length, " selected department(s)? All related courses, students, and faculty will also be archived."))) {
+              _context5.n = 2;
+              break;
+            }
+            return _context5.a(2);
+          case 2:
+            _context5.p = 2;
+            _iterator6 = _createForOfIteratorHelper(selectedDepartments);
+            _context5.p = 3;
+            _loop = /*#__PURE__*/_regenerator().m(function _loop() {
+              var id, dept, deptName, res, coursesRes, allCourses, coursesToArchive, _iterator7, _step7, course, studentsRes, allStudents, studentsToArchive, _iterator8, _step8, student, facultiesRes, allFaculties, facultiesToArchive, _iterator9, _step9, faculty, _t7, _t8, _t9;
+              return _regenerator().w(function (_context4) {
+                while (1) switch (_context4.p = _context4.n) {
+                  case 0:
+                    id = _step6.value;
+                    dept = activeDepartments.find(function (d) {
+                      return d.id === id;
+                    });
+                    if (!dept) {
+                      _context4.n = 31;
+                      break;
+                    }
+                    deptName = dept.name; // Archive the department
+                    _context4.n = 1;
+                    return fetch("/api/departments/".concat(id), {
+                      method: 'PUT',
+                      headers: {
+                        'Content-Type': 'application/json'
+                      },
+                      body: JSON.stringify({
+                        status: 'Archived',
+                        archived: true
+                      })
+                    });
+                  case 1:
+                    res = _context4.v;
+                    if (res.ok) {
+                      _utils_logger__WEBPACK_IMPORTED_MODULE_3__["default"].logArchive('Department', "Archived department: ".concat(deptName));
+                    }
+
+                    // Archive all courses in this department
+                    _context4.n = 2;
+                    return fetch('/api/courses');
+                  case 2:
+                    coursesRes = _context4.v;
+                    if (!coursesRes.ok) {
+                      _context4.n = 11;
+                      break;
+                    }
+                    _context4.n = 3;
+                    return coursesRes.json();
+                  case 3:
+                    allCourses = _context4.v;
+                    coursesToArchive = allCourses.filter(function (c) {
+                      return c.department === deptName && c.status !== 'archived' && c.archived !== true;
+                    });
+                    _iterator7 = _createForOfIteratorHelper(coursesToArchive);
+                    _context4.p = 4;
+                    _iterator7.s();
+                  case 5:
+                    if ((_step7 = _iterator7.n()).done) {
+                      _context4.n = 8;
+                      break;
+                    }
+                    course = _step7.value;
+                    _context4.n = 6;
+                    return fetch("/api/courses/".concat(course.id), {
+                      method: 'PUT',
+                      headers: {
+                        'Content-Type': 'application/json'
+                      },
+                      body: JSON.stringify({
+                        status: 'archived',
+                        archived: true
+                      })
+                    });
+                  case 6:
+                    _utils_logger__WEBPACK_IMPORTED_MODULE_3__["default"].logArchive('Course', "Auto-archived course: ".concat(course.name, " (department archived)"));
+                  case 7:
+                    _context4.n = 5;
+                    break;
+                  case 8:
+                    _context4.n = 10;
+                    break;
+                  case 9:
+                    _context4.p = 9;
+                    _t7 = _context4.v;
+                    _iterator7.e(_t7);
+                  case 10:
+                    _context4.p = 10;
+                    _iterator7.f();
+                    return _context4.f(10);
+                  case 11:
+                    _context4.n = 12;
+                    return fetch('/api/students');
+                  case 12:
+                    studentsRes = _context4.v;
+                    if (!studentsRes.ok) {
+                      _context4.n = 21;
+                      break;
+                    }
+                    _context4.n = 13;
+                    return studentsRes.json();
+                  case 13:
+                    allStudents = _context4.v;
+                    studentsToArchive = allStudents.filter(function (s) {
+                      return s.department === deptName && !s.archived && s.archived !== 1;
+                    });
+                    _iterator8 = _createForOfIteratorHelper(studentsToArchive);
+                    _context4.p = 14;
+                    _iterator8.s();
+                  case 15:
+                    if ((_step8 = _iterator8.n()).done) {
+                      _context4.n = 18;
+                      break;
+                    }
+                    student = _step8.value;
+                    _context4.n = 16;
+                    return fetch("/api/students/".concat(student.id), {
+                      method: 'PUT',
+                      headers: {
+                        'Content-Type': 'application/json'
+                      },
+                      body: JSON.stringify({
+                        archived: true
+                      })
+                    });
+                  case 16:
+                    _utils_logger__WEBPACK_IMPORTED_MODULE_3__["default"].logArchive('Student', "Auto-archived student: ".concat(student.name, " (department archived)"));
+                  case 17:
+                    _context4.n = 15;
+                    break;
+                  case 18:
+                    _context4.n = 20;
+                    break;
+                  case 19:
+                    _context4.p = 19;
+                    _t8 = _context4.v;
+                    _iterator8.e(_t8);
+                  case 20:
+                    _context4.p = 20;
+                    _iterator8.f();
+                    return _context4.f(20);
+                  case 21:
+                    _context4.n = 22;
+                    return fetch('/api/faculties');
+                  case 22:
+                    facultiesRes = _context4.v;
+                    if (!facultiesRes.ok) {
+                      _context4.n = 31;
+                      break;
+                    }
+                    _context4.n = 23;
+                    return facultiesRes.json();
+                  case 23:
+                    allFaculties = _context4.v;
+                    facultiesToArchive = allFaculties.filter(function (f) {
+                      return f.department === deptName && !f.archived && f.archived !== 1;
+                    });
+                    _iterator9 = _createForOfIteratorHelper(facultiesToArchive);
+                    _context4.p = 24;
+                    _iterator9.s();
+                  case 25:
+                    if ((_step9 = _iterator9.n()).done) {
+                      _context4.n = 28;
+                      break;
+                    }
+                    faculty = _step9.value;
+                    _context4.n = 26;
+                    return fetch("/api/faculties/".concat(faculty.id), {
+                      method: 'PUT',
+                      headers: {
+                        'Content-Type': 'application/json'
+                      },
+                      body: JSON.stringify({
+                        archived: true
+                      })
+                    });
+                  case 26:
+                    _utils_logger__WEBPACK_IMPORTED_MODULE_3__["default"].logArchive('Faculty', "Auto-archived faculty: ".concat(faculty.name, " (department archived)"));
+                  case 27:
+                    _context4.n = 25;
+                    break;
+                  case 28:
+                    _context4.n = 30;
+                    break;
+                  case 29:
+                    _context4.p = 29;
+                    _t9 = _context4.v;
+                    _iterator9.e(_t9);
+                  case 30:
+                    _context4.p = 30;
+                    _iterator9.f();
+                    return _context4.f(30);
+                  case 31:
+                    return _context4.a(2);
+                }
+              }, _loop, null, [[24, 29, 30, 31], [14, 19, 20, 21], [4, 9, 10, 11]]);
+            });
+            _iterator6.s();
+          case 4:
+            if ((_step6 = _iterator6.n()).done) {
+              _context5.n = 6;
+              break;
+            }
+            return _context5.d(_regeneratorValues(_loop()), 5);
+          case 5:
+            _context5.n = 4;
+            break;
+          case 6:
+            _context5.n = 8;
+            break;
+          case 7:
+            _context5.p = 7;
+            _t0 = _context5.v;
+            _iterator6.e(_t0);
+          case 8:
+            _context5.p = 8;
+            _iterator6.f();
+            return _context5.f(8);
+          case 9:
+            _context5.n = 10;
+            return fetch('/api/departments');
+          case 10:
+            deptRes = _context5.v;
+            if (!deptRes.ok) {
+              _context5.n = 12;
+              break;
+            }
+            _context5.n = 11;
+            return deptRes.json();
+          case 11:
+            data = _context5.v;
+            setDepartments(Array.isArray(data) ? data : []);
+          case 12:
+            _context5.n = 13;
+            return fetch('/api/students');
+          case 13:
+            studRes = _context5.v;
+            if (!studRes.ok) {
+              _context5.n = 15;
+              break;
+            }
+            _context5.n = 14;
+            return studRes.json();
+          case 14:
+            _data2 = _context5.v;
+            setStudents(Array.isArray(_data2) ? _data2 : []);
+          case 15:
+            _context5.n = 16;
+            return fetch('/api/faculties');
+          case 16:
+            facRes = _context5.v;
+            if (!facRes.ok) {
+              _context5.n = 18;
+              break;
+            }
+            _context5.n = 17;
+            return facRes.json();
+          case 17:
+            _data3 = _context5.v;
+            setFaculties(Array.isArray(_data3) ? _data3 : []);
+          case 18:
+            setSelectedDepartments([]);
+            _context5.n = 20;
+            break;
+          case 19:
+            _context5.p = 19;
+            _t1 = _context5.v;
+            console.error('Error archiving departments:', _t1);
+          case 20:
+            return _context5.a(2);
+        }
+      }, _callee4, null, [[3, 7, 8, 9], [2, 19]]);
+    }));
+    return function handleArchiveAll() {
+      return _ref0.apply(this, arguments);
+    };
+  }();
+
+  // Toggle checkbox
+  var handleCheckboxToggle = function handleCheckboxToggle(id) {
+    setSelectedDepartments(function (prev) {
+      return prev.includes(id) ? prev.filter(function (i) {
+        return i !== id;
+      }) : [].concat(_toConsumableArray(prev), [id]);
+    });
+  };
+
+  // Select all toggle
+  var handleSelectAllToggle = function handleSelectAllToggle() {
+    setSelectedDepartments(function (prev) {
+      return prev.length === sortedFiltered.length ? [] : sortedFiltered.map(function (d) {
+        return d.id;
+      });
+    });
+  };
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
     style: {
       display: "flex",
       minHeight: "100vh",
       background: "#f8fafc"
     },
-    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_Navbar__WEBPACK_IMPORTED_MODULE_2__["default"], {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("main", {
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_Navbar__WEBPACK_IMPORTED_MODULE_2__["default"], {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("main", {
       className: "department-container",
       style: {
         flex: 1
       },
-      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
         className: "dashboard-header",
-        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
           className: "logout-btn",
           onClick: function onClick() {
             return navigate('/login');
           },
           children: "Log out"
         })
-      }), !selectedDept && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+      }), !selectedDept && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
         style: {
           padding: '24px 40px',
           borderBottom: '1px solid #e5e7eb'
         },
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("h1", {
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("h1", {
           style: {
             margin: 0,
             fontSize: 28,
@@ -72480,7 +73416,7 @@ function Department() {
             color: '#111827'
           },
           children: "Departments"
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("p", {
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("p", {
           style: {
             margin: '4px 0 0 0',
             fontSize: 14,
@@ -72488,7 +73424,7 @@ function Department() {
           },
           children: "Manage department information"
         })]
-      }), !selectedDept && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+      }), !selectedDept && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
         style: {
           display: 'flex',
           gap: 16,
@@ -72496,13 +73432,13 @@ function Department() {
           alignItems: 'center',
           borderBottom: '1px solid #e5e7eb'
         },
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
           style: {
             position: 'relative',
             flex: 1,
             maxWidth: 400
           },
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("svg", {
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("svg", {
             style: {
               position: 'absolute',
               left: 12,
@@ -72515,14 +73451,14 @@ function Department() {
             fill: "none",
             stroke: "#9ca3af",
             strokeWidth: "2",
-            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("circle", {
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("circle", {
               cx: "11",
               cy: "11",
               r: "8"
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("path", {
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("path", {
               d: "m21 21-4.35-4.35"
             })]
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("input", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", {
             type: "text",
             placeholder: "Search departments...",
             value: search,
@@ -72545,7 +73481,24 @@ function Department() {
               return e.target.style.borderColor = '#d1d5db';
             }
           })]
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("button", {
+        }), selectedDepartments.length > 0 && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("button", {
+          onClick: handleArchiveAll,
+          style: {
+            display: 'flex',
+            alignItems: 'center',
+            gap: 8,
+            padding: '10px 16px',
+            background: '#fef3c7',
+            color: '#ca8a04',
+            border: 'none',
+            borderRadius: 8,
+            fontSize: 13,
+            fontWeight: 600,
+            cursor: 'pointer',
+            whiteSpace: 'nowrap'
+          },
+          children: ["\uD83D\uDCE6 Archive Selected (", selectedDepartments.length, ")"]
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("button", {
           onClick: handleAdd,
           style: {
             display: 'flex',
@@ -72561,7 +73514,7 @@ function Department() {
             cursor: 'pointer',
             whiteSpace: 'nowrap'
           },
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("span", {
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("span", {
             style: {
               fontSize: 18,
               lineHeight: 1
@@ -72569,28 +73522,28 @@ function Department() {
             children: "+"
           }), "Add Department"]
         })]
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
         className: "department-header",
         style: {
           display: selectedDept ? 'flex' : 'none'
         },
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
           className: "department-back-btn",
           onClick: function onClick() {
             return selectedDept ? handleBackToList() : navigate(-1);
           },
-          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("svg", {
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("svg", {
             width: "28",
             height: "28",
             viewBox: "0 0 24 24",
             fill: "none",
-            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("circle", {
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("circle", {
               cx: "12",
               cy: "12",
               r: "12",
               fill: "#222",
               opacity: "0.12"
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("path", {
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("path", {
               d: "M14 8l-4 4 4 4",
               stroke: "#222",
               strokeWidth: "2",
@@ -72598,10 +73551,10 @@ function Department() {
               strokeLinejoin: "round"
             })]
           })
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
           className: "department-actions"
         })]
-      }), showAdd && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(DepartmentFullForm, {
+      }), showAdd && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(DepartmentFullForm, {
         isEdit: false,
         onSubmit: handleAddSubmit,
         onCancel: function onCancel() {
@@ -72609,7 +73562,7 @@ function Department() {
         },
         form: form,
         setForm: setForm
-      }), showEdit && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(DepartmentFullForm, {
+      }), showEdit && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(DepartmentFullForm, {
         isEdit: true,
         onSubmit: handleEditSubmit,
         onCancel: function onCancel() {
@@ -72617,7 +73570,7 @@ function Department() {
         },
         form: form,
         setForm: setForm
-      }), !showAdd && !showEdit && selectedDept ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+      }), !showAdd && !showEdit && selectedDept ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
         style: {
           display: "flex",
           justifyContent: "center",
@@ -72625,14 +73578,14 @@ function Department() {
           marginTop: "40px",
           gap: "60px"
         },
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
           style: {
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
             minWidth: 320
           },
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
             style: {
               width: 220,
               height: 220,
@@ -72643,22 +73596,22 @@ function Department() {
               justifyContent: "center",
               boxShadow: "0 4px 24px #e6eaf1"
             },
-            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("svg", {
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("svg", {
               width: "64",
               height: "64",
               viewBox: "0 0 24 24",
               fill: "none",
-              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("path", {
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("path", {
                 d: "M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4z",
                 stroke: "#94a3b8",
                 strokeWidth: "1.5"
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("path", {
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("path", {
                 d: "M4 20v-1c0-2.8 3.6-4 8-4s8 1.2 8 4v1",
                 stroke: "#94a3b8",
                 strokeWidth: "1.5"
               })]
             })
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
             style: {
               marginTop: 24,
               fontWeight: 700,
@@ -72666,7 +73619,7 @@ function Department() {
               textAlign: "center"
             },
             children: selectedDept.name
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
             style: {
               color: "#888",
               fontSize: "1rem",
@@ -72674,12 +73627,12 @@ function Department() {
               textAlign: "center"
             },
             children: selectedDept.head
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
             style: {
               display: "flex",
               gap: 16
             },
-            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
               className: "department-icon-btn",
               title: "Edit",
               onClick: function onClick() {
@@ -72688,20 +73641,20 @@ function Department() {
                 });
                 if (idx !== -1) handleEdit(idx);
               },
-              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("svg", {
+              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("svg", {
                 width: "20",
                 height: "20",
                 fill: "none",
                 stroke: "#222",
                 strokeWidth: "2",
                 viewBox: "0 0 24 24",
-                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("path", {
+                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("path", {
                   d: "M12 20h9"
-                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("path", {
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("path", {
                   d: "M16.5 3.5a2.121 2.121 0 1 1 3 3L7 19.5 3 21l1.5-4L16.5 3.5z"
                 })]
               })
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
               className: "department-icon-btn",
               title: "Archive",
               onClick: function onClick() {
@@ -72711,94 +73664,94 @@ function Department() {
                 if (idx !== -1) handleDelete(idx);
                 handleBackToList();
               },
-              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("svg", {
+              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("svg", {
                 width: "20",
                 height: "20",
                 fill: "none",
                 stroke: "#222",
                 strokeWidth: "2",
                 viewBox: "0 0 24 24",
-                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("path", {
+                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("path", {
                   d: "M3 3h18v4H3z"
-                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("path", {
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("path", {
                   d: "M3 7v11a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V7"
-                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("path", {
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("path", {
                   d: "M9 11h6"
                 })]
               })
             })]
           })]
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
           style: {
             minWidth: 320,
             maxWidth: 600
           },
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
             style: {
               fontWeight: 700,
               fontSize: "1.1rem",
               marginBottom: 8
             },
             children: "Description"
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
             style: {
               color: "#555",
               marginBottom: 24,
               lineHeight: 1.6
             },
             children: selectedDept.description
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
             style: {
               display: "flex",
               gap: 40
             },
-            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
-              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
                 style: {
                   color: "#888",
                   fontSize: 13
                 },
                 children: "Contact"
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
                 style: {
                   fontWeight: 600
                 },
                 children: selectedDept.email
               })]
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
-              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
                 style: {
                   color: "#888",
                   fontSize: 13
                 },
                 children: "Faculties"
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
                 style: {
                   fontWeight: 600
                 },
                 children: (_facultiesCount$selec = facultiesCount[selectedDept.name]) !== null && _facultiesCount$selec !== void 0 ? _facultiesCount$selec : 0
               })]
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
-              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
                 style: {
                   color: "#888",
                   fontSize: 13
                 },
                 children: "Students"
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
                 style: {
                   fontWeight: 600
                 },
                 children: (_studentsCount$select = studentsCount[selectedDept.name]) !== null && _studentsCount$select !== void 0 ? _studentsCount$select : 0
               })]
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
-              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
                 style: {
                   color: "#888",
                   fontSize: 13
                 },
                 children: "Status"
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
                 style: {
                   fontWeight: 600
                 },
@@ -72807,118 +73760,206 @@ function Department() {
             })]
           })]
         })]
-      }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+      }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
         className: "department-table-container",
-        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("table", {
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("table", {
           className: "department-table",
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("thead", {
-            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("tr", {
-              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("th", {
-                children: "Department Name"
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("th", {
-                children: "Dean"
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("th", {
-                children: "Contact"
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("th", {
-                children: "No. of Faculties"
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("th", {
-                children: "No. of Students"
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("th", {
-                children: "Status"
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("th", {
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("thead", {
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("tr", {
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("th", {
+                style: {
+                  width: 40,
+                  textAlign: 'center'
+                },
+                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", {
+                  type: "checkbox",
+                  checked: sortedFiltered.length > 0 && selectedDepartments.length === sortedFiltered.length,
+                  onChange: handleSelectAllToggle,
+                  style: {
+                    cursor: 'pointer',
+                    width: 16,
+                    height: 16
+                  }
+                })
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("th", {
+                onClick: function onClick() {
+                  return handleSort('name');
+                },
+                style: {
+                  cursor: 'pointer',
+                  userSelect: 'none'
+                },
+                children: ["Department Name ", sortField === 'name' && (sortDirection === 'asc' ? '↑' : '↓')]
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("th", {
+                onClick: function onClick() {
+                  return handleSort('head');
+                },
+                style: {
+                  cursor: 'pointer',
+                  userSelect: 'none'
+                },
+                children: ["Dean ", sortField === 'head' && (sortDirection === 'asc' ? '↑' : '↓')]
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("th", {
+                onClick: function onClick() {
+                  return handleSort('email');
+                },
+                style: {
+                  cursor: 'pointer',
+                  userSelect: 'none'
+                },
+                children: ["Contact ", sortField === 'email' && (sortDirection === 'asc' ? '↑' : '↓')]
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("th", {
+                onClick: function onClick() {
+                  return handleSort('faculties');
+                },
+                style: {
+                  cursor: 'pointer',
+                  userSelect: 'none'
+                },
+                children: ["No. of Faculties ", sortField === 'faculties' && (sortDirection === 'asc' ? '↑' : '↓')]
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("th", {
+                onClick: function onClick() {
+                  return handleSort('students');
+                },
+                style: {
+                  cursor: 'pointer',
+                  userSelect: 'none'
+                },
+                children: ["No. of Students ", sortField === 'students' && (sortDirection === 'asc' ? '↑' : '↓')]
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("th", {
+                onClick: function onClick() {
+                  return handleSort('status');
+                },
+                style: {
+                  cursor: 'pointer',
+                  userSelect: 'none'
+                },
+                children: ["Status ", sortField === 'status' && (sortDirection === 'asc' ? '↑' : '↓')]
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("th", {
                 style: {
                   width: 84,
                   textAlign: "center"
                 }
               })]
             })
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("tbody", {
-            children: [filtered.length === 0 && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("tr", {
-              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("td", {
-                colSpan: "6",
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("tbody", {
+            children: [sortedFiltered.length === 0 && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("tr", {
+              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("td", {
+                colSpan: "8",
                 children: "No programs found."
               })
-            }), filtered.map(function (d, idx) {
-              var _d$id, _ref5, _facultiesCount$d$nam, _ref6, _studentsCount$d$name, _d$status;
-              return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("tr", {
+            }), sortedFiltered.map(function (d, idx) {
+              var _d$id, _ref1, _facultiesCount$d$nam, _ref10, _studentsCount$d$name, _d$status;
+              return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("tr", {
                 style: {
                   cursor: 'pointer'
                 },
-                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("td", {
+                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("td", {
+                  style: {
+                    textAlign: 'center'
+                  },
+                  onClick: function onClick(e) {
+                    return e.stopPropagation();
+                  },
+                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", {
+                    type: "checkbox",
+                    checked: selectedDepartments.includes(d.id),
+                    onChange: function onChange() {
+                      return handleCheckboxToggle(d.id);
+                    },
+                    style: {
+                      cursor: 'pointer',
+                      width: 16,
+                      height: 16
+                    },
+                    onClick: function onClick(e) {
+                      return e.stopPropagation();
+                    }
+                  })
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("td", {
                   onClick: function onClick() {
                     return handleUserClick(d);
                   },
-                  children: d.name
-                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("td", {
+                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(HighlightText, {
+                    text: d.name,
+                    highlight: search
+                  })
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("td", {
                   onClick: function onClick() {
                     return handleUserClick(d);
                   },
-                  children: d.head
-                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("td", {
+                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(HighlightText, {
+                    text: d.head,
+                    highlight: search
+                  })
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("td", {
                   onClick: function onClick() {
                     return handleUserClick(d);
                   },
-                  children: d.email
-                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("td", {
+                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(HighlightText, {
+                    text: d.email,
+                    highlight: search
+                  })
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("td", {
                   onClick: function onClick() {
                     return handleUserClick(d);
                   },
-                  children: (_ref5 = (_facultiesCount$d$nam = facultiesCount[d.name]) !== null && _facultiesCount$d$nam !== void 0 ? _facultiesCount$d$nam : d.faculties) !== null && _ref5 !== void 0 ? _ref5 : 0
-                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("td", {
+                  children: (_ref1 = (_facultiesCount$d$nam = facultiesCount[d.name]) !== null && _facultiesCount$d$nam !== void 0 ? _facultiesCount$d$nam : d.faculties) !== null && _ref1 !== void 0 ? _ref1 : 0
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("td", {
                   onClick: function onClick() {
                     return handleUserClick(d);
                   },
-                  children: (_ref6 = (_studentsCount$d$name = studentsCount[d.name]) !== null && _studentsCount$d$name !== void 0 ? _studentsCount$d$name : d.students) !== null && _ref6 !== void 0 ? _ref6 : ""
-                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("td", {
+                  children: (_ref10 = (_studentsCount$d$name = studentsCount[d.name]) !== null && _studentsCount$d$name !== void 0 ? _studentsCount$d$name : d.students) !== null && _ref10 !== void 0 ? _ref10 : ""
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("td", {
                   onClick: function onClick() {
                     return handleUserClick(d);
                   },
                   children: (_d$status = d.status) !== null && _d$status !== void 0 ? _d$status : "Active"
-                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("td", {
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("td", {
                   style: {
                     textAlign: "center"
                   },
-                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
                     className: "actions-cell",
-                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
+                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
                       className: "department-icon-btn",
                       title: "Edit",
                       onClick: function onClick(e) {
                         e.stopPropagation();
                         handleEdit(idx);
                       },
-                      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("svg", {
+                      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("svg", {
                         width: "20",
                         height: "20",
                         fill: "none",
                         stroke: "#222",
                         strokeWidth: "2",
                         viewBox: "0 0 24 24",
-                        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("path", {
+                        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("path", {
                           d: "M12 20h9"
-                        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("path", {
+                        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("path", {
                           d: "M16.5 3.5a2.121 2.121 0 1 1 3 3L7 19.5 3 21l1.5-4L16.5 3.5z"
                         })]
                       })
-                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
                       className: "department-icon-btn",
                       title: "Archive",
                       onClick: function onClick(e) {
                         e.stopPropagation();
                         handleDelete(idx);
                       },
-                      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("svg", {
+                      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("svg", {
                         width: "20",
                         height: "20",
                         fill: "none",
                         stroke: "#222",
                         strokeWidth: "2",
                         viewBox: "0 0 24 24",
-                        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("path", {
+                        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("path", {
                           d: "M3 3h18v4H3z"
-                        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("path", {
+                        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("path", {
                           d: "M3 7v11a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V7"
-                        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("path", {
+                        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("path", {
                           d: "M9 11h6"
                         })]
                       })
@@ -72951,7 +73992,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router/dist/index.js");
 /* harmony import */ var _Navbar__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Navbar */ "./resources/js/components/Navbar.js");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var _utils_logger__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../utils/logger */ "./resources/js/utils/logger.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+function _regeneratorValues(e) { if (null != e) { var t = e["function" == typeof Symbol && Symbol.iterator || "@@iterator"], r = 0; if (t) return t.call(e); if ("function" == typeof e.next) return e; if (!isNaN(e.length)) return { next: function next() { return e && r >= e.length && (e = void 0), { value: e && e[r++], done: !e }; } }; } throw new TypeError(_typeof(e) + " is not iterable"); }
+function _createForOfIteratorHelper(r, e) { var t = "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (!t) { if (Array.isArray(r) || (t = _unsupportedIterableToArray(r)) || e && r && "number" == typeof r.length) { t && (r = t); var _n = 0, F = function F() {}; return { s: F, n: function n() { return _n >= r.length ? { done: !0 } : { done: !1, value: r[_n++] }; }, e: function e(r) { throw r; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var o, a = !0, u = !1; return { s: function s() { t = t.call(r); }, n: function n() { var r = t.next(); return a = r.done, r; }, e: function e(r) { u = !0, o = r; }, f: function f() { try { a || null == t["return"] || t["return"](); } finally { if (u) throw o; } } }; }
 function _toConsumableArray(r) { return _arrayWithoutHoles(r) || _iterableToArray(r) || _unsupportedIterableToArray(r) || _nonIterableSpread(); }
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 function _iterableToArray(r) { if ("undefined" != typeof Symbol && null != r[Symbol.iterator] || null != r["@@iterator"]) return Array.from(r); }
@@ -72980,8 +74024,30 @@ function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e 
 
 
 
-/* Local storage helper */
 
+// Text highlighting component
+
+var HighlightText = function HighlightText(_ref) {
+  var text = _ref.text,
+    highlight = _ref.highlight;
+  if (!highlight || !text) return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.Fragment, {
+    children: text
+  });
+  var parts = String(text).split(new RegExp("(".concat(highlight.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), ")"), 'gi'));
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.Fragment, {
+    children: parts.map(function (part, i) {
+      return part.toLowerCase() === highlight.toLowerCase() ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("span", {
+        style: {
+          backgroundColor: '#fef08a',
+          fontWeight: 600
+        },
+        children: part
+      }, i) : part;
+    })
+  });
+};
+
+/* Local storage helper */
 var LocalDB = /*#__PURE__*/function () {
   function LocalDB() {
     var key = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "faculties";
@@ -73093,41 +74159,41 @@ var LocalDB = /*#__PURE__*/function () {
 var localDB = new LocalDB();
 
 /* Form overlay (left card) */
-var FacultyFullForm = /*#__PURE__*/(0,react__WEBPACK_IMPORTED_MODULE_0__.memo)(function (_ref) {
-  var isEdit = _ref.isEdit,
-    onSubmit = _ref.onSubmit,
-    onCancel = _ref.onCancel,
-    form = _ref.form,
-    setForm = _ref.setForm,
-    _ref$departments = _ref.departments,
-    departments = _ref$departments === void 0 ? [] : _ref$departments,
-    _ref$courses = _ref.courses,
-    courses = _ref$courses === void 0 ? [] : _ref$courses;
+var FacultyFullForm = /*#__PURE__*/(0,react__WEBPACK_IMPORTED_MODULE_0__.memo)(function (_ref2) {
+  var isEdit = _ref2.isEdit,
+    onSubmit = _ref2.onSubmit,
+    onCancel = _ref2.onCancel,
+    form = _ref2.form,
+    setForm = _ref2.setForm,
+    _ref2$departments = _ref2.departments,
+    departments = _ref2$departments === void 0 ? [] : _ref2$departments,
+    _ref2$courses = _ref2.courses,
+    courses = _ref2$courses === void 0 ? [] : _ref2$courses;
   // Filter courses based on selected department
   var filteredCourses = form.department ? courses.filter(function (c) {
     return c.department === form.department;
   }) : courses;
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
     className: "faculty-form-overlay",
     role: "dialog",
     "aria-modal": "true",
-    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("form", {
+    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("form", {
       className: "faculty-full-form",
       onSubmit: onSubmit,
-      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
         className: "faculty-form-header-row",
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("h2", {
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("h2", {
           className: "faculty-form-title",
           children: isEdit ? "Edit Faculty" : "Add Faculty"
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
           className: "faculty-form-group",
           style: {
             minWidth: 260
           },
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("label", {
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("label", {
             className: "sr-only",
             children: "Department"
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("select", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("select", {
             required: true,
             className: "faculty-form-designation",
             value: form.department,
@@ -73138,30 +74204,30 @@ var FacultyFullForm = /*#__PURE__*/(0,react__WEBPACK_IMPORTED_MODULE_0__.memo)(f
                 subject: ""
               }));
             },
-            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("option", {
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("option", {
               value: "",
               children: "Select department"
             }), departments.filter(function (d) {
               return d && d.name;
             }).map(function (d) {
               var _d$id;
-              return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("option", {
+              return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("option", {
                 value: d.name,
                 children: d.name
               }, (_d$id = d.id) !== null && _d$id !== void 0 ? _d$id : d.name);
             })]
           })]
         })]
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
         className: "faculty-form-row",
-        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
           className: "faculty-form-group",
           style: {
             flex: 1
           },
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("label", {
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("label", {
             children: "Full Name"
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("input", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", {
             type: "text",
             required: true,
             value: form.name,
@@ -73173,16 +74239,16 @@ var FacultyFullForm = /*#__PURE__*/(0,react__WEBPACK_IMPORTED_MODULE_0__.memo)(f
             placeholder: "Full Name"
           })]
         })
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
         className: "faculty-form-row",
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
           className: "faculty-form-group",
           style: {
             flex: 2
           },
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("label", {
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("label", {
             children: "Email address"
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("input", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", {
             type: "email",
             required: true,
             value: form.email,
@@ -73193,14 +74259,14 @@ var FacultyFullForm = /*#__PURE__*/(0,react__WEBPACK_IMPORTED_MODULE_0__.memo)(f
             },
             placeholder: "Email address"
           })]
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
           className: "faculty-form-group",
           style: {
             flex: 1
           },
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("label", {
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("label", {
             children: "Gender"
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("select", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("select", {
             required: true,
             value: form.gender,
             onChange: function onChange(e) {
@@ -73208,26 +74274,26 @@ var FacultyFullForm = /*#__PURE__*/(0,react__WEBPACK_IMPORTED_MODULE_0__.memo)(f
                 gender: e.target.value
               }));
             },
-            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("option", {
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("option", {
               value: "",
               children: "Select"
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("option", {
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("option", {
               children: "Male"
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("option", {
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("option", {
               children: "Female"
             })]
           })]
         })]
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
         className: "faculty-form-row",
-        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
           className: "faculty-form-group",
           style: {
             flex: 1
           },
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("label", {
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("label", {
             children: "Phone number"
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("input", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", {
             type: "text",
             value: form.phone,
             onChange: function onChange(e) {
@@ -73238,16 +74304,16 @@ var FacultyFullForm = /*#__PURE__*/(0,react__WEBPACK_IMPORTED_MODULE_0__.memo)(f
             placeholder: "Phone number"
           })]
         })
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
         className: "faculty-form-row",
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
           className: "faculty-form-group",
           style: {
             flex: 1
           },
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("label", {
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("label", {
             children: "Course"
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("select", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("select", {
             required: true,
             value: form.subject,
             onChange: function onChange(e) {
@@ -73256,27 +74322,27 @@ var FacultyFullForm = /*#__PURE__*/(0,react__WEBPACK_IMPORTED_MODULE_0__.memo)(f
               }));
             },
             disabled: !form.department,
-            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("option", {
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("option", {
               value: "",
               children: form.department ? "Select course" : "Select department first"
             }), filteredCourses.filter(function (c) {
               return c && c.name;
             }).map(function (c) {
               var _c$id;
-              return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("option", {
+              return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("option", {
                 value: c.name,
                 children: c.name
               }, (_c$id = c.id) !== null && _c$id !== void 0 ? _c$id : c.name);
             })]
           })]
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
           className: "faculty-form-group",
           style: {
             flex: 1
           },
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("label", {
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("label", {
             children: "Age"
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("input", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", {
             type: "number",
             required: true,
             value: form.age,
@@ -73288,16 +74354,16 @@ var FacultyFullForm = /*#__PURE__*/(0,react__WEBPACK_IMPORTED_MODULE_0__.memo)(f
             placeholder: "Age"
           })]
         })]
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
         className: "faculty-form-row",
-        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
           className: "faculty-form-group",
           style: {
             flex: 1
           },
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("label", {
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("label", {
             children: "About"
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("textarea", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("textarea", {
             required: true,
             value: form.about,
             onChange: function onChange(e) {
@@ -73311,13 +74377,13 @@ var FacultyFullForm = /*#__PURE__*/(0,react__WEBPACK_IMPORTED_MODULE_0__.memo)(f
             }
           })]
         })
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
         className: "faculty-form-actions",
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
           type: "submit",
           className: "faculty-form-submit",
           children: isEdit ? "Save Changes" : "Add Faculty"
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
           type: "button",
           className: "faculty-form-cancel",
           onClick: onCancel,
@@ -73400,10 +74466,27 @@ function Faculty() {
     _useState22 = _slicedToArray(_useState21, 2),
     loading = _useState22[0],
     setLoading = _useState22[1];
-  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
-    var mounted = true;
-    _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee5() {
-      var res, json, local, _t, _t2;
+
+  // Sorting state
+  var _useState23 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null),
+    _useState24 = _slicedToArray(_useState23, 2),
+    sortField = _useState24[0],
+    setSortField = _useState24[1];
+  var _useState25 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)('asc'),
+    _useState26 = _slicedToArray(_useState25, 2),
+    sortDirection = _useState26[0],
+    setSortDirection = _useState26[1];
+
+  // Checkbox selections for bulk operations
+  var _useState27 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
+    _useState28 = _slicedToArray(_useState27, 2),
+    selectedFaculty = _useState28[0],
+    setSelectedFaculty = _useState28[1];
+
+  // Function to fetch faculty
+  var fetchFaculty = /*#__PURE__*/function () {
+    var _ref3 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee5() {
+      var res, json, activeFaculty, local, _activeFaculty, _t, _t2;
       return _regenerator().w(function (_context5) {
         while (1) switch (_context5.p = _context5.n) {
           case 0:
@@ -73420,7 +74503,11 @@ function Faculty() {
             return res.json();
           case 2:
             json = _context5.v;
-            if (mounted) setFacultyList(Array.isArray(json) ? json : []);
+            // Filter out archived faculty (check for both true and 1)
+            activeFaculty = Array.isArray(json) ? json.filter(function (f) {
+              return !f.archived && f.archived !== 1;
+            }) : [];
+            setFacultyList(activeFaculty);
             _context5.n = 4;
             break;
           case 3:
@@ -73436,115 +74523,194 @@ function Faculty() {
             return localDB.readAll();
           case 7:
             local = _context5.v;
-            if (mounted) setFacultyList(Array.isArray(local) ? local : []);
+            _activeFaculty = Array.isArray(local) ? local.filter(function (f) {
+              return !f.archived && f.archived !== 1;
+            }) : [];
+            setFacultyList(_activeFaculty);
             _context5.n = 9;
             break;
           case 8:
             _context5.p = 8;
             _t2 = _context5.v;
-            if (mounted) setFacultyList([]);
+            setFacultyList([]);
           case 9:
             _context5.p = 9;
-            if (mounted) setLoading(false);
+            setLoading(false);
             return _context5.f(9);
           case 10:
             return _context5.a(2);
         }
       }, _callee5, null, [[6, 8], [0, 5, 9, 10]]);
+    }));
+    return function fetchFaculty() {
+      return _ref3.apply(this, arguments);
+    };
+  }();
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
+    var mounted = true;
+    _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee6() {
+      return _regenerator().w(function (_context6) {
+        while (1) switch (_context6.n) {
+          case 0:
+            if (!mounted) {
+              _context6.n = 1;
+              break;
+            }
+            _context6.n = 1;
+            return fetchFaculty();
+          case 1:
+            return _context6.a(2);
+        }
+      }, _callee6);
     }))();
+
+    // Refresh every 15 seconds to check for archived faculty
+    var interval = setInterval(function () {
+      if (mounted && !document.hidden) fetchFaculty();
+    }, 15000);
     return function () {
       mounted = false;
+      clearInterval(interval);
     };
   }, []);
 
   // fetch departments for dropdown
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
-    var mounted = true;
-    _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee6() {
-      var res, json, local, _t3, _t4;
-      return _regenerator().w(function (_context6) {
-        while (1) switch (_context6.p = _context6.n) {
-          case 0:
-            _context6.p = 0;
-            _context6.n = 1;
-            return fetch('/api/departments');
-          case 1:
-            res = _context6.v;
-            if (res.ok) {
-              _context6.n = 2;
+    var isFetching = false;
+    var fetchDepartments = /*#__PURE__*/function () {
+      var _ref5 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee7() {
+        var res, json, activeDepts, _t3;
+        return _regenerator().w(function (_context7) {
+          while (1) switch (_context7.p = _context7.n) {
+            case 0:
+              if (!(document.hidden || isFetching)) {
+                _context7.n = 1;
+                break;
+              }
+              return _context7.a(2);
+            case 1:
+              isFetching = true;
+              _context7.p = 2;
+              _context7.n = 3;
+              return fetch('/api/departments');
+            case 3:
+              res = _context7.v;
+              if (res.ok) {
+                _context7.n = 4;
+                break;
+              }
+              throw new Error('no api');
+            case 4:
+              _context7.n = 5;
+              return res.json();
+            case 5:
+              json = _context7.v;
+              // Filter out archived departments
+              activeDepts = Array.isArray(json) ? json.filter(function (d) {
+                return !d.archived && d.archived !== 1 && d.status !== 'Archived';
+              }) : [];
+              setDepartments(activeDepts);
+              _context7.n = 7;
               break;
-            }
-            throw new Error('no api');
-          case 2:
-            _context6.n = 3;
-            return res.json();
-          case 3:
-            json = _context6.v;
-            if (mounted) setDepartments(Array.isArray(json) ? json : []);
-            _context6.n = 8;
-            break;
-          case 4:
-            _context6.p = 4;
-            _t3 = _context6.v;
-            _context6.p = 5;
-            _context6.n = 6;
-            return localDB.readAll();
-          case 6:
-            local = _context6.v;
-            if (mounted) setDepartments([]);
-            _context6.n = 8;
-            break;
-          case 7:
-            _context6.p = 7;
-            _t4 = _context6.v;
-            if (mounted) setDepartments([]);
-          case 8:
-            return _context6.a(2);
-        }
-      }, _callee6, null, [[5, 7], [0, 4]]);
-    }))();
+            case 6:
+              _context7.p = 6;
+              _t3 = _context7.v;
+              setDepartments([]);
+            case 7:
+              _context7.p = 7;
+              isFetching = false;
+              return _context7.f(7);
+            case 8:
+              return _context7.a(2);
+          }
+        }, _callee7, null, [[2, 6, 7, 8]]);
+      }));
+      return function fetchDepartments() {
+        return _ref5.apply(this, arguments);
+      };
+    }();
+    fetchDepartments();
+    // Reduced polling to 60 seconds to prevent rate limiting
+    var interval = setInterval(fetchDepartments, 60000);
+
+    // Refetch when page becomes visible
+    var handleVisibilityChange = function handleVisibilityChange() {
+      if (!document.hidden) fetchDepartments();
+    };
+    document.addEventListener('visibilitychange', handleVisibilityChange);
     return function () {
-      mounted = false;
+      clearInterval(interval);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
     };
   }, []);
 
   // fetch courses for dropdown
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
-    var mounted = true;
-    _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee7() {
-      var res, json, _t5;
-      return _regenerator().w(function (_context7) {
-        while (1) switch (_context7.p = _context7.n) {
-          case 0:
-            _context7.p = 0;
-            _context7.n = 1;
-            return fetch('/api/courses');
-          case 1:
-            res = _context7.v;
-            if (res.ok) {
-              _context7.n = 2;
+    var isFetching = false;
+    var fetchCourses = /*#__PURE__*/function () {
+      var _ref6 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee8() {
+        var res, json, activeCourses, _t4;
+        return _regenerator().w(function (_context8) {
+          while (1) switch (_context8.p = _context8.n) {
+            case 0:
+              if (!(document.hidden || isFetching)) {
+                _context8.n = 1;
+                break;
+              }
+              return _context8.a(2);
+            case 1:
+              isFetching = true;
+              _context8.p = 2;
+              _context8.n = 3;
+              return fetch('/api/courses');
+            case 3:
+              res = _context8.v;
+              if (res.ok) {
+                _context8.n = 4;
+                break;
+              }
+              throw new Error('no api');
+            case 4:
+              _context8.n = 5;
+              return res.json();
+            case 5:
+              json = _context8.v;
+              // Filter out archived courses
+              activeCourses = Array.isArray(json) ? json.filter(function (c) {
+                return !c.archived && c.archived !== 1 && c.status !== 'archived';
+              }) : [];
+              setCourses(activeCourses);
+              _context8.n = 7;
               break;
-            }
-            throw new Error('no api');
-          case 2:
-            _context7.n = 3;
-            return res.json();
-          case 3:
-            json = _context7.v;
-            if (mounted) setCourses(Array.isArray(json) ? json : []);
-            _context7.n = 5;
-            break;
-          case 4:
-            _context7.p = 4;
-            _t5 = _context7.v;
-            if (mounted) setCourses([]);
-          case 5:
-            return _context7.a(2);
-        }
-      }, _callee7, null, [[0, 4]]);
-    }))();
+            case 6:
+              _context8.p = 6;
+              _t4 = _context8.v;
+              setCourses([]);
+            case 7:
+              _context8.p = 7;
+              isFetching = false;
+              return _context8.f(7);
+            case 8:
+              return _context8.a(2);
+          }
+        }, _callee8, null, [[2, 6, 7, 8]]);
+      }));
+      return function fetchCourses() {
+        return _ref6.apply(this, arguments);
+      };
+    }();
+    fetchCourses();
+    // Reduced polling to 60 seconds to prevent rate limiting
+    var interval = setInterval(fetchCourses, 60000);
+
+    // Refetch when page becomes visible
+    var handleVisibilityChange = function handleVisibilityChange() {
+      if (!document.hidden) fetchCourses();
+    };
+    document.addEventListener('visibilitychange', handleVisibilityChange);
     return function () {
-      mounted = false;
+      clearInterval(interval);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
     };
   }, []);
   var handleAdd = function handleAdd() {
@@ -73552,17 +74718,17 @@ function Faculty() {
     setShowAdd(true);
   };
   var handleAddSubmit = /*#__PURE__*/function () {
-    var _ref5 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee8(e) {
-      var payload, res, created, _created, _created2, _t6;
-      return _regenerator().w(function (_context8) {
-        while (1) switch (_context8.p = _context8.n) {
+    var _ref7 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee9(e) {
+      var payload, res, created, _created, _created2, _t5;
+      return _regenerator().w(function (_context9) {
+        while (1) switch (_context9.p = _context9.n) {
           case 0:
             e.preventDefault();
             payload = _objectSpread(_objectSpread({}, form), {}, {
               avatar: form.avatar || "https://randomuser.me/api/portraits/lego/1.jpg"
             });
-            _context8.p = 1;
-            _context8.n = 2;
+            _context9.p = 1;
+            _context9.n = 2;
             return fetch('/api/faculties', {
               method: 'POST',
               headers: {
@@ -73571,53 +74737,54 @@ function Faculty() {
               body: JSON.stringify(payload)
             });
           case 2:
-            res = _context8.v;
+            res = _context9.v;
             if (!res.ok) {
-              _context8.n = 4;
+              _context9.n = 4;
               break;
             }
-            _context8.n = 3;
+            _context9.n = 3;
             return res.json();
           case 3:
-            created = _context8.v;
+            created = _context9.v;
             setFacultyList(function (prev) {
               return [].concat(_toConsumableArray(prev), [created]);
             });
-            _context8.n = 6;
+            _utils_logger__WEBPACK_IMPORTED_MODULE_3__["default"].logCreate('Faculty', "Added faculty: ".concat(payload.name));
+            _context9.n = 6;
             break;
           case 4:
-            _context8.n = 5;
+            _context9.n = 5;
             return localDB.create(payload);
           case 5:
-            _created = _context8.v;
+            _created = _context9.v;
             setFacultyList(function (prev) {
               return [].concat(_toConsumableArray(prev), [_created]);
             });
           case 6:
-            _context8.n = 9;
+            _context9.n = 9;
             break;
           case 7:
-            _context8.p = 7;
-            _t6 = _context8.v;
-            _context8.n = 8;
+            _context9.p = 7;
+            _t5 = _context9.v;
+            _context9.n = 8;
             return localDB.create(payload);
           case 8:
-            _created2 = _context8.v;
+            _created2 = _context9.v;
             setFacultyList(function (prev) {
               return [].concat(_toConsumableArray(prev), [_created2]);
             });
           case 9:
-            _context8.p = 9;
+            _context9.p = 9;
             setShowAdd(false);
             setForm(defaultForm);
-            return _context8.f(9);
+            return _context9.f(9);
           case 10:
-            return _context8.a(2);
+            return _context9.a(2);
         }
-      }, _callee8, null, [[1, 7, 9, 10]]);
+      }, _callee9, null, [[1, 7, 9, 10]]);
     }));
     return function handleAddSubmit(_x5) {
-      return _ref5.apply(this, arguments);
+      return _ref7.apply(this, arguments);
     };
   }();
   var handleEdit = function handleEdit(item) {
@@ -73631,29 +74798,29 @@ function Faculty() {
     setShowEdit(true);
   };
   var handleEditSubmit = /*#__PURE__*/function () {
-    var _ref6 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee9(e) {
+    var _ref8 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee0(e) {
       var _facultyList$editInde;
-      var id, payload, res, updated, _updated, _updated2, _t7;
-      return _regenerator().w(function (_context9) {
-        while (1) switch (_context9.p = _context9.n) {
+      var id, payload, res, updated, _updated, _updated2, _t6;
+      return _regenerator().w(function (_context0) {
+        while (1) switch (_context0.p = _context0.n) {
           case 0:
             e.preventDefault();
             if (!(editIndex === null)) {
-              _context9.n = 1;
+              _context0.n = 1;
               break;
             }
-            return _context9.a(2);
+            return _context0.a(2);
           case 1:
             id = (_facultyList$editInde = facultyList[editIndex]) === null || _facultyList$editInde === void 0 ? void 0 : _facultyList$editInde.id;
             if (id) {
-              _context9.n = 2;
+              _context0.n = 2;
               break;
             }
-            return _context9.a(2);
+            return _context0.a(2);
           case 2:
             payload = _objectSpread({}, form);
-            _context9.p = 3;
-            _context9.n = 4;
+            _context0.p = 3;
+            _context0.n = 4;
             return fetch("/api/faculties/".concat(id), {
               method: 'PUT',
               headers: {
@@ -73662,89 +74829,90 @@ function Faculty() {
               body: JSON.stringify(payload)
             });
           case 4:
-            res = _context9.v;
+            res = _context0.v;
             if (!res.ok) {
-              _context9.n = 6;
+              _context0.n = 6;
               break;
             }
-            _context9.n = 5;
+            _context0.n = 5;
             return res.json();
           case 5:
-            updated = _context9.v;
+            updated = _context0.v;
             setFacultyList(function (prev) {
               return prev.map(function (f) {
                 return f.id === updated.id ? updated : f;
               });
             });
-            _context9.n = 8;
+            _utils_logger__WEBPACK_IMPORTED_MODULE_3__["default"].logUpdate('Faculty', "Updated faculty: ".concat(payload.name));
+            _context0.n = 8;
             break;
           case 6:
-            _context9.n = 7;
+            _context0.n = 7;
             return localDB.update(id, payload);
           case 7:
-            _updated = _context9.v;
+            _updated = _context0.v;
             setFacultyList(function (prev) {
               return prev.map(function (f) {
                 return f.id === id ? _updated : f;
               });
             });
           case 8:
-            _context9.n = 11;
+            _context0.n = 11;
             break;
           case 9:
-            _context9.p = 9;
-            _t7 = _context9.v;
-            _context9.n = 10;
+            _context0.p = 9;
+            _t6 = _context0.v;
+            _context0.n = 10;
             return localDB.update(id, payload);
           case 10:
-            _updated2 = _context9.v;
+            _updated2 = _context0.v;
             setFacultyList(function (prev) {
               return prev.map(function (f) {
                 return f.id === id ? _updated2 : f;
               });
             });
           case 11:
-            _context9.p = 11;
+            _context0.p = 11;
             setShowEdit(false);
             setEditIndex(null);
             setForm(defaultForm);
-            return _context9.f(11);
+            return _context0.f(11);
           case 12:
-            return _context9.a(2);
+            return _context0.a(2);
         }
-      }, _callee9, null, [[3, 9, 11, 12]]);
+      }, _callee0, null, [[3, 9, 11, 12]]);
     }));
     return function handleEditSubmit(_x6) {
-      return _ref6.apply(this, arguments);
+      return _ref8.apply(this, arguments);
     };
   }();
   var handleDelete = /*#__PURE__*/function () {
-    var _ref7 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee0(item) {
-      var res, _t8;
-      return _regenerator().w(function (_context0) {
-        while (1) switch (_context0.p = _context0.n) {
+    var _ref9 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee1(item) {
+      var res, _t7;
+      return _regenerator().w(function (_context1) {
+        while (1) switch (_context1.p = _context1.n) {
           case 0:
             if (!(!item || !item.id)) {
-              _context0.n = 1;
+              _context1.n = 1;
               break;
             }
-            return _context0.a(2);
+            return _context1.a(2);
           case 1:
             if (window.confirm("Are you sure you want to delete this record?")) {
-              _context0.n = 2;
+              _context1.n = 2;
               break;
             }
-            return _context0.a(2);
+            return _context1.a(2);
           case 2:
-            _context0.p = 2;
-            _context0.n = 3;
+            _context1.p = 2;
+            _context1.n = 3;
             return fetch("/api/faculties/".concat(item.id), {
               method: 'DELETE'
             });
           case 3:
-            res = _context0.v;
+            res = _context1.v;
             if (!res.ok) {
-              _context0.n = 4;
+              _context1.n = 4;
               break;
             }
             setFacultyList(function (prev) {
@@ -73752,10 +74920,11 @@ function Faculty() {
                 return f.id !== item.id;
               });
             });
-            _context0.n = 6;
+            _utils_logger__WEBPACK_IMPORTED_MODULE_3__["default"].logDelete('Faculty', "Deleted faculty: ".concat(item.name));
+            _context1.n = 6;
             break;
           case 4:
-            _context0.n = 5;
+            _context1.n = 5;
             return localDB["delete"](item.id);
           case 5:
             setFacultyList(function (prev) {
@@ -73764,12 +74933,12 @@ function Faculty() {
               });
             });
           case 6:
-            _context0.n = 9;
+            _context1.n = 9;
             break;
           case 7:
-            _context0.p = 7;
-            _t8 = _context0.v;
-            _context0.n = 8;
+            _context1.p = 7;
+            _t7 = _context1.v;
+            _context1.n = 8;
             return localDB["delete"](item.id);
           case 8:
             setFacultyList(function (prev) {
@@ -73778,16 +74947,251 @@ function Faculty() {
               });
             });
           case 9:
-            if (selectedUser && selectedUser.id === target.id) setSelectedUser(null);
+            if (selectedUser && selectedUser.id === item.id) setSelectedUser(null);
           case 10:
-            return _context0.a(2);
+            return _context1.a(2);
         }
-      }, _callee0, null, [[2, 7]]);
+      }, _callee1, null, [[2, 7]]);
     }));
     return function handleDelete(_x7) {
-      return _ref7.apply(this, arguments);
+      return _ref9.apply(this, arguments);
     };
   }();
+
+  // Bulk archive all selected
+  var handleArchiveAll = /*#__PURE__*/function () {
+    var _ref0 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee10() {
+      var _iterator, _step, _loop, _t8, _t9;
+      return _regenerator().w(function (_context11) {
+        while (1) switch (_context11.p = _context11.n) {
+          case 0:
+            if (!(selectedFaculty.length === 0)) {
+              _context11.n = 1;
+              break;
+            }
+            alert('Please select faculty members to archive');
+            return _context11.a(2);
+          case 1:
+            if (window.confirm("Archive ".concat(selectedFaculty.length, " selected faculty member(s)?"))) {
+              _context11.n = 2;
+              break;
+            }
+            return _context11.a(2);
+          case 2:
+            _context11.p = 2;
+            _iterator = _createForOfIteratorHelper(selectedFaculty);
+            _context11.p = 3;
+            _loop = /*#__PURE__*/_regenerator().m(function _loop() {
+              var id, res, faculty;
+              return _regenerator().w(function (_context10) {
+                while (1) switch (_context10.n) {
+                  case 0:
+                    id = _step.value;
+                    _context10.n = 1;
+                    return fetch("/api/faculties/".concat(id), {
+                      method: 'PUT',
+                      headers: {
+                        'Content-Type': 'application/json'
+                      },
+                      body: JSON.stringify({
+                        archived: true
+                      })
+                    });
+                  case 1:
+                    res = _context10.v;
+                    if (res.ok) {
+                      faculty = facultyList.find(function (f) {
+                        return f.id === id;
+                      });
+                      _utils_logger__WEBPACK_IMPORTED_MODULE_3__["default"].logArchive('Faculty', "Archived faculty: ".concat((faculty === null || faculty === void 0 ? void 0 : faculty.name) || 'Unknown'));
+                    }
+                  case 2:
+                    return _context10.a(2);
+                }
+              }, _loop);
+            });
+            _iterator.s();
+          case 4:
+            if ((_step = _iterator.n()).done) {
+              _context11.n = 6;
+              break;
+            }
+            return _context11.d(_regeneratorValues(_loop()), 5);
+          case 5:
+            _context11.n = 4;
+            break;
+          case 6:
+            _context11.n = 8;
+            break;
+          case 7:
+            _context11.p = 7;
+            _t8 = _context11.v;
+            _iterator.e(_t8);
+          case 8:
+            _context11.p = 8;
+            _iterator.f();
+            return _context11.f(8);
+          case 9:
+            _context11.n = 10;
+            return fetchFaculty();
+          case 10:
+            setSelectedFaculty([]);
+            _context11.n = 12;
+            break;
+          case 11:
+            _context11.p = 11;
+            _t9 = _context11.v;
+            console.error('Error archiving faculty:', _t9);
+          case 12:
+            return _context11.a(2);
+        }
+      }, _callee10, null, [[3, 7, 8, 9], [2, 11]]);
+    }));
+    return function handleArchiveAll() {
+      return _ref0.apply(this, arguments);
+    };
+  }();
+
+  // Bulk restore all selected (for when viewing archived - though this component shows active)
+  var handleRestoreAll = /*#__PURE__*/function () {
+    var _ref1 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee11() {
+      var _iterator2, _step2, _loop2, _t0, _t1;
+      return _regenerator().w(function (_context13) {
+        while (1) switch (_context13.p = _context13.n) {
+          case 0:
+            if (!(selectedFaculty.length === 0)) {
+              _context13.n = 1;
+              break;
+            }
+            alert('Please select faculty members to restore');
+            return _context13.a(2);
+          case 1:
+            if (window.confirm("Restore ".concat(selectedFaculty.length, " selected faculty member(s)?"))) {
+              _context13.n = 2;
+              break;
+            }
+            return _context13.a(2);
+          case 2:
+            _context13.p = 2;
+            _iterator2 = _createForOfIteratorHelper(selectedFaculty);
+            _context13.p = 3;
+            _loop2 = /*#__PURE__*/_regenerator().m(function _loop2() {
+              var id, res, faculty;
+              return _regenerator().w(function (_context12) {
+                while (1) switch (_context12.n) {
+                  case 0:
+                    id = _step2.value;
+                    _context12.n = 1;
+                    return fetch("/api/faculties/".concat(id), {
+                      method: 'PUT',
+                      headers: {
+                        'Content-Type': 'application/json'
+                      },
+                      body: JSON.stringify({
+                        archived: false
+                      })
+                    });
+                  case 1:
+                    res = _context12.v;
+                    if (res.ok) {
+                      faculty = facultyList.find(function (f) {
+                        return f.id === id;
+                      });
+                      _utils_logger__WEBPACK_IMPORTED_MODULE_3__["default"].logRestore('Faculty', "Restored faculty: ".concat((faculty === null || faculty === void 0 ? void 0 : faculty.name) || 'Unknown'));
+                    }
+                  case 2:
+                    return _context12.a(2);
+                }
+              }, _loop2);
+            });
+            _iterator2.s();
+          case 4:
+            if ((_step2 = _iterator2.n()).done) {
+              _context13.n = 6;
+              break;
+            }
+            return _context13.d(_regeneratorValues(_loop2()), 5);
+          case 5:
+            _context13.n = 4;
+            break;
+          case 6:
+            _context13.n = 8;
+            break;
+          case 7:
+            _context13.p = 7;
+            _t0 = _context13.v;
+            _iterator2.e(_t0);
+          case 8:
+            _context13.p = 8;
+            _iterator2.f();
+            return _context13.f(8);
+          case 9:
+            _context13.n = 10;
+            return fetchFaculty();
+          case 10:
+            setSelectedFaculty([]);
+            _context13.n = 12;
+            break;
+          case 11:
+            _context13.p = 11;
+            _t1 = _context13.v;
+            console.error('Error restoring faculty:', _t1);
+          case 12:
+            return _context13.a(2);
+        }
+      }, _callee11, null, [[3, 7, 8, 9], [2, 11]]);
+    }));
+    return function handleRestoreAll() {
+      return _ref1.apply(this, arguments);
+    };
+  }();
+
+  // Toggle checkbox
+  var handleCheckboxToggle = function handleCheckboxToggle(id) {
+    setSelectedFaculty(function (prev) {
+      return prev.includes(id) ? prev.filter(function (i) {
+        return i !== id;
+      }) : [].concat(_toConsumableArray(prev), [id]);
+    });
+  };
+  var filteredList = facultyList.filter(function (f) {
+    var matchesSearch = (f.name || "").toLowerCase().includes(search.toLowerCase()) || (f.email || "").toLowerCase().includes(search.toLowerCase());
+    var matchesDepartment = departmentFilter === "All Departments" || f.department === departmentFilter;
+    return matchesSearch && matchesDepartment;
+  });
+
+  // Handle column sorting
+  var handleSort = function handleSort(field) {
+    if (sortField === field) {
+      setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
+    } else {
+      setSortField(field);
+      setSortDirection('asc');
+    }
+  };
+
+  // Apply sorting
+  var sortedList = _toConsumableArray(filteredList).sort(function (a, b) {
+    if (!sortField) return 0;
+    var aVal = a[sortField] || '';
+    var bVal = b[sortField] || '';
+
+    // Convert to string for comparison
+    aVal = String(aVal).toLowerCase();
+    bVal = String(bVal).toLowerCase();
+    if (aVal < bVal) return sortDirection === 'asc' ? -1 : 1;
+    if (aVal > bVal) return sortDirection === 'asc' ? 1 : -1;
+    return 0;
+  });
+
+  // Select all toggle
+  var handleSelectAllToggle = function handleSelectAllToggle() {
+    setSelectedFaculty(function (prev) {
+      return prev.length === sortedList.length ? [] : sortedList.map(function (f) {
+        return f.id;
+      });
+    });
+  };
   var handleFilter = function handleFilter() {
     return setShowFilter(true);
   };
@@ -73800,38 +75204,33 @@ function Faculty() {
   var handleBackToList = function handleBackToList() {
     return setSelectedUser(null);
   };
-  var filteredList = facultyList.filter(function (f) {
-    var matchesSearch = (f.name || "").toLowerCase().includes(search.toLowerCase()) || (f.email || "").toLowerCase().includes(search.toLowerCase());
-    var matchesDepartment = departmentFilter === "All Departments" || f.department === departmentFilter;
-    return matchesSearch && matchesDepartment;
-  });
   var fontStyle = {
     fontFamily: "Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial"
   };
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
     style: _objectSpread({
       display: "flex",
       minHeight: "100vh",
       background: "#f8fafc"
     }, fontStyle),
-    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_Navbar__WEBPACK_IMPORTED_MODULE_2__["default"], {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("main", {
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_Navbar__WEBPACK_IMPORTED_MODULE_2__["default"], {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("main", {
       className: "faculty-container",
       style: {
         flex: 1
       },
-      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
         className: "dashboard-header",
-        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
           className: "logout-btn",
           onClick: handleLogout,
           children: "Log out"
         })
-      }), !selectedUser && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+      }), !selectedUser && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
         style: {
           padding: '24px 40px',
           borderBottom: '1px solid #e5e7eb'
         },
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("h1", {
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("h1", {
           style: {
             margin: 0,
             fontSize: 28,
@@ -73839,7 +75238,7 @@ function Faculty() {
             color: '#111827'
           },
           children: "Faculty"
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("p", {
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("p", {
           style: {
             margin: '4px 0 0 0',
             fontSize: 14,
@@ -73847,7 +75246,7 @@ function Faculty() {
           },
           children: "Manage faculty information"
         })]
-      }), !selectedUser && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+      }), !selectedUser && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
         style: {
           display: 'flex',
           gap: 16,
@@ -73855,13 +75254,13 @@ function Faculty() {
           alignItems: 'center',
           borderBottom: '1px solid #e5e7eb'
         },
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
           style: {
             position: 'relative',
             flex: 1,
             maxWidth: 400
           },
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("svg", {
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("svg", {
             style: {
               position: 'absolute',
               left: 12,
@@ -73874,14 +75273,14 @@ function Faculty() {
             fill: "none",
             stroke: "#9ca3af",
             strokeWidth: "2",
-            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("circle", {
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("circle", {
               cx: "11",
               cy: "11",
               r: "8"
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("path", {
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("path", {
               d: "m21 21-4.35-4.35"
             })]
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("input", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", {
             type: "text",
             placeholder: "Search faculty...",
             value: search,
@@ -73904,7 +75303,7 @@ function Faculty() {
               return e.target.style.borderColor = '#d1d5db';
             }
           })]
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("select", {
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("select", {
           value: departmentFilter,
           onChange: function onChange(e) {
             return setDepartmentFilter(e.target.value);
@@ -73924,19 +75323,36 @@ function Faculty() {
             backgroundRepeat: 'no-repeat',
             backgroundSize: '20px'
           },
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("option", {
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("option", {
             value: "All Departments",
             children: "All Departments"
           }), departments.filter(function (d) {
             return d && d.name;
           }).map(function (d) {
             var _d$id2;
-            return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("option", {
+            return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("option", {
               value: d.name,
               children: d.name
             }, (_d$id2 = d.id) !== null && _d$id2 !== void 0 ? _d$id2 : d.name);
           })]
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("button", {
+        }), selectedFaculty.length > 0 && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("button", {
+          onClick: handleArchiveAll,
+          style: {
+            display: 'flex',
+            alignItems: 'center',
+            gap: 8,
+            padding: '10px 16px',
+            background: '#fef3c7',
+            color: '#ca8a04',
+            border: 'none',
+            borderRadius: 8,
+            fontSize: 13,
+            fontWeight: 600,
+            cursor: 'pointer',
+            whiteSpace: 'nowrap'
+          },
+          children: ["\uD83D\uDCE6 Archive Selected (", selectedFaculty.length, ")"]
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("button", {
           onClick: handleAdd,
           style: {
             display: 'flex',
@@ -73952,7 +75368,7 @@ function Faculty() {
             cursor: 'pointer',
             whiteSpace: 'nowrap'
           },
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("span", {
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("span", {
             style: {
               fontSize: 18,
               lineHeight: 1
@@ -73960,28 +75376,28 @@ function Faculty() {
             children: "+"
           }), "Add Faculty"]
         })]
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
         className: "faculty-header",
         style: {
           display: selectedUser ? 'flex' : 'none'
         },
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
           className: "faculty-back-btn",
           onClick: function onClick() {
             return selectedUser ? handleBackToList() : navigate(-1);
           },
-          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("svg", {
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("svg", {
             width: "28",
             height: "28",
             viewBox: "0 0 24 24",
             fill: "none",
-            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("circle", {
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("circle", {
               cx: "12",
               cy: "12",
               r: "12",
               fill: "#222",
               opacity: "0.12"
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("path", {
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("path", {
               d: "M14 8l-4 4 4 4",
               stroke: "#222",
               strokeWidth: "2",
@@ -73989,10 +75405,10 @@ function Faculty() {
               strokeLinejoin: "round"
             })]
           })
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
           className: "faculty-actions"
         })]
-      }), showAdd && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(FacultyFullForm, {
+      }), showAdd && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(FacultyFullForm, {
         isEdit: false,
         onSubmit: handleAddSubmit,
         onCancel: function onCancel() {
@@ -74002,7 +75418,7 @@ function Faculty() {
         setForm: setForm,
         departments: departments,
         courses: courses
-      }), showEdit && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(FacultyFullForm, {
+      }), showEdit && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(FacultyFullForm, {
         isEdit: true,
         onSubmit: handleEditSubmit,
         onCancel: function onCancel() {
@@ -74012,7 +75428,7 @@ function Faculty() {
         setForm: setForm,
         departments: departments,
         courses: courses
-      }), !showAdd && !showEdit && selectedUser ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+      }), !showAdd && !showEdit && selectedUser ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
         style: {
           display: "flex",
           justifyContent: "center",
@@ -74020,14 +75436,14 @@ function Faculty() {
           marginTop: 40,
           gap: 60
         },
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
           style: {
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
             minWidth: 320
           },
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("img", {
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("img", {
             src: selectedUser.avatar || "https://randomuser.me/api/portraits/lego/1.jpg",
             alt: selectedUser.name,
             style: {
@@ -74037,7 +75453,7 @@ function Faculty() {
               objectFit: "cover",
               boxShadow: "0 4px 24px #e6eaf1"
             }
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
             style: {
               marginTop: 24,
               fontWeight: 700,
@@ -74045,7 +75461,7 @@ function Faculty() {
               textAlign: "center"
             },
             children: selectedUser.name
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
             style: {
               color: "#888",
               fontSize: "1rem",
@@ -74053,13 +75469,13 @@ function Faculty() {
               textAlign: "center"
             },
             children: selectedUser.subject
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
             style: {
               display: "flex",
               gap: 24,
               marginTop: 16
             },
-            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
               style: {
                 background: "#0033ff",
                 border: "none",
@@ -74074,7 +75490,7 @@ function Faculty() {
                 return handleEdit(selectedUser);
               },
               children: "Edit"
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
               style: {
                 background: "#ff2d2d",
                 border: "none",
@@ -74092,51 +75508,51 @@ function Faculty() {
               children: "Delete"
             })]
           })]
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
           style: {
             minWidth: 320,
             maxWidth: 400
           },
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
             style: {
               fontWeight: 700,
               fontSize: "1.1rem",
               marginBottom: 8
             },
             children: "About"
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
             style: {
               color: "#555",
               marginBottom: 24,
               lineHeight: 1.6
             },
             children: selectedUser.about
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
             style: {
               display: "flex",
               gap: 40
             },
-            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
-              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
                 style: {
                   color: "#888",
                   fontSize: 13
                 },
                 children: "Age"
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
                 style: {
                   fontWeight: 600
                 },
                 children: selectedUser.age
               })]
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
-              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
                 style: {
                   color: "#888",
                   fontSize: 13
                 },
                 children: "Gender"
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
                 style: {
                   fontWeight: 600
                 },
@@ -74145,119 +75561,203 @@ function Faculty() {
             })]
           })]
         })]
-      }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+      }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
         className: "faculty-table-container",
-        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("table", {
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("table", {
           className: "faculty-table",
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("thead", {
-            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("tr", {
-              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("th", {
-                children: "Name"
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("th", {
-                children: "Course"
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("th", {
-                children: "Email address"
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("th", {
-                children: "Department"
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("th", {
-                children: "Gender"
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("th", {})]
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("thead", {
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("tr", {
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("th", {
+                style: {
+                  width: 40,
+                  textAlign: 'center'
+                },
+                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", {
+                  type: "checkbox",
+                  checked: sortedList.length > 0 && selectedFaculty.length === sortedList.length,
+                  onChange: handleSelectAllToggle,
+                  style: {
+                    cursor: 'pointer',
+                    width: 16,
+                    height: 16
+                  }
+                })
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("th", {
+                onClick: function onClick() {
+                  return handleSort('name');
+                },
+                style: {
+                  cursor: 'pointer',
+                  userSelect: 'none'
+                },
+                children: ["Name ", sortField === 'name' && (sortDirection === 'asc' ? '↑' : '↓')]
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("th", {
+                onClick: function onClick() {
+                  return handleSort('subject');
+                },
+                style: {
+                  cursor: 'pointer',
+                  userSelect: 'none'
+                },
+                children: ["Course ", sortField === 'subject' && (sortDirection === 'asc' ? '↑' : '↓')]
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("th", {
+                onClick: function onClick() {
+                  return handleSort('email');
+                },
+                style: {
+                  cursor: 'pointer',
+                  userSelect: 'none'
+                },
+                children: ["Email address ", sortField === 'email' && (sortDirection === 'asc' ? '↑' : '↓')]
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("th", {
+                onClick: function onClick() {
+                  return handleSort('department');
+                },
+                style: {
+                  cursor: 'pointer',
+                  userSelect: 'none'
+                },
+                children: ["Department ", sortField === 'department' && (sortDirection === 'asc' ? '↑' : '↓')]
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("th", {
+                onClick: function onClick() {
+                  return handleSort('gender');
+                },
+                style: {
+                  cursor: 'pointer',
+                  userSelect: 'none'
+                },
+                children: ["Gender ", sortField === 'gender' && (sortDirection === 'asc' ? '↑' : '↓')]
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("th", {})]
             })
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("tbody", {
-            children: [!loading && filteredList.length === 0 && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("tr", {
-              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("td", {
-                colSpan: "6",
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("tbody", {
+            children: [!loading && sortedList.length === 0 && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("tr", {
+              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("td", {
+                colSpan: "7",
                 children: "No faculty found."
               })
-            }), loading && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("tr", {
-              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("td", {
-                colSpan: "6",
+            }), loading && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("tr", {
+              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("td", {
+                colSpan: "7",
                 children: "Loading\u2026"
               })
-            }), filteredList.map(function (f, idx) {
+            }), sortedList.map(function (f, idx) {
               var _f$id;
-              return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("tr", {
+              return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("tr", {
                 style: {
                   cursor: "pointer"
                 },
-                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("td", {
+                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("td", {
+                  style: {
+                    textAlign: 'center'
+                  },
+                  onClick: function onClick(e) {
+                    return e.stopPropagation();
+                  },
+                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", {
+                    type: "checkbox",
+                    checked: selectedFaculty.includes(f.id),
+                    onChange: function onChange() {
+                      return handleCheckboxToggle(f.id);
+                    },
+                    style: {
+                      cursor: 'pointer',
+                      width: 16,
+                      height: 16
+                    },
+                    onClick: function onClick(e) {
+                      return e.stopPropagation();
+                    }
+                  })
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("td", {
                   onClick: function onClick() {
                     return handleUserClick(f);
                   },
-                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
                     className: "faculty-avatar-name",
-                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("img", {
+                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("img", {
                       src: f.avatar || "https://randomuser.me/api/portraits/lego/1.jpg",
                       alt: f.name,
                       className: "faculty-avatar"
-                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("span", {
-                      children: f.name
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("span", {
+                      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(HighlightText, {
+                        text: f.name,
+                        highlight: search
+                      })
                     })]
                   })
-                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("td", {
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("td", {
                   onClick: function onClick() {
                     return handleUserClick(f);
                   },
-                  children: f.subject
-                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("td", {
+                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(HighlightText, {
+                    text: f.subject,
+                    highlight: search
+                  })
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("td", {
                   onClick: function onClick() {
                     return handleUserClick(f);
                   },
-                  children: f.email
-                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("td", {
+                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(HighlightText, {
+                    text: f.email,
+                    highlight: search
+                  })
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("td", {
                   onClick: function onClick() {
                     return handleUserClick(f);
                   },
-                  children: f.department
-                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("td", {
+                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(HighlightText, {
+                    text: f.department,
+                    highlight: search
+                  })
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("td", {
                   onClick: function onClick() {
                     return handleUserClick(f);
                   },
                   children: f.gender
-                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("td", {
-                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("td", {
+                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
                     className: "faculty-icon-btn",
                     title: "Edit",
                     onClick: function onClick(e) {
                       e.stopPropagation();
                       handleEdit(f);
                     },
-                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("svg", {
+                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("svg", {
                       width: "20",
                       height: "20",
                       fill: "none",
                       stroke: "#222",
                       strokeWidth: "2",
                       viewBox: "0 0 24 24",
-                      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("path", {
+                      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("path", {
                         d: "M12 20h9"
-                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("path", {
+                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("path", {
                         d: "M16.5 3.5a2.121 2.121 0 1 1 3 3L7 19.5 3 21l1.5-4L16.5 3.5z"
                       })]
                     })
-                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
                     className: "faculty-icon-btn",
                     title: "Delete",
                     onClick: function onClick(e) {
                       e.stopPropagation();
                       handleDelete(f);
                     },
-                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("svg", {
+                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("svg", {
                       width: "20",
                       height: "20",
                       fill: "none",
                       stroke: "#222",
                       strokeWidth: "2",
                       viewBox: "0 0 24 24",
-                      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("path", {
+                      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("path", {
                         d: "M3 6h18"
-                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("path", {
+                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("path", {
                         d: "M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"
-                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("path", {
+                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("path", {
                         d: "M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"
-                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("path", {
+                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("path", {
                         d: "M10 11v6"
-                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("path", {
+                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("path", {
                         d: "M14 11v6"
                       })]
                     })
@@ -74267,15 +75767,15 @@ function Faculty() {
             })]
           })]
         })
-      }), showFilter && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+      }), showFilter && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
         className: "modal-overlay",
-        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
           className: "modal",
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("h3", {
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("h3", {
             children: "Filter (Demo)"
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("p", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("p", {
             children: "Here you can add filter options."
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
             className: "faculty-filter-btn",
             onClick: function onClick() {
               return setShowFilter(false);
@@ -74971,7 +76471,7 @@ function Navbar() {
               var isActive = _ref3.isActive;
               return isActive ? "active" : "";
             },
-            children: "Students / Classes"
+            children: "Students"
           })
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("li", {
           children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(react_router_dom__WEBPACK_IMPORTED_MODULE_1__.NavLink, {
@@ -74998,7 +76498,7 @@ function Navbar() {
               var isActive = _ref6.isActive;
               return isActive ? "active" : "";
             },
-            children: "Settings & Profile"
+            children: "Settings"
           })
         })]
       })
@@ -75108,8 +76608,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router/dist/index.js");
 /* harmony import */ var _Navbar__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Navbar */ "./resources/js/components/Navbar.js");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var _utils_logger__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../utils/logger */ "./resources/js/utils/logger.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
+function _createForOfIteratorHelper(r, e) { var t = "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (!t) { if (Array.isArray(r) || (t = _unsupportedIterableToArray(r)) || e && r && "number" == typeof r.length) { t && (r = t); var _n = 0, F = function F() {}; return { s: F, n: function n() { return _n >= r.length ? { done: !0 } : { done: !1, value: r[_n++] }; }, e: function e(r) { throw r; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var o, a = !0, u = !1; return { s: function s() { t = t.call(r); }, n: function n() { var r = t.next(); return a = r.done, r; }, e: function e(r) { u = !0, o = r; }, f: function f() { try { a || null == t["return"] || t["return"](); } finally { if (u) throw o; } } }; }
 function _regenerator() { /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/babel/babel/blob/main/packages/babel-helpers/LICENSE */ var e, t, r = "function" == typeof Symbol ? Symbol : {}, n = r.iterator || "@@iterator", o = r.toStringTag || "@@toStringTag"; function i(r, n, o, i) { var c = n && n.prototype instanceof Generator ? n : Generator, u = Object.create(c.prototype); return _regeneratorDefine2(u, "_invoke", function (r, n, o) { var i, c, u, f = 0, p = o || [], y = !1, G = { p: 0, n: 0, v: e, a: d, f: d.bind(e, 4), d: function d(t, r) { return i = t, c = 0, u = e, G.n = r, a; } }; function d(r, n) { for (c = r, u = n, t = 0; !y && f && !o && t < p.length; t++) { var o, i = p[t], d = G.p, l = i[2]; r > 3 ? (o = l === n) && (u = i[(c = i[4]) ? 5 : (c = 3, 3)], i[4] = i[5] = e) : i[0] <= d && ((o = r < 2 && d < i[1]) ? (c = 0, G.v = n, G.n = i[1]) : d < l && (o = r < 3 || i[0] > n || n > l) && (i[4] = r, i[5] = n, G.n = l, c = 0)); } if (o || r > 1) return a; throw y = !0, n; } return function (o, p, l) { if (f > 1) throw TypeError("Generator is already running"); for (y && 1 === p && d(p, l), c = p, u = l; (t = c < 2 ? e : u) || !y;) { i || (c ? c < 3 ? (c > 1 && (G.n = -1), d(c, u)) : G.n = u : G.v = u); try { if (f = 2, i) { if (c || (o = "next"), t = i[o]) { if (!(t = t.call(i, u))) throw TypeError("iterator result is not an object"); if (!t.done) return t; u = t.value, c < 2 && (c = 0); } else 1 === c && (t = i["return"]) && t.call(i), c < 2 && (u = TypeError("The iterator does not provide a '" + o + "' method"), c = 1); i = e; } else if ((t = (y = G.n < 0) ? u : r.call(n, G)) !== a) break; } catch (t) { i = e, c = 1, u = t; } finally { f = 1; } } return { value: t, done: y }; }; }(r, o, i), !0), u; } var a = {}; function Generator() {} function GeneratorFunction() {} function GeneratorFunctionPrototype() {} t = Object.getPrototypeOf; var c = [][n] ? t(t([][n]())) : (_regeneratorDefine2(t = {}, n, function () { return this; }), t), u = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(c); function f(e) { return Object.setPrototypeOf ? Object.setPrototypeOf(e, GeneratorFunctionPrototype) : (e.__proto__ = GeneratorFunctionPrototype, _regeneratorDefine2(e, o, "GeneratorFunction")), e.prototype = Object.create(u), e; } return GeneratorFunction.prototype = GeneratorFunctionPrototype, _regeneratorDefine2(u, "constructor", GeneratorFunctionPrototype), _regeneratorDefine2(GeneratorFunctionPrototype, "constructor", GeneratorFunction), GeneratorFunction.displayName = "GeneratorFunction", _regeneratorDefine2(GeneratorFunctionPrototype, o, "GeneratorFunction"), _regeneratorDefine2(u), _regeneratorDefine2(u, o, "Generator"), _regeneratorDefine2(u, n, function () { return this; }), _regeneratorDefine2(u, "toString", function () { return "[object Generator]"; }), (_regenerator = function _regenerator() { return { w: i, m: f }; })(); }
 function _regeneratorDefine2(e, r, n, t) { var i = Object.defineProperty; try { i({}, "", {}); } catch (e) { i = 0; } _regeneratorDefine2 = function _regeneratorDefine(e, r, n, t) { function o(r, n) { _regeneratorDefine2(e, r, function (e) { return this._invoke(r, n, e); }); } r ? i ? i(e, r, { value: n, enumerable: !t, configurable: !t, writable: !t }) : e[r] = n : (o("next", 0), o("throw", 1), o("return", 2)); }, _regeneratorDefine2(e, r, n, t); }
 function asyncGeneratorStep(n, t, e, r, o, a, c) { try { var i = n[a](c), u = i.value; } catch (n) { return void e(n); } i.done ? t(u) : Promise.resolve(u).then(r, o); }
@@ -75133,8 +76635,30 @@ function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
 
 
 
-// Reusable localStorage-backed list manager
 
+// Text highlighting component
+
+var HighlightText = function HighlightText(_ref) {
+  var text = _ref.text,
+    highlight = _ref.highlight;
+  if (!highlight || !text) return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.Fragment, {
+    children: text
+  });
+  var parts = String(text).split(new RegExp("(".concat(highlight.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), ")"), 'gi'));
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.Fragment, {
+    children: parts.map(function (part, i) {
+      return part.toLowerCase() === highlight.toLowerCase() ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("span", {
+        style: {
+          backgroundColor: '#fef08a',
+          fontWeight: 600
+        },
+        children: part
+      }, i) : part;
+    })
+  });
+};
+
+// Reusable localStorage-backed list manager
 function useLocalList(key) {
   var initial = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(function () {
@@ -75200,48 +76724,288 @@ function Settings() {
     search = _useState6[0],
     setSearch = _useState6[1];
 
-  // Fetch courses from API
-  var _useState7 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
+  // Filter states for each tab
+  var _useState7 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)('all'),
     _useState8 = _slicedToArray(_useState7, 2),
-    courseList = _useState8[0],
-    setCourseList = _useState8[1];
-  var _useState9 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
+    courseFilter = _useState8[0],
+    setCourseFilter = _useState8[1];
+  var _useState9 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)('all'),
     _useState0 = _slicedToArray(_useState9, 2),
-    departmentList = _useState0[0],
-    setDepartmentList = _useState0[1];
+    departmentFilter = _useState0[0],
+    setDepartmentFilter = _useState0[1];
+  var _useState1 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)('all'),
+    _useState10 = _slicedToArray(_useState1, 2),
+    facultyFilter = _useState10[0],
+    setFacultyFilter = _useState10[1];
+  var _useState11 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)('all'),
+    _useState12 = _slicedToArray(_useState11, 2),
+    studentFilter = _useState12[0],
+    setStudentFilter = _useState12[1];
+  var _useState13 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)('all'),
+    _useState14 = _slicedToArray(_useState13, 2),
+    logFilter = _useState14[0],
+    setLogFilter = _useState14[1];
+
+  // Checkbox selections for bulk operations
+  var _useState15 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
+    _useState16 = _slicedToArray(_useState15, 2),
+    selectedCourses = _useState16[0],
+    setSelectedCourses = _useState16[1];
+  var _useState17 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
+    _useState18 = _slicedToArray(_useState17, 2),
+    selectedDepartments = _useState18[0],
+    setSelectedDepartments = _useState18[1];
+  var _useState19 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
+    _useState20 = _slicedToArray(_useState19, 2),
+    selectedFaculty = _useState20[0],
+    setSelectedFaculty = _useState20[1];
+  var _useState21 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
+    _useState22 = _slicedToArray(_useState21, 2),
+    selectedStudents = _useState22[0],
+    setSelectedStudents = _useState22[1];
+
+  // Pagination for logs
+  var _useState23 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(1),
+    _useState24 = _slicedToArray(_useState23, 2),
+    logsCurrentPage = _useState24[0],
+    setLogsCurrentPage = _useState24[1];
+  var logsPerPage = 10; // 10 logs per page
+
+  // Fetch courses from API
+  var _useState25 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
+    _useState26 = _slicedToArray(_useState25, 2),
+    courseList = _useState26[0],
+    setCourseList = _useState26[1];
+  var _useState27 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
+    _useState28 = _slicedToArray(_useState27, 2),
+    departmentList = _useState28[0],
+    setDepartmentList = _useState28[1];
+  var _useState29 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
+    _useState30 = _slicedToArray(_useState29, 2),
+    facultyList = _useState30[0],
+    setFacultyList = _useState30[1];
+  var _useState31 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
+    _useState32 = _slicedToArray(_useState31, 2),
+    studentList = _useState32[0],
+    setStudentList = _useState32[1];
+  var _useState33 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
+    _useState34 = _slicedToArray(_useState33, 2),
+    logList = _useState34[0],
+    setLogList = _useState34[1];
 
   // Filter to show only ARCHIVED items in Settings (opposite of other components)
   var archivedCourseList = courseList.filter(function (c) {
-    return c.status === 'archived' || c.archived === true;
+    return c.status === 'archived' || c.archived === true || c.archived === 1;
   });
   var archivedDepartmentList = departmentList.filter(function (d) {
-    return d.status === 'Archived' || d.archived === true;
+    return d.status === 'Archived' || d.archived === true || d.archived === 1;
+  });
+  var archivedFacultyList = facultyList.filter(function (f) {
+    return f.archived === true || f.archived === 1;
+  });
+  var archivedStudentList = studentList.filter(function (s) {
+    return s.archived === true || s.archived === 1;
   });
 
-  // Apply search filtering
+  // Get unique departments for filtering
+  var uniqueDepartments = _toConsumableArray(new Set(archivedCourseList.map(function (c) {
+    return c.department;
+  }).filter(Boolean)));
+  var uniqueFacultyDepartments = _toConsumableArray(new Set(archivedFacultyList.map(function (f) {
+    return f.department;
+  }).filter(Boolean)));
+  var uniqueStudentDepartments = _toConsumableArray(new Set(archivedStudentList.map(function (s) {
+    return s.department;
+  }).filter(Boolean)));
+  var uniqueLogTypes = _toConsumableArray(new Set(logList.map(function (l) {
+    return l.type;
+  }).filter(Boolean)));
+
+  // Apply search and filter
   var filteredCourses = archivedCourseList.filter(function (c) {
-    return (c.name || "").toLowerCase().includes(search.toLowerCase()) || (c.department || "").toLowerCase().includes(search.toLowerCase());
+    var matchesSearch = (c.name || "").toLowerCase().includes(search.toLowerCase()) || (c.department || "").toLowerCase().includes(search.toLowerCase());
+    var matchesFilter = courseFilter === 'all' || c.department === courseFilter;
+    return matchesSearch && matchesFilter;
   });
   var filteredDepartments = archivedDepartmentList.filter(function (d) {
-    return (d.name || "").toLowerCase().includes(search.toLowerCase()) || (d.head || "").toLowerCase().includes(search.toLowerCase()) || (d.email || "").toLowerCase().includes(search.toLowerCase());
+    var matchesSearch = (d.name || "").toLowerCase().includes(search.toLowerCase()) || (d.head || "").toLowerCase().includes(search.toLowerCase()) || (d.email || "").toLowerCase().includes(search.toLowerCase());
+    var matchesFilter = departmentFilter === 'all' || d.name === departmentFilter;
+    return matchesSearch && matchesFilter;
   });
-  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
-    fetch('/api/courses').then(function (res) {
-      return res.json();
-    }).then(function (data) {
-      return setCourseList(Array.isArray(data) ? data : []);
-    })["catch"](function () {
-      return setCourseList([]);
+  var filteredFaculty = archivedFacultyList.filter(function (f) {
+    var matchesSearch = (f.name || "").toLowerCase().includes(search.toLowerCase()) || (f.email || "").toLowerCase().includes(search.toLowerCase()) || (f.department || "").toLowerCase().includes(search.toLowerCase()) || (f.subject || "").toLowerCase().includes(search.toLowerCase());
+    var matchesFilter = facultyFilter === 'all' || f.department === facultyFilter;
+    return matchesSearch && matchesFilter;
+  });
+  var filteredStudents = archivedStudentList.filter(function (s) {
+    var matchesSearch = (s.name || "").toLowerCase().includes(search.toLowerCase()) || (s.email || "").toLowerCase().includes(search.toLowerCase()) || (s.department || "").toLowerCase().includes(search.toLowerCase()) || (s.course || "").toLowerCase().includes(search.toLowerCase());
+    var matchesFilter = studentFilter === 'all' || s.department === studentFilter;
+    return matchesSearch && matchesFilter;
+  });
+  var filteredLogs = logList.filter(function (log) {
+    var date = new Date(log.timestamp);
+    var timeStr = date.toLocaleTimeString('en-US', {
+      hour: '2-digit',
+      minute: '2-digit'
     });
+    var dateStr = date.toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric'
+    });
+    var matchesSearch = (log.action || "").toLowerCase().includes(search.toLowerCase()) || (log.user || "").toLowerCase().includes(search.toLowerCase()) || (log.details || "").toLowerCase().includes(search.toLowerCase()) || timeStr.toLowerCase().includes(search.toLowerCase()) || dateStr.toLowerCase().includes(search.toLowerCase());
+    var matchesFilter = logFilter === 'all' || log.type === logFilter;
+    return matchesSearch && matchesFilter;
+  });
+
+  // Pagination calculations for logs
+  var totalLogsPages = Math.ceil(filteredLogs.length / logsPerPage);
+  var logsStartIndex = (logsCurrentPage - 1) * logsPerPage;
+  var logsEndIndex = logsStartIndex + logsPerPage;
+  var paginatedLogs = filteredLogs.slice(logsStartIndex, logsEndIndex);
+
+  // Reset to page 1 when search changes or switching tabs
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
+    setLogsCurrentPage(1);
+  }, [search, activeTab]);
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
+    var isFetching = false;
+    var fetchCourses = function fetchCourses() {
+      // Only fetch if the document is visible (tab is active) and not already fetching
+      if (document.hidden || isFetching) return;
+      isFetching = true;
+      fetch('/api/courses').then(function (res) {
+        if (!res.ok) throw new Error('Network response was not ok');
+        return res.json();
+      }).then(function (data) {
+        return setCourseList(Array.isArray(data) ? data : []);
+      })["catch"](function () {
+        return setCourseList([]);
+      })["finally"](function () {
+        isFetching = false;
+      });
+    };
+    fetchCourses();
+    // Reduced polling to 60 seconds to prevent rate limiting
+    var interval = setInterval(fetchCourses, 60000);
+
+    // Also refetch when page becomes visible
+    var handleVisibilityChange = function handleVisibilityChange() {
+      if (!document.hidden) fetchCourses();
+    };
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    return function () {
+      clearInterval(interval);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
   }, []);
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
-    fetch('/api/departments').then(function (res) {
-      return res.json();
-    }).then(function (data) {
-      return setDepartmentList(Array.isArray(data) ? data : []);
-    })["catch"](function () {
-      return setDepartmentList([]);
-    });
+    var isFetching = false;
+    var fetchDepartments = function fetchDepartments() {
+      // Only fetch if the document is visible (tab is active) and not already fetching
+      if (document.hidden || isFetching) return;
+      isFetching = true;
+      fetch('/api/departments').then(function (res) {
+        if (!res.ok) throw new Error('Network response was not ok');
+        return res.json();
+      }).then(function (data) {
+        return setDepartmentList(Array.isArray(data) ? data : []);
+      })["catch"](function () {
+        return setDepartmentList([]);
+      })["finally"](function () {
+        isFetching = false;
+      });
+    };
+    fetchDepartments();
+    // Reduced polling to 60 seconds to prevent rate limiting
+    var interval = setInterval(fetchDepartments, 60000);
+
+    // Also refetch when page becomes visible
+    var handleVisibilityChange = function handleVisibilityChange() {
+      if (!document.hidden) fetchDepartments();
+    };
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    return function () {
+      clearInterval(interval);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
+  }, []);
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
+    var isFetching = false;
+    var fetchFaculties = function fetchFaculties() {
+      // Only fetch if the document is visible (tab is active) and not already fetching
+      if (document.hidden || isFetching) return;
+      isFetching = true;
+      fetch('/api/faculties').then(function (res) {
+        if (!res.ok) throw new Error('Network response was not ok');
+        return res.json();
+      }).then(function (data) {
+        return setFacultyList(Array.isArray(data) ? data : []);
+      })["catch"](function () {
+        return setFacultyList([]);
+      })["finally"](function () {
+        isFetching = false;
+      });
+    };
+    fetchFaculties();
+    // Reduced polling to 60 seconds to prevent rate limiting
+    var interval = setInterval(fetchFaculties, 60000);
+
+    // Also refetch when page becomes visible
+    var handleVisibilityChange = function handleVisibilityChange() {
+      if (!document.hidden) fetchFaculties();
+    };
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    return function () {
+      clearInterval(interval);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
+  }, []);
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
+    var isFetching = false;
+    var fetchStudents = function fetchStudents() {
+      // Only fetch if the document is visible (tab is active) and not already fetching
+      if (document.hidden || isFetching) return;
+      isFetching = true;
+      fetch('/api/students').then(function (res) {
+        if (!res.ok) throw new Error('Network response was not ok');
+        return res.json();
+      }).then(function (data) {
+        return setStudentList(Array.isArray(data) ? data : []);
+      })["catch"](function () {
+        return setStudentList([]);
+      })["finally"](function () {
+        isFetching = false;
+      });
+    };
+    fetchStudents();
+    // Reduced polling to 60 seconds to prevent rate limiting
+    var interval = setInterval(fetchStudents, 60000);
+
+    // Also refetch when page becomes visible
+    var handleVisibilityChange = function handleVisibilityChange() {
+      if (!document.hidden) fetchStudents();
+    };
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    return function () {
+      clearInterval(interval);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
+  }, []);
+
+  // Load logs from logger utility
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
+    var logs = _utils_logger__WEBPACK_IMPORTED_MODULE_3__["default"].getLogs();
+    setLogList(logs);
+
+    // Reduced logs polling from 5s to 30s (logs don't need frequent updates)
+    var interval = setInterval(function () {
+      var updatedLogs = _utils_logger__WEBPACK_IMPORTED_MODULE_3__["default"].getLogs();
+      setLogList(updatedLogs);
+    }, 30000);
+    return function () {
+      return clearInterval(interval);
+    };
   }, []);
   var years = useLocalList('settings_years', []);
   var courseDefault = {
@@ -75258,18 +77022,18 @@ function Settings() {
     description: '',
     status: 'Active'
   };
-  var _useState1 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(courseDefault),
-    _useState10 = _slicedToArray(_useState1, 2),
-    form = _useState10[0],
-    setForm = _useState10[1];
-  var _useState11 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null),
-    _useState12 = _slicedToArray(_useState11, 2),
-    editing = _useState12[0],
-    setEditing = _useState12[1];
-  var _useState13 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
-    _useState14 = _slicedToArray(_useState13, 2),
-    showModal = _useState14[0],
-    setShowModal = _useState14[1];
+  var _useState35 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(courseDefault),
+    _useState36 = _slicedToArray(_useState35, 2),
+    form = _useState36[0],
+    setForm = _useState36[1];
+  var _useState37 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null),
+    _useState38 = _slicedToArray(_useState37, 2),
+    editing = _useState38[0],
+    setEditing = _useState38[1];
+  var _useState39 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
+    _useState40 = _slicedToArray(_useState39, 2),
+    showModal = _useState40[0],
+    setShowModal = _useState40[1];
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
     if (activeTab === 'courses') {
       setForm(courseDefault);
@@ -75279,7 +77043,7 @@ function Settings() {
     setEditing(null);
   }, [activeTab]);
   var handleSubmit = /*#__PURE__*/function () {
-    var _ref = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee(e) {
+    var _ref2 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee(e) {
       var payload, res, updated, _res, newCourse, _payload, _res2, _updated, _res3, newDept, _t, _t2;
       return _regenerator().w(function (_context) {
         while (1) switch (_context.p = _context.n) {
@@ -75445,7 +77209,7 @@ function Settings() {
       }, _callee, null, [[14, 22], [2, 10]]);
     }));
     return function handleSubmit(_x) {
-      return _ref.apply(this, arguments);
+      return _ref2.apply(this, arguments);
     };
   }();
   var startEdit = function startEdit(item) {
@@ -75470,7 +77234,7 @@ function Settings() {
     setShowModal(true);
   };
   var confirmArchive = /*#__PURE__*/function () {
-    var _ref2 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee2(id) {
+    var _ref3 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee2(id) {
       var res, updated, _res4, _updated2, _t3;
       return _regenerator().w(function (_context2) {
         while (1) switch (_context2.p = _context2.n) {
@@ -75559,16 +77323,32 @@ function Settings() {
       }, _callee2, null, [[1, 9]]);
     }));
     return function confirmArchive(_x2) {
-      return _ref2.apply(this, arguments);
+      return _ref3.apply(this, arguments);
     };
   }();
   var handleUnarchive = /*#__PURE__*/function () {
-    var _ref3 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee3(id) {
-      var res, updated, _res5, _updated3, _t4;
+    var _ref4 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee3(id) {
+      var skipConfirm,
+        course,
+        res,
+        updated,
+        dept,
+        _res5,
+        _updated3,
+        faculty,
+        _res6,
+        _updated4,
+        student,
+        _res7,
+        _updated5,
+        type,
+        _args3 = arguments,
+        _t4;
       return _regenerator().w(function (_context3) {
         while (1) switch (_context3.p = _context3.n) {
           case 0:
-            if (window.confirm('Restore this item? Note: Archived courses in this department must be restored separately.')) {
+            skipConfirm = _args3.length > 1 && _args3[1] !== undefined ? _args3[1] : false;
+            if (!(!skipConfirm && !window.confirm('Restore this item? Note: This will NOT automatically restore related students/faculty. You must restore them separately if needed.'))) {
               _context3.n = 1;
               break;
             }
@@ -75579,6 +77359,9 @@ function Settings() {
               _context3.n = 5;
               break;
             }
+            course = courseList.find(function (c) {
+              return c.id === id;
+            });
             _context3.n = 2;
             return fetch("/api/courses/".concat(id), {
               method: 'PUT',
@@ -75605,14 +77388,18 @@ function Settings() {
                 return c.id === id ? updated : c;
               });
             });
+            _utils_logger__WEBPACK_IMPORTED_MODULE_3__["default"].logRestore('Course', "Restored course: ".concat((course === null || course === void 0 ? void 0 : course.name) || 'Unknown'));
           case 4:
-            _context3.n = 8;
+            _context3.n = 16;
             break;
           case 5:
             if (!(activeTab === 'departments')) {
-              _context3.n = 8;
+              _context3.n = 9;
               break;
             }
+            dept = departmentList.find(function (d) {
+              return d.id === id;
+            });
             _context3.n = 6;
             return fetch("/api/departments/".concat(id), {
               method: 'PUT',
@@ -75639,29 +77426,118 @@ function Settings() {
                 return d.id === id ? _updated3 : d;
               });
             });
+            _utils_logger__WEBPACK_IMPORTED_MODULE_3__["default"].logRestore('Department', "Restored department: ".concat((dept === null || dept === void 0 ? void 0 : dept.name) || 'Unknown'));
           case 8:
-            _context3.n = 10;
+            _context3.n = 16;
             break;
           case 9:
-            _context3.p = 9;
+            if (!(activeTab === 'faculty')) {
+              _context3.n = 13;
+              break;
+            }
+            faculty = facultyList.find(function (f) {
+              return f.id === id;
+            });
+            _context3.n = 10;
+            return fetch("/api/faculties/".concat(id), {
+              method: 'PUT',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                archived: false
+              })
+            });
+          case 10:
+            _res6 = _context3.v;
+            if (!_res6.ok) {
+              _context3.n = 12;
+              break;
+            }
+            _context3.n = 11;
+            return _res6.json();
+          case 11:
+            _updated4 = _context3.v;
+            setFacultyList(function (prev) {
+              return prev.map(function (f) {
+                return f.id === id ? _updated4 : f;
+              });
+            });
+            _utils_logger__WEBPACK_IMPORTED_MODULE_3__["default"].logRestore('Faculty', "Restored faculty: ".concat((faculty === null || faculty === void 0 ? void 0 : faculty.name) || 'Unknown'));
+          case 12:
+            _context3.n = 16;
+            break;
+          case 13:
+            if (!(activeTab === 'students')) {
+              _context3.n = 16;
+              break;
+            }
+            student = studentList.find(function (s) {
+              return s.id === id;
+            });
+            _context3.n = 14;
+            return fetch("/api/students/".concat(id), {
+              method: 'PUT',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                archived: false
+              })
+            });
+          case 14:
+            _res7 = _context3.v;
+            if (!_res7.ok) {
+              _context3.n = 16;
+              break;
+            }
+            _context3.n = 15;
+            return _res7.json();
+          case 15:
+            _updated5 = _context3.v;
+            setStudentList(function (prev) {
+              return prev.map(function (s) {
+                return s.id === id ? _updated5 : s;
+              });
+            });
+            _utils_logger__WEBPACK_IMPORTED_MODULE_3__["default"].logRestore('Student', "Restored student: ".concat((student === null || student === void 0 ? void 0 : student.name) || 'Unknown'));
+          case 16:
+            _context3.n = 18;
+            break;
+          case 17:
+            _context3.p = 17;
             _t4 = _context3.v;
             console.error('Error unarchiving item:', _t4);
-          case 10:
+            type = activeTab === 'courses' ? 'Course' : activeTab === 'departments' ? 'Department' : activeTab === 'faculty' ? 'Faculty' : 'Student';
+            _utils_logger__WEBPACK_IMPORTED_MODULE_3__["default"].logError(type, "Failed to restore item");
+          case 18:
             return _context3.a(2);
         }
-      }, _callee3, null, [[1, 9]]);
+      }, _callee3, null, [[1, 17]]);
     }));
     return function handleUnarchive(_x3) {
-      return _ref3.apply(this, arguments);
+      return _ref4.apply(this, arguments);
     };
   }();
   var handlePermanentDelete = /*#__PURE__*/function () {
-    var _ref4 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee4(id) {
-      var res, _res6, _t5;
+    var _ref5 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee4(id) {
+      var skipConfirm,
+        course,
+        res,
+        dept,
+        _res8,
+        faculty,
+        _res9,
+        student,
+        _res0,
+        type,
+        _args4 = arguments,
+        _t5;
       return _regenerator().w(function (_context4) {
         while (1) switch (_context4.p = _context4.n) {
           case 0:
-            if (window.confirm('Permanently delete this item? This cannot be undone!')) {
+            skipConfirm = _args4.length > 1 && _args4[1] !== undefined ? _args4[1] : false;
+            if (!(!skipConfirm && !window.confirm('Permanently delete this item? This cannot be undone!'))) {
               _context4.n = 1;
               break;
             }
@@ -75672,6 +77548,9 @@ function Settings() {
               _context4.n = 3;
               break;
             }
+            course = courseList.find(function (c) {
+              return c.id === id;
+            });
             _context4.n = 2;
             return fetch("/api/courses/".concat(id), {
               method: 'DELETE'
@@ -75684,69 +77563,314 @@ function Settings() {
                   return c.id !== id;
                 });
               });
+              _utils_logger__WEBPACK_IMPORTED_MODULE_3__["default"].logDelete('Course', "Permanently deleted course: ".concat((course === null || course === void 0 ? void 0 : course.name) || 'Unknown'));
             }
-            _context4.n = 5;
+            _context4.n = 9;
             break;
           case 3:
             if (!(activeTab === 'departments')) {
               _context4.n = 5;
               break;
             }
+            dept = departmentList.find(function (d) {
+              return d.id === id;
+            });
             _context4.n = 4;
             return fetch("/api/departments/".concat(id), {
               method: 'DELETE'
             });
           case 4:
-            _res6 = _context4.v;
-            if (_res6.ok) {
+            _res8 = _context4.v;
+            if (_res8.ok) {
               setDepartmentList(function (prev) {
                 return prev.filter(function (d) {
                   return d.id !== id;
                 });
               });
+              _utils_logger__WEBPACK_IMPORTED_MODULE_3__["default"].logDelete('Department', "Permanently deleted department: ".concat((dept === null || dept === void 0 ? void 0 : dept.name) || 'Unknown'));
             }
-          case 5:
-            _context4.n = 7;
+            _context4.n = 9;
             break;
+          case 5:
+            if (!(activeTab === 'faculty')) {
+              _context4.n = 7;
+              break;
+            }
+            faculty = facultyList.find(function (f) {
+              return f.id === id;
+            });
+            _context4.n = 6;
+            return fetch("/api/faculties/".concat(id), {
+              method: 'DELETE'
+            });
           case 6:
-            _context4.p = 6;
+            _res9 = _context4.v;
+            if (_res9.ok) {
+              setFacultyList(function (prev) {
+                return prev.filter(function (f) {
+                  return f.id !== id;
+                });
+              });
+              _utils_logger__WEBPACK_IMPORTED_MODULE_3__["default"].logDelete('Faculty', "Permanently deleted faculty: ".concat((faculty === null || faculty === void 0 ? void 0 : faculty.name) || 'Unknown'));
+            }
+            _context4.n = 9;
+            break;
+          case 7:
+            if (!(activeTab === 'students')) {
+              _context4.n = 9;
+              break;
+            }
+            student = studentList.find(function (s) {
+              return s.id === id;
+            });
+            _context4.n = 8;
+            return fetch("/api/students/".concat(id), {
+              method: 'DELETE'
+            });
+          case 8:
+            _res0 = _context4.v;
+            if (_res0.ok) {
+              setStudentList(function (prev) {
+                return prev.filter(function (s) {
+                  return s.id !== id;
+                });
+              });
+              _utils_logger__WEBPACK_IMPORTED_MODULE_3__["default"].logDelete('Student', "Permanently deleted student: ".concat((student === null || student === void 0 ? void 0 : student.name) || 'Unknown'));
+            }
+          case 9:
+            _context4.n = 11;
+            break;
+          case 10:
+            _context4.p = 10;
             _t5 = _context4.v;
             console.error('Error deleting item:', _t5);
-          case 7:
+            type = activeTab === 'courses' ? 'Course' : activeTab === 'departments' ? 'Department' : activeTab === 'faculty' ? 'Faculty' : 'Student';
+            _utils_logger__WEBPACK_IMPORTED_MODULE_3__["default"].logError(type, "Failed to delete item");
+          case 11:
             return _context4.a(2);
         }
-      }, _callee4, null, [[1, 6]]);
+      }, _callee4, null, [[1, 10]]);
     }));
     return function handlePermanentDelete(_x4) {
-      return _ref4.apply(this, arguments);
+      return _ref5.apply(this, arguments);
     };
   }();
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+
+  // Bulk operations for restore all
+  var handleRestoreAll = /*#__PURE__*/function () {
+    var _ref6 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee5() {
+      var itemsToRestore, _iterator, _step, id, _t6, _t7;
+      return _regenerator().w(function (_context5) {
+        while (1) switch (_context5.p = _context5.n) {
+          case 0:
+            itemsToRestore = activeTab === 'courses' ? selectedCourses : activeTab === 'departments' ? selectedDepartments : activeTab === 'faculty' ? selectedFaculty : selectedStudents;
+            if (!(itemsToRestore.length === 0)) {
+              _context5.n = 1;
+              break;
+            }
+            alert('Please select items to restore');
+            return _context5.a(2);
+          case 1:
+            if (window.confirm("Restore ".concat(itemsToRestore.length, " selected item(s)?"))) {
+              _context5.n = 2;
+              break;
+            }
+            return _context5.a(2);
+          case 2:
+            _context5.p = 2;
+            _iterator = _createForOfIteratorHelper(itemsToRestore);
+            _context5.p = 3;
+            _iterator.s();
+          case 4:
+            if ((_step = _iterator.n()).done) {
+              _context5.n = 6;
+              break;
+            }
+            id = _step.value;
+            _context5.n = 5;
+            return handleUnarchive(id, true);
+          case 5:
+            _context5.n = 4;
+            break;
+          case 6:
+            _context5.n = 8;
+            break;
+          case 7:
+            _context5.p = 7;
+            _t6 = _context5.v;
+            _iterator.e(_t6);
+          case 8:
+            _context5.p = 8;
+            _iterator.f();
+            return _context5.f(8);
+          case 9:
+            // Clear selections
+            if (activeTab === 'courses') setSelectedCourses([]);else if (activeTab === 'departments') setSelectedDepartments([]);else if (activeTab === 'faculty') setSelectedFaculty([]);else if (activeTab === 'students') setSelectedStudents([]);
+            _context5.n = 11;
+            break;
+          case 10:
+            _context5.p = 10;
+            _t7 = _context5.v;
+            console.error('Error restoring items:', _t7);
+          case 11:
+            return _context5.a(2);
+        }
+      }, _callee5, null, [[3, 7, 8, 9], [2, 10]]);
+    }));
+    return function handleRestoreAll() {
+      return _ref6.apply(this, arguments);
+    };
+  }();
+
+  // Bulk delete
+  var handleDeleteAll = /*#__PURE__*/function () {
+    var _ref7 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee6() {
+      var itemsToDelete, _iterator2, _step2, id, _t8, _t9;
+      return _regenerator().w(function (_context6) {
+        while (1) switch (_context6.p = _context6.n) {
+          case 0:
+            itemsToDelete = activeTab === 'courses' ? selectedCourses : activeTab === 'departments' ? selectedDepartments : activeTab === 'faculty' ? selectedFaculty : selectedStudents;
+            if (!(itemsToDelete.length === 0)) {
+              _context6.n = 1;
+              break;
+            }
+            alert('Please select items to delete');
+            return _context6.a(2);
+          case 1:
+            if (window.confirm("Permanently delete ".concat(itemsToDelete.length, " selected item(s)? This cannot be undone!"))) {
+              _context6.n = 2;
+              break;
+            }
+            return _context6.a(2);
+          case 2:
+            _context6.p = 2;
+            _iterator2 = _createForOfIteratorHelper(itemsToDelete);
+            _context6.p = 3;
+            _iterator2.s();
+          case 4:
+            if ((_step2 = _iterator2.n()).done) {
+              _context6.n = 6;
+              break;
+            }
+            id = _step2.value;
+            _context6.n = 5;
+            return handlePermanentDelete(id, true);
+          case 5:
+            _context6.n = 4;
+            break;
+          case 6:
+            _context6.n = 8;
+            break;
+          case 7:
+            _context6.p = 7;
+            _t8 = _context6.v;
+            _iterator2.e(_t8);
+          case 8:
+            _context6.p = 8;
+            _iterator2.f();
+            return _context6.f(8);
+          case 9:
+            // Clear selections
+            if (activeTab === 'courses') setSelectedCourses([]);else if (activeTab === 'departments') setSelectedDepartments([]);else if (activeTab === 'faculty') setSelectedFaculty([]);else if (activeTab === 'students') setSelectedStudents([]);
+            _context6.n = 11;
+            break;
+          case 10:
+            _context6.p = 10;
+            _t9 = _context6.v;
+            console.error('Error deleting items:', _t9);
+          case 11:
+            return _context6.a(2);
+        }
+      }, _callee6, null, [[3, 7, 8, 9], [2, 10]]);
+    }));
+    return function handleDeleteAll() {
+      return _ref7.apply(this, arguments);
+    };
+  }();
+
+  // Toggle checkbox
+  var handleCheckboxToggle = function handleCheckboxToggle(id) {
+    if (activeTab === 'courses') {
+      setSelectedCourses(function (prev) {
+        return prev.includes(id) ? prev.filter(function (i) {
+          return i !== id;
+        }) : [].concat(_toConsumableArray(prev), [id]);
+      });
+    } else if (activeTab === 'departments') {
+      setSelectedDepartments(function (prev) {
+        return prev.includes(id) ? prev.filter(function (i) {
+          return i !== id;
+        }) : [].concat(_toConsumableArray(prev), [id]);
+      });
+    } else if (activeTab === 'faculty') {
+      setSelectedFaculty(function (prev) {
+        return prev.includes(id) ? prev.filter(function (i) {
+          return i !== id;
+        }) : [].concat(_toConsumableArray(prev), [id]);
+      });
+    } else if (activeTab === 'students') {
+      setSelectedStudents(function (prev) {
+        return prev.includes(id) ? prev.filter(function (i) {
+          return i !== id;
+        }) : [].concat(_toConsumableArray(prev), [id]);
+      });
+    }
+  };
+
+  // Select all toggle
+  var handleSelectAllToggle = function handleSelectAllToggle() {
+    if (activeTab === 'courses') {
+      setSelectedCourses(function (prev) {
+        return prev.length === filteredCourses.length ? [] : filteredCourses.map(function (c) {
+          return c.id;
+        });
+      });
+    } else if (activeTab === 'departments') {
+      setSelectedDepartments(function (prev) {
+        return prev.length === filteredDepartments.length ? [] : filteredDepartments.map(function (d) {
+          return d.id;
+        });
+      });
+    } else if (activeTab === 'faculty') {
+      setSelectedFaculty(function (prev) {
+        return prev.length === filteredFaculty.length ? [] : filteredFaculty.map(function (f) {
+          return f.id;
+        });
+      });
+    } else if (activeTab === 'students') {
+      setSelectedStudents(function (prev) {
+        return prev.length === filteredStudents.length ? [] : filteredStudents.map(function (s) {
+          return s.id;
+        });
+      });
+    }
+  };
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
     style: {
       display: 'flex',
       minHeight: '100vh',
       background: '#f8fafc'
     },
-    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_Navbar__WEBPACK_IMPORTED_MODULE_2__["default"], {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("main", {
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_Navbar__WEBPACK_IMPORTED_MODULE_2__["default"], {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("main", {
       className: "student-container",
       style: {
         flex: 1
       },
-      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
         className: "dashboard-header",
-        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
           className: "logout-btn",
           onClick: function onClick() {
             return window.location.href = '/login';
           },
           children: "Log out"
         })
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
         style: {
           padding: '24px 40px',
           borderBottom: '1px solid #e5e7eb'
         },
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("h1", {
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("h1", {
           style: {
             fontSize: 28,
             fontWeight: 700,
@@ -75755,7 +77879,7 @@ function Settings() {
             marginBottom: 4
           },
           children: "System Settings"
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("p", {
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("p", {
           style: {
             fontSize: 14,
             color: '#6b7280',
@@ -75763,21 +77887,22 @@ function Settings() {
           },
           children: "Manage archived items and system configuration"
         })]
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
         style: {
           display: 'flex',
           gap: 16,
           padding: '20px 40px',
           borderBottom: '1px solid #e5e7eb',
-          alignItems: 'center'
+          alignItems: 'center',
+          flexWrap: 'wrap'
         },
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
           style: {
             position: 'relative',
             flex: 1,
             maxWidth: 400
           },
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("svg", {
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("svg", {
             style: {
               position: 'absolute',
               left: 12,
@@ -75790,14 +77915,14 @@ function Settings() {
             fill: "none",
             stroke: "#9ca3af",
             strokeWidth: "2",
-            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("circle", {
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("circle", {
               cx: "11",
               cy: "11",
               r: "8"
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("path", {
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("path", {
               d: "m21 21-4.35-4.35"
             })]
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("input", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", {
             type: "text",
             placeholder: "Search archived ".concat(activeTab, "..."),
             value: search,
@@ -75813,26 +77938,175 @@ function Settings() {
               outline: 'none'
             }
           })]
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+        }), activeTab === 'courses' && uniqueDepartments.length > 0 && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("select", {
+          value: courseFilter,
+          onChange: function onChange(e) {
+            return setCourseFilter(e.target.value);
+          },
+          style: {
+            padding: '10px 12px',
+            border: '1px solid #e5e7eb',
+            borderRadius: 8,
+            fontSize: 14,
+            outline: 'none',
+            cursor: 'pointer',
+            background: '#fff'
+          },
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("option", {
+            value: "all",
+            children: "All Departments"
+          }), uniqueDepartments.map(function (dept) {
+            return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("option", {
+              value: dept,
+              children: dept
+            }, dept);
+          })]
+        }), activeTab === 'departments' && archivedDepartmentList.length > 0 && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("select", {
+          value: departmentFilter,
+          onChange: function onChange(e) {
+            return setDepartmentFilter(e.target.value);
+          },
+          style: {
+            padding: '10px 12px',
+            border: '1px solid #e5e7eb',
+            borderRadius: 8,
+            fontSize: 14,
+            outline: 'none',
+            cursor: 'pointer',
+            background: '#fff'
+          },
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("option", {
+            value: "all",
+            children: "All Departments"
+          }), archivedDepartmentList.map(function (dept) {
+            return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("option", {
+              value: dept.name,
+              children: dept.name
+            }, dept.id);
+          })]
+        }), activeTab === 'faculty' && uniqueFacultyDepartments.length > 0 && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("select", {
+          value: facultyFilter,
+          onChange: function onChange(e) {
+            return setFacultyFilter(e.target.value);
+          },
+          style: {
+            padding: '10px 12px',
+            border: '1px solid #e5e7eb',
+            borderRadius: 8,
+            fontSize: 14,
+            outline: 'none',
+            cursor: 'pointer',
+            background: '#fff'
+          },
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("option", {
+            value: "all",
+            children: "All Departments"
+          }), uniqueFacultyDepartments.map(function (dept) {
+            return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("option", {
+              value: dept,
+              children: dept
+            }, dept);
+          })]
+        }), activeTab === 'students' && uniqueStudentDepartments.length > 0 && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("select", {
+          value: studentFilter,
+          onChange: function onChange(e) {
+            return setStudentFilter(e.target.value);
+          },
+          style: {
+            padding: '10px 12px',
+            border: '1px solid #e5e7eb',
+            borderRadius: 8,
+            fontSize: 14,
+            outline: 'none',
+            cursor: 'pointer',
+            background: '#fff'
+          },
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("option", {
+            value: "all",
+            children: "All Departments"
+          }), uniqueStudentDepartments.map(function (dept) {
+            return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("option", {
+              value: dept,
+              children: dept
+            }, dept);
+          })]
+        }), activeTab === 'logs' && uniqueLogTypes.length > 0 && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("select", {
+          value: logFilter,
+          onChange: function onChange(e) {
+            return setLogFilter(e.target.value);
+          },
+          style: {
+            padding: '10px 12px',
+            border: '1px solid #e5e7eb',
+            borderRadius: 8,
+            fontSize: 14,
+            outline: 'none',
+            cursor: 'pointer',
+            background: '#fff'
+          },
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("option", {
+            value: "all",
+            children: "All Types"
+          }), uniqueLogTypes.map(function (type) {
+            return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("option", {
+              value: type,
+              children: type
+            }, type);
+          })]
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
           style: {
             fontSize: 13,
             color: '#6b7280',
             whiteSpace: 'nowrap'
           },
-          children: [activeTab === 'courses' && "".concat(filteredCourses.length, " of ").concat(archivedCourseList.length, " items"), activeTab === 'departments' && "".concat(filteredDepartments.length, " of ").concat(archivedDepartmentList.length, " items")]
+          children: [activeTab === 'courses' && "".concat(selectedCourses.length > 0 ? "".concat(selectedCourses.length, " selected \u2022 ") : '').concat(filteredCourses.length, " of ").concat(archivedCourseList.length, " items"), activeTab === 'departments' && "".concat(selectedDepartments.length > 0 ? "".concat(selectedDepartments.length, " selected \u2022 ") : '').concat(filteredDepartments.length, " of ").concat(archivedDepartmentList.length, " items"), activeTab === 'faculty' && "".concat(selectedFaculty.length > 0 ? "".concat(selectedFaculty.length, " selected \u2022 ") : '').concat(filteredFaculty.length, " of ").concat(archivedFacultyList.length, " items"), activeTab === 'students' && "".concat(selectedStudents.length > 0 ? "".concat(selectedStudents.length, " selected \u2022 ") : '').concat(filteredStudents.length, " of ").concat(archivedStudentList.length, " items"), activeTab === 'logs' && "".concat(filteredLogs.length, " of ").concat(logList.length, " entries")]
+        }), activeTab !== 'logs' && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.Fragment, {
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
+            onClick: handleRestoreAll,
+            disabled: activeTab === 'courses' && selectedCourses.length === 0 || activeTab === 'departments' && selectedDepartments.length === 0 || activeTab === 'faculty' && selectedFaculty.length === 0 || activeTab === 'students' && selectedStudents.length === 0,
+            style: {
+              padding: '10px 16px',
+              background: '#dcfce7',
+              color: '#16a34a',
+              border: 'none',
+              borderRadius: 8,
+              fontSize: 13,
+              fontWeight: 600,
+              cursor: 'pointer',
+              whiteSpace: 'nowrap',
+              opacity: activeTab === 'courses' && selectedCourses.length === 0 || activeTab === 'departments' && selectedDepartments.length === 0 || activeTab === 'faculty' && selectedFaculty.length === 0 || activeTab === 'students' && selectedStudents.length === 0 ? 0.5 : 1
+            },
+            children: "\u21BB Restore Selected"
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
+            onClick: handleDeleteAll,
+            disabled: activeTab === 'courses' && selectedCourses.length === 0 || activeTab === 'departments' && selectedDepartments.length === 0 || activeTab === 'faculty' && selectedFaculty.length === 0 || activeTab === 'students' && selectedStudents.length === 0,
+            style: {
+              padding: '10px 16px',
+              background: '#fee2e2',
+              color: '#dc2626',
+              border: 'none',
+              borderRadius: 8,
+              fontSize: 13,
+              fontWeight: 600,
+              cursor: 'pointer',
+              whiteSpace: 'nowrap',
+              opacity: activeTab === 'courses' && selectedCourses.length === 0 || activeTab === 'departments' && selectedDepartments.length === 0 || activeTab === 'faculty' && selectedFaculty.length === 0 || activeTab === 'students' && selectedStudents.length === 0 ? 0.5 : 1
+            },
+            children: "\uD83D\uDDD1\uFE0F Delete Selected"
+          })]
         })]
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
         style: {
           padding: '0 40px'
         },
-        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
           style: {
             display: 'flex',
             gap: 4,
             borderBottom: '2px solid #e5e7eb',
             marginBottom: 24
           },
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
             onClick: function onClick() {
               return setActiveTab('courses');
             },
@@ -75849,7 +78123,7 @@ function Settings() {
               transition: 'all 0.2s'
             },
             children: "\uD83D\uDCDA Archived Courses"
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
             onClick: function onClick() {
               return setActiveTab('departments');
             },
@@ -75866,32 +78140,99 @@ function Settings() {
               transition: 'all 0.2s'
             },
             children: "\uD83C\uDFDB\uFE0F Archived Departments"
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
+            onClick: function onClick() {
+              return setActiveTab('faculty');
+            },
+            style: {
+              background: 'none',
+              border: 'none',
+              borderBottom: activeTab === 'faculty' ? '3px solid #111827' : '3px solid transparent',
+              padding: '14px 20px',
+              cursor: 'pointer',
+              fontWeight: activeTab === 'faculty' ? 600 : 400,
+              color: activeTab === 'faculty' ? '#111827' : '#6b7280',
+              marginBottom: -2,
+              fontSize: 14,
+              transition: 'all 0.2s'
+            },
+            children: "\uD83D\uDC68\u200D\uD83C\uDFEB Archived Faculty"
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
+            onClick: function onClick() {
+              return setActiveTab('students');
+            },
+            style: {
+              background: 'none',
+              border: 'none',
+              borderBottom: activeTab === 'students' ? '3px solid #111827' : '3px solid transparent',
+              padding: '14px 20px',
+              cursor: 'pointer',
+              fontWeight: activeTab === 'students' ? 600 : 400,
+              color: activeTab === 'students' ? '#111827' : '#6b7280',
+              marginBottom: -2,
+              fontSize: 14,
+              transition: 'all 0.2s'
+            },
+            children: "\uD83D\uDC68\u200D\uD83C\uDF93 Archived Students"
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
+            onClick: function onClick() {
+              return setActiveTab('logs');
+            },
+            style: {
+              background: 'none',
+              border: 'none',
+              borderBottom: activeTab === 'logs' ? '3px solid #111827' : '3px solid transparent',
+              padding: '14px 20px',
+              cursor: 'pointer',
+              fontWeight: activeTab === 'logs' ? 600 : 400,
+              color: activeTab === 'logs' ? '#111827' : '#6b7280',
+              marginBottom: -2,
+              fontSize: 14,
+              transition: 'all 0.2s'
+            },
+            children: "\uD83D\uDCCB System Logs"
           })]
         })
-      }), activeTab === 'courses' && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+      }), activeTab === 'courses' && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
         style: {
           padding: '0 40px',
           marginBottom: 40
         },
-        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
           style: {
             background: '#fff',
             borderRadius: 12,
             overflow: 'hidden',
             boxShadow: '0 1px 3px rgba(0,0,0,0.1)'
           },
-          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("table", {
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("table", {
             style: {
               width: '100%',
               borderCollapse: 'collapse'
             },
-            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("thead", {
-              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("tr", {
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("thead", {
+              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("tr", {
                 style: {
                   background: '#f9fafb',
                   borderBottom: '1px solid #e5e7eb'
                 },
-                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("th", {
+                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("th", {
+                  style: {
+                    width: 40,
+                    textAlign: 'center',
+                    padding: '14px 20px'
+                  },
+                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", {
+                    type: "checkbox",
+                    checked: filteredCourses.length > 0 && selectedCourses.length === filteredCourses.length,
+                    onChange: handleSelectAllToggle,
+                    style: {
+                      cursor: 'pointer',
+                      width: 16,
+                      height: 16
+                    }
+                  })
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("th", {
                   style: {
                     textAlign: 'left',
                     padding: '14px 20px',
@@ -75902,7 +78243,7 @@ function Settings() {
                     letterSpacing: 0.5
                   },
                   children: "Course Name"
-                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("th", {
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("th", {
                   style: {
                     textAlign: 'left',
                     padding: '14px 20px',
@@ -75913,7 +78254,7 @@ function Settings() {
                     letterSpacing: 0.5
                   },
                   children: "Department"
-                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("th", {
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("th", {
                   style: {
                     textAlign: 'left',
                     padding: '14px 20px',
@@ -75924,7 +78265,7 @@ function Settings() {
                     letterSpacing: 0.5
                   },
                   children: "Level"
-                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("th", {
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("th", {
                   style: {
                     textAlign: 'left',
                     padding: '14px 20px',
@@ -75935,7 +78276,7 @@ function Settings() {
                     letterSpacing: 0.5
                   },
                   children: "Credits"
-                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("th", {
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("th", {
                   style: {
                     textAlign: 'center',
                     padding: '14px 20px',
@@ -75948,20 +78289,20 @@ function Settings() {
                   children: "Actions"
                 })]
               })
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("tbody", {
-              children: [filteredCourses.length === 0 && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("tr", {
-                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("td", {
-                  colSpan: "5",
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("tbody", {
+              children: [filteredCourses.length === 0 && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("tr", {
+                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("td", {
+                  colSpan: "6",
                   style: {
                     padding: '60px 20px',
                     textAlign: 'center',
                     color: '#9ca3af'
                   },
-                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
                     style: {
                       marginBottom: 12
                     },
-                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("svg", {
+                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("svg", {
                       width: "48",
                       height: "48",
                       viewBox: "0 0 24 24",
@@ -75971,13 +78312,13 @@ function Settings() {
                       style: {
                         margin: '0 auto'
                       },
-                      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("path", {
+                      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("path", {
                         d: "M3 3h18v4H3z"
-                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("path", {
+                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("path", {
                         d: "M3 7v11a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V7"
                       })]
                     })
-                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
                     style: {
                       fontSize: 15,
                       fontWeight: 500,
@@ -75985,7 +78326,7 @@ function Settings() {
                       marginBottom: 4
                     },
                     children: search ? 'No archived courses match your search' : 'No archived courses'
-                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
                     style: {
                       fontSize: 13,
                       color: '#9ca3af'
@@ -75994,7 +78335,7 @@ function Settings() {
                   })]
                 })
               }), filteredCourses.map(function (item, idx) {
-                return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("tr", {
+                return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("tr", {
                   style: {
                     borderBottom: '1px solid #f3f4f6',
                     transition: 'background 0.15s'
@@ -76005,41 +78346,67 @@ function Settings() {
                   onMouseLeave: function onMouseLeave(e) {
                     return e.currentTarget.style.background = 'transparent';
                   },
-                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("td", {
+                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("td", {
+                    style: {
+                      textAlign: 'center',
+                      padding: '16px 20px'
+                    },
+                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", {
+                      type: "checkbox",
+                      checked: selectedCourses.includes(item.id),
+                      onChange: function onChange() {
+                        return handleCheckboxToggle(item.id);
+                      },
+                      style: {
+                        cursor: 'pointer',
+                        width: 16,
+                        height: 16
+                      },
+                      onClick: function onClick(e) {
+                        return e.stopPropagation();
+                      }
+                    })
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("td", {
                     style: {
                       padding: '16px 20px',
                       fontSize: 14,
                       color: '#111827',
                       fontWeight: 600
                     },
-                    children: item.name
-                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("td", {
+                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(HighlightText, {
+                      text: item.name,
+                      highlight: search
+                    })
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("td", {
                     style: {
                       padding: '16px 20px',
                       fontSize: 14,
                       color: '#6b7280'
                     },
-                    children: item.department
-                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("td", {
+                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(HighlightText, {
+                      text: item.department,
+                      highlight: search
+                    })
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("td", {
                     style: {
                       padding: '16px 20px',
                       fontSize: 14,
                       color: '#6b7280'
                     },
                     children: item.gender
-                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("td", {
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("td", {
                     style: {
                       padding: '16px 20px',
                       fontSize: 14,
                       color: '#6b7280'
                     },
                     children: item.age
-                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("td", {
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("td", {
                     style: {
                       padding: '16px 20px',
                       textAlign: 'center'
                     },
-                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
+                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
                       onClick: function onClick() {
                         return handleUnarchive(item.id);
                       },
@@ -76063,7 +78430,7 @@ function Settings() {
                       },
                       title: "Restore",
                       children: "\u21BB Restore"
-                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
                       onClick: function onClick() {
                         return handlePermanentDelete(item.id);
                       },
@@ -76093,30 +78460,46 @@ function Settings() {
             })]
           })
         })
-      }), activeTab === 'departments' && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+      }), activeTab === 'departments' && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
         style: {
           padding: '0 40px',
           marginBottom: 40
         },
-        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
           style: {
             background: '#fff',
             borderRadius: 12,
             overflow: 'hidden',
             boxShadow: '0 1px 3px rgba(0,0,0,0.1)'
           },
-          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("table", {
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("table", {
             style: {
               width: '100%',
               borderCollapse: 'collapse'
             },
-            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("thead", {
-              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("tr", {
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("thead", {
+              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("tr", {
                 style: {
                   background: '#f9fafb',
                   borderBottom: '1px solid #e5e7eb'
                 },
-                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("th", {
+                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("th", {
+                  style: {
+                    width: 40,
+                    textAlign: 'center',
+                    padding: '14px 20px'
+                  },
+                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", {
+                    type: "checkbox",
+                    checked: filteredDepartments.length > 0 && selectedDepartments.length === filteredDepartments.length,
+                    onChange: handleSelectAllToggle,
+                    style: {
+                      cursor: 'pointer',
+                      width: 16,
+                      height: 16
+                    }
+                  })
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("th", {
                   style: {
                     textAlign: 'left',
                     padding: '14px 20px',
@@ -76127,7 +78510,7 @@ function Settings() {
                     letterSpacing: 0.5
                   },
                   children: "Department Name"
-                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("th", {
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("th", {
                   style: {
                     textAlign: 'left',
                     padding: '14px 20px',
@@ -76138,7 +78521,7 @@ function Settings() {
                     letterSpacing: 0.5
                   },
                   children: "Dean"
-                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("th", {
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("th", {
                   style: {
                     textAlign: 'left',
                     padding: '14px 20px',
@@ -76149,7 +78532,7 @@ function Settings() {
                     letterSpacing: 0.5
                   },
                   children: "Contact"
-                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("th", {
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("th", {
                   style: {
                     textAlign: 'left',
                     padding: '14px 20px',
@@ -76160,7 +78543,7 @@ function Settings() {
                     letterSpacing: 0.5
                   },
                   children: "Status"
-                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("th", {
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("th", {
                   style: {
                     textAlign: 'center',
                     padding: '14px 20px',
@@ -76173,20 +78556,20 @@ function Settings() {
                   children: "Actions"
                 })]
               })
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("tbody", {
-              children: [filteredDepartments.length === 0 && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("tr", {
-                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("td", {
-                  colSpan: "5",
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("tbody", {
+              children: [filteredDepartments.length === 0 && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("tr", {
+                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("td", {
+                  colSpan: "6",
                   style: {
                     padding: '60px 20px',
                     textAlign: 'center',
                     color: '#9ca3af'
                   },
-                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
                     style: {
                       marginBottom: 12
                     },
-                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("svg", {
+                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("svg", {
                       width: "48",
                       height: "48",
                       viewBox: "0 0 24 24",
@@ -76196,13 +78579,13 @@ function Settings() {
                       style: {
                         margin: '0 auto'
                       },
-                      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("path", {
+                      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("path", {
                         d: "M3 3h18v4H3z"
-                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("path", {
+                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("path", {
                         d: "M3 7v11a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V7"
                       })]
                     })
-                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
                     style: {
                       fontSize: 15,
                       fontWeight: 500,
@@ -76210,7 +78593,7 @@ function Settings() {
                       marginBottom: 4
                     },
                     children: search ? 'No archived departments match your search' : 'No archived departments'
-                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
                     style: {
                       fontSize: 13,
                       color: '#9ca3af'
@@ -76219,7 +78602,7 @@ function Settings() {
                   })]
                 })
               }), filteredDepartments.map(function (item, idx) {
-                return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("tr", {
+                return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("tr", {
                   style: {
                     borderBottom: '1px solid #f3f4f6',
                     transition: 'background 0.15s'
@@ -76230,33 +78613,62 @@ function Settings() {
                   onMouseLeave: function onMouseLeave(e) {
                     return e.currentTarget.style.background = 'transparent';
                   },
-                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("td", {
+                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("td", {
+                    style: {
+                      textAlign: 'center',
+                      padding: '16px 20px'
+                    },
+                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", {
+                      type: "checkbox",
+                      checked: selectedDepartments.includes(item.id),
+                      onChange: function onChange() {
+                        return handleCheckboxToggle(item.id);
+                      },
+                      style: {
+                        cursor: 'pointer',
+                        width: 16,
+                        height: 16
+                      },
+                      onClick: function onClick(e) {
+                        return e.stopPropagation();
+                      }
+                    })
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("td", {
                     style: {
                       padding: '16px 20px',
                       fontSize: 14,
                       color: '#111827',
                       fontWeight: 600
                     },
-                    children: item.name
-                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("td", {
+                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(HighlightText, {
+                      text: item.name,
+                      highlight: search
+                    })
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("td", {
                     style: {
                       padding: '16px 20px',
                       fontSize: 14,
                       color: '#6b7280'
                     },
-                    children: item.head || '-'
-                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("td", {
+                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(HighlightText, {
+                      text: item.head || '-',
+                      highlight: search
+                    })
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("td", {
                     style: {
                       padding: '16px 20px',
                       fontSize: 14,
                       color: '#6b7280'
                     },
-                    children: item.email || '-'
-                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("td", {
+                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(HighlightText, {
+                      text: item.email || '-',
+                      highlight: search
+                    })
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("td", {
                     style: {
                       padding: '16px 20px'
                     },
-                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("span", {
+                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("span", {
                       style: {
                         display: 'inline-block',
                         background: '#f3f4f6',
@@ -76268,12 +78680,12 @@ function Settings() {
                       },
                       children: "Archived"
                     })
-                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("td", {
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("td", {
                     style: {
                       padding: '16px 20px',
                       textAlign: 'center'
                     },
-                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
+                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
                       onClick: function onClick() {
                         return handleUnarchive(item.id);
                       },
@@ -76297,7 +78709,7 @@ function Settings() {
                       },
                       title: "Restore",
                       children: "\u21BB Restore"
-                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
                       onClick: function onClick() {
                         return handlePermanentDelete(item.id);
                       },
@@ -76326,6 +78738,1011 @@ function Settings() {
               })]
             })]
           })
+        })
+      }), activeTab === 'faculty' && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+        style: {
+          padding: '0 40px',
+          marginBottom: 40
+        },
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+          style: {
+            background: '#fff',
+            borderRadius: 12,
+            overflow: 'hidden',
+            boxShadow: '0 1px 3px rgba(0,0,0,0.1)'
+          },
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("table", {
+            style: {
+              width: '100%',
+              borderCollapse: 'collapse'
+            },
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("thead", {
+              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("tr", {
+                style: {
+                  background: '#f9fafb',
+                  borderBottom: '1px solid #e5e7eb'
+                },
+                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("th", {
+                  style: {
+                    width: 40,
+                    textAlign: 'center',
+                    padding: '14px 20px'
+                  },
+                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", {
+                    type: "checkbox",
+                    checked: filteredFaculty.length > 0 && selectedFaculty.length === filteredFaculty.length,
+                    onChange: handleSelectAllToggle,
+                    style: {
+                      cursor: 'pointer',
+                      width: 16,
+                      height: 16
+                    }
+                  })
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("th", {
+                  style: {
+                    textAlign: 'left',
+                    padding: '14px 20px',
+                    fontWeight: 600,
+                    fontSize: 12,
+                    color: '#6b7280',
+                    textTransform: 'uppercase',
+                    letterSpacing: 0.5
+                  },
+                  children: "Name"
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("th", {
+                  style: {
+                    textAlign: 'left',
+                    padding: '14px 20px',
+                    fontWeight: 600,
+                    fontSize: 12,
+                    color: '#6b7280',
+                    textTransform: 'uppercase',
+                    letterSpacing: 0.5
+                  },
+                  children: "Email"
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("th", {
+                  style: {
+                    textAlign: 'left',
+                    padding: '14px 20px',
+                    fontWeight: 600,
+                    fontSize: 12,
+                    color: '#6b7280',
+                    textTransform: 'uppercase',
+                    letterSpacing: 0.5
+                  },
+                  children: "Department"
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("th", {
+                  style: {
+                    textAlign: 'left',
+                    padding: '14px 20px',
+                    fontWeight: 600,
+                    fontSize: 12,
+                    color: '#6b7280',
+                    textTransform: 'uppercase',
+                    letterSpacing: 0.5
+                  },
+                  children: "Course"
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("th", {
+                  style: {
+                    textAlign: 'left',
+                    padding: '14px 20px',
+                    fontWeight: 600,
+                    fontSize: 12,
+                    color: '#6b7280',
+                    textTransform: 'uppercase',
+                    letterSpacing: 0.5
+                  },
+                  children: "Gender"
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("th", {
+                  style: {
+                    textAlign: 'center',
+                    padding: '14px 20px',
+                    fontWeight: 600,
+                    fontSize: 12,
+                    color: '#6b7280',
+                    textTransform: 'uppercase',
+                    letterSpacing: 0.5
+                  },
+                  children: "Actions"
+                })]
+              })
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("tbody", {
+              children: [filteredFaculty.length === 0 && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("tr", {
+                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("td", {
+                  colSpan: "7",
+                  style: {
+                    padding: '60px 20px',
+                    textAlign: 'center',
+                    color: '#9ca3af'
+                  },
+                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+                    style: {
+                      marginBottom: 12
+                    },
+                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("svg", {
+                      width: "48",
+                      height: "48",
+                      viewBox: "0 0 24 24",
+                      fill: "none",
+                      stroke: "#d1d5db",
+                      strokeWidth: "1.5",
+                      style: {
+                        margin: '0 auto'
+                      },
+                      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("path", {
+                        d: "M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"
+                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("circle", {
+                        cx: "12",
+                        cy: "7",
+                        r: "4"
+                      })]
+                    })
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+                    style: {
+                      fontSize: 15,
+                      fontWeight: 500,
+                      color: '#6b7280',
+                      marginBottom: 4
+                    },
+                    children: search ? 'No archived faculty match your search' : 'No archived faculty'
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+                    style: {
+                      fontSize: 13,
+                      color: '#9ca3af'
+                    },
+                    children: search ? 'Try adjusting your search terms' : 'Archived faculty will appear here'
+                  })]
+                })
+              }), filteredFaculty.map(function (item, idx) {
+                return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("tr", {
+                  style: {
+                    borderBottom: '1px solid #f3f4f6',
+                    transition: 'background 0.15s'
+                  },
+                  onMouseEnter: function onMouseEnter(e) {
+                    return e.currentTarget.style.background = '#f9fafb';
+                  },
+                  onMouseLeave: function onMouseLeave(e) {
+                    return e.currentTarget.style.background = 'transparent';
+                  },
+                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("td", {
+                    style: {
+                      textAlign: 'center',
+                      padding: '16px 20px'
+                    },
+                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", {
+                      type: "checkbox",
+                      checked: selectedFaculty.includes(item.id),
+                      onChange: function onChange() {
+                        return handleCheckboxToggle(item.id);
+                      },
+                      style: {
+                        cursor: 'pointer',
+                        width: 16,
+                        height: 16
+                      },
+                      onClick: function onClick(e) {
+                        return e.stopPropagation();
+                      }
+                    })
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("td", {
+                    style: {
+                      padding: '16px 20px',
+                      fontSize: 14,
+                      color: '#111827',
+                      fontWeight: 600
+                    },
+                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(HighlightText, {
+                      text: item.name,
+                      highlight: search
+                    })
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("td", {
+                    style: {
+                      padding: '16px 20px',
+                      fontSize: 14,
+                      color: '#6b7280'
+                    },
+                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(HighlightText, {
+                      text: item.email || '-',
+                      highlight: search
+                    })
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("td", {
+                    style: {
+                      padding: '16px 20px',
+                      fontSize: 14,
+                      color: '#6b7280'
+                    },
+                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(HighlightText, {
+                      text: item.department || '-',
+                      highlight: search
+                    })
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("td", {
+                    style: {
+                      padding: '16px 20px',
+                      fontSize: 14,
+                      color: '#6b7280'
+                    },
+                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(HighlightText, {
+                      text: item.subject || '-',
+                      highlight: search
+                    })
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("td", {
+                    style: {
+                      padding: '16px 20px',
+                      fontSize: 14,
+                      color: '#6b7280'
+                    },
+                    children: item.gender || '-'
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("td", {
+                    style: {
+                      padding: '16px 20px',
+                      textAlign: 'center'
+                    },
+                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
+                      onClick: function onClick() {
+                        return handleUnarchive(item.id);
+                      },
+                      style: {
+                        background: '#dcfce7',
+                        border: 'none',
+                        cursor: 'pointer',
+                        padding: '6px 12px',
+                        marginRight: 8,
+                        borderRadius: 6,
+                        fontSize: 12,
+                        fontWeight: 600,
+                        color: '#16a34a',
+                        transition: 'all 0.2s'
+                      },
+                      onMouseEnter: function onMouseEnter(e) {
+                        return e.target.style.background = '#bbf7d0';
+                      },
+                      onMouseLeave: function onMouseLeave(e) {
+                        return e.target.style.background = '#dcfce7';
+                      },
+                      title: "Restore",
+                      children: "\u21BB Restore"
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
+                      onClick: function onClick() {
+                        return handlePermanentDelete(item.id);
+                      },
+                      style: {
+                        background: '#fee2e2',
+                        border: 'none',
+                        cursor: 'pointer',
+                        padding: '6px 12px',
+                        borderRadius: 6,
+                        fontSize: 12,
+                        fontWeight: 600,
+                        color: '#dc2626',
+                        transition: 'all 0.2s'
+                      },
+                      onMouseEnter: function onMouseEnter(e) {
+                        return e.target.style.background = '#fecaca';
+                      },
+                      onMouseLeave: function onMouseLeave(e) {
+                        return e.target.style.background = '#fee2e2';
+                      },
+                      title: "Delete Permanently",
+                      children: "\uD83D\uDDD1\uFE0F Delete"
+                    })]
+                  })]
+                }, item.id);
+              })]
+            })]
+          })
+        })
+      }), activeTab === 'students' && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+        style: {
+          padding: '0 40px',
+          marginBottom: 40
+        },
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+          style: {
+            background: '#fff',
+            borderRadius: 12,
+            overflow: 'hidden',
+            boxShadow: '0 1px 3px rgba(0,0,0,0.1)'
+          },
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("table", {
+            style: {
+              width: '100%',
+              borderCollapse: 'collapse'
+            },
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("thead", {
+              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("tr", {
+                style: {
+                  background: '#f9fafb',
+                  borderBottom: '1px solid #e5e7eb'
+                },
+                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("th", {
+                  style: {
+                    width: 40,
+                    textAlign: 'center',
+                    padding: '14px 20px'
+                  },
+                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", {
+                    type: "checkbox",
+                    checked: filteredStudents.length > 0 && selectedStudents.length === filteredStudents.length,
+                    onChange: handleSelectAllToggle,
+                    style: {
+                      cursor: 'pointer',
+                      width: 16,
+                      height: 16
+                    }
+                  })
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("th", {
+                  style: {
+                    textAlign: 'left',
+                    padding: '14px 20px',
+                    fontWeight: 600,
+                    fontSize: 12,
+                    color: '#6b7280',
+                    textTransform: 'uppercase',
+                    letterSpacing: 0.5
+                  },
+                  children: "Name"
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("th", {
+                  style: {
+                    textAlign: 'left',
+                    padding: '14px 20px',
+                    fontWeight: 600,
+                    fontSize: 12,
+                    color: '#6b7280',
+                    textTransform: 'uppercase',
+                    letterSpacing: 0.5
+                  },
+                  children: "Email"
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("th", {
+                  style: {
+                    textAlign: 'left',
+                    padding: '14px 20px',
+                    fontWeight: 600,
+                    fontSize: 12,
+                    color: '#6b7280',
+                    textTransform: 'uppercase',
+                    letterSpacing: 0.5
+                  },
+                  children: "Department"
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("th", {
+                  style: {
+                    textAlign: 'left',
+                    padding: '14px 20px',
+                    fontWeight: 600,
+                    fontSize: 12,
+                    color: '#6b7280',
+                    textTransform: 'uppercase',
+                    letterSpacing: 0.5
+                  },
+                  children: "Course"
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("th", {
+                  style: {
+                    textAlign: 'left',
+                    padding: '14px 20px',
+                    fontWeight: 600,
+                    fontSize: 12,
+                    color: '#6b7280',
+                    textTransform: 'uppercase',
+                    letterSpacing: 0.5
+                  },
+                  children: "Year"
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("th", {
+                  style: {
+                    textAlign: 'left',
+                    padding: '14px 20px',
+                    fontWeight: 600,
+                    fontSize: 12,
+                    color: '#6b7280',
+                    textTransform: 'uppercase',
+                    letterSpacing: 0.5
+                  },
+                  children: "Gender"
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("th", {
+                  style: {
+                    textAlign: 'center',
+                    padding: '14px 20px',
+                    fontWeight: 600,
+                    fontSize: 12,
+                    color: '#6b7280',
+                    textTransform: 'uppercase',
+                    letterSpacing: 0.5
+                  },
+                  children: "Actions"
+                })]
+              })
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("tbody", {
+              children: [filteredStudents.length === 0 && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("tr", {
+                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("td", {
+                  colSpan: "8",
+                  style: {
+                    padding: '60px 20px',
+                    textAlign: 'center',
+                    color: '#9ca3af'
+                  },
+                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+                    style: {
+                      marginBottom: 12
+                    },
+                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("svg", {
+                      width: "48",
+                      height: "48",
+                      viewBox: "0 0 24 24",
+                      fill: "none",
+                      stroke: "#d1d5db",
+                      strokeWidth: "1.5",
+                      style: {
+                        margin: '0 auto'
+                      },
+                      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("path", {
+                        d: "M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"
+                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("circle", {
+                        cx: "12",
+                        cy: "7",
+                        r: "4"
+                      })]
+                    })
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+                    style: {
+                      fontSize: 15,
+                      fontWeight: 500,
+                      color: '#6b7280',
+                      marginBottom: 4
+                    },
+                    children: search ? 'No archived students match your search' : 'No archived students'
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+                    style: {
+                      fontSize: 13,
+                      color: '#9ca3af'
+                    },
+                    children: search ? 'Try adjusting your search terms' : 'Archived students will appear here'
+                  })]
+                })
+              }), filteredStudents.map(function (item, idx) {
+                return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("tr", {
+                  style: {
+                    borderBottom: '1px solid #f3f4f6',
+                    transition: 'background 0.15s'
+                  },
+                  onMouseEnter: function onMouseEnter(e) {
+                    return e.currentTarget.style.background = '#f9fafb';
+                  },
+                  onMouseLeave: function onMouseLeave(e) {
+                    return e.currentTarget.style.background = 'transparent';
+                  },
+                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("td", {
+                    style: {
+                      textAlign: 'center',
+                      padding: '16px 20px'
+                    },
+                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", {
+                      type: "checkbox",
+                      checked: selectedStudents.includes(item.id),
+                      onChange: function onChange() {
+                        return handleCheckboxToggle(item.id);
+                      },
+                      style: {
+                        cursor: 'pointer',
+                        width: 16,
+                        height: 16
+                      },
+                      onClick: function onClick(e) {
+                        return e.stopPropagation();
+                      }
+                    })
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("td", {
+                    style: {
+                      padding: '16px 20px',
+                      fontSize: 14,
+                      color: '#111827',
+                      fontWeight: 600
+                    },
+                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(HighlightText, {
+                      text: item.name,
+                      highlight: search
+                    })
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("td", {
+                    style: {
+                      padding: '16px 20px',
+                      fontSize: 14,
+                      color: '#6b7280'
+                    },
+                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(HighlightText, {
+                      text: item.email || '-',
+                      highlight: search
+                    })
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("td", {
+                    style: {
+                      padding: '16px 20px',
+                      fontSize: 14,
+                      color: '#6b7280'
+                    },
+                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(HighlightText, {
+                      text: item.department || '-',
+                      highlight: search
+                    })
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("td", {
+                    style: {
+                      padding: '16px 20px',
+                      fontSize: 14,
+                      color: '#6b7280'
+                    },
+                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(HighlightText, {
+                      text: item.course || '-',
+                      highlight: search
+                    })
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("td", {
+                    style: {
+                      padding: '16px 20px',
+                      fontSize: 14,
+                      color: '#6b7280'
+                    },
+                    children: item.year || '-'
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("td", {
+                    style: {
+                      padding: '16px 20px',
+                      fontSize: 14,
+                      color: '#6b7280'
+                    },
+                    children: item.gender || '-'
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("td", {
+                    style: {
+                      padding: '16px 20px',
+                      textAlign: 'center'
+                    },
+                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
+                      onClick: function onClick() {
+                        return handleUnarchive(item.id);
+                      },
+                      style: {
+                        background: '#dcfce7',
+                        border: 'none',
+                        cursor: 'pointer',
+                        padding: '6px 12px',
+                        marginRight: 8,
+                        borderRadius: 6,
+                        fontSize: 12,
+                        fontWeight: 600,
+                        color: '#16a34a',
+                        transition: 'all 0.2s'
+                      },
+                      onMouseEnter: function onMouseEnter(e) {
+                        return e.target.style.background = '#bbf7d0';
+                      },
+                      onMouseLeave: function onMouseLeave(e) {
+                        return e.target.style.background = '#dcfce7';
+                      },
+                      title: "Restore",
+                      children: "\u21BB Restore"
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
+                      onClick: function onClick() {
+                        return handlePermanentDelete(item.id);
+                      },
+                      style: {
+                        background: '#fee2e2',
+                        border: 'none',
+                        cursor: 'pointer',
+                        padding: '6px 12px',
+                        borderRadius: 6,
+                        fontSize: 12,
+                        fontWeight: 600,
+                        color: '#dc2626',
+                        transition: 'all 0.2s'
+                      },
+                      onMouseEnter: function onMouseEnter(e) {
+                        return e.target.style.background = '#fecaca';
+                      },
+                      onMouseLeave: function onMouseLeave(e) {
+                        return e.target.style.background = '#fee2e2';
+                      },
+                      title: "Delete Permanently",
+                      children: "\uD83D\uDDD1\uFE0F Delete"
+                    })]
+                  })]
+                }, item.id);
+              })]
+            })]
+          })
+        })
+      }), activeTab === 'logs' && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+        style: {
+          padding: '0 40px',
+          marginBottom: 40
+        },
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+          style: {
+            background: '#fff',
+            borderRadius: 12,
+            overflow: 'hidden',
+            boxShadow: '0 1px 3px rgba(0,0,0,0.1)'
+          },
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("table", {
+            style: {
+              width: '100%',
+              borderCollapse: 'collapse'
+            },
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("thead", {
+              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("tr", {
+                style: {
+                  background: '#f9fafb',
+                  borderBottom: '1px solid #e5e7eb'
+                },
+                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("th", {
+                  style: {
+                    textAlign: 'left',
+                    padding: '14px 20px',
+                    fontWeight: 600,
+                    fontSize: 12,
+                    color: '#6b7280',
+                    textTransform: 'uppercase',
+                    letterSpacing: 0.5
+                  },
+                  children: "Timestamp"
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("th", {
+                  style: {
+                    textAlign: 'left',
+                    padding: '14px 20px',
+                    fontWeight: 600,
+                    fontSize: 12,
+                    color: '#6b7280',
+                    textTransform: 'uppercase',
+                    letterSpacing: 0.5
+                  },
+                  children: "User"
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("th", {
+                  style: {
+                    textAlign: 'left',
+                    padding: '14px 20px',
+                    fontWeight: 600,
+                    fontSize: 12,
+                    color: '#6b7280',
+                    textTransform: 'uppercase',
+                    letterSpacing: 0.5
+                  },
+                  children: "Action"
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("th", {
+                  style: {
+                    textAlign: 'left',
+                    padding: '14px 20px',
+                    fontWeight: 600,
+                    fontSize: 12,
+                    color: '#6b7280',
+                    textTransform: 'uppercase',
+                    letterSpacing: 0.5
+                  },
+                  children: "Type"
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("th", {
+                  style: {
+                    textAlign: 'left',
+                    padding: '14px 20px',
+                    fontWeight: 600,
+                    fontSize: 12,
+                    color: '#6b7280',
+                    textTransform: 'uppercase',
+                    letterSpacing: 0.5
+                  },
+                  children: "Details"
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("th", {
+                  style: {
+                    textAlign: 'center',
+                    padding: '14px 20px',
+                    fontWeight: 600,
+                    fontSize: 12,
+                    color: '#6b7280',
+                    textTransform: 'uppercase',
+                    letterSpacing: 0.5
+                  },
+                  children: "Status"
+                })]
+              })
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("tbody", {
+              children: [filteredLogs.length === 0 && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("tr", {
+                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("td", {
+                  colSpan: "6",
+                  style: {
+                    padding: '60px 20px',
+                    textAlign: 'center',
+                    color: '#9ca3af'
+                  },
+                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+                    style: {
+                      marginBottom: 12
+                    },
+                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("svg", {
+                      width: "48",
+                      height: "48",
+                      viewBox: "0 0 24 24",
+                      fill: "none",
+                      stroke: "#d1d5db",
+                      strokeWidth: "1.5",
+                      style: {
+                        margin: '0 auto'
+                      },
+                      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("path", {
+                        d: "M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
+                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("path", {
+                        d: "M14 2v6h6"
+                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("path", {
+                        d: "M16 13H8"
+                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("path", {
+                        d: "M16 17H8"
+                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("path", {
+                        d: "M10 9H8"
+                      })]
+                    })
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+                    style: {
+                      fontSize: 15,
+                      fontWeight: 500,
+                      color: '#6b7280',
+                      marginBottom: 4
+                    },
+                    children: search ? 'No logs match your search' : 'No logs available'
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+                    style: {
+                      fontSize: 13,
+                      color: '#9ca3af'
+                    },
+                    children: search ? 'Try adjusting your search terms' : 'System activity logs will appear here'
+                  })]
+                })
+              }), paginatedLogs.map(function (log, idx) {
+                var date = new Date(log.timestamp);
+                var timeStr = date.toLocaleTimeString('en-US', {
+                  hour: '2-digit',
+                  minute: '2-digit'
+                });
+                var dateStr = date.toLocaleDateString('en-US', {
+                  month: 'short',
+                  day: 'numeric',
+                  year: 'numeric'
+                });
+                var statusColors = {
+                  success: {
+                    bg: '#dcfce7',
+                    text: '#16a34a'
+                  },
+                  warning: {
+                    bg: '#fef3c7',
+                    text: '#ca8a04'
+                  },
+                  error: {
+                    bg: '#fee2e2',
+                    text: '#dc2626'
+                  }
+                };
+                var colors = statusColors[log.status] || statusColors.success;
+                return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("tr", {
+                  style: {
+                    borderBottom: '1px solid #f3f4f6',
+                    transition: 'background 0.15s'
+                  },
+                  onMouseEnter: function onMouseEnter(e) {
+                    return e.currentTarget.style.background = '#f9fafb';
+                  },
+                  onMouseLeave: function onMouseLeave(e) {
+                    return e.currentTarget.style.background = 'transparent';
+                  },
+                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("td", {
+                    style: {
+                      padding: '16px 20px',
+                      fontSize: 13,
+                      color: '#6b7280'
+                    },
+                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+                      style: {
+                        fontWeight: 600,
+                        color: '#111827',
+                        marginBottom: 2
+                      },
+                      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(HighlightText, {
+                        text: timeStr,
+                        highlight: search
+                      })
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+                      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(HighlightText, {
+                        text: dateStr,
+                        highlight: search
+                      })
+                    })]
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("td", {
+                    style: {
+                      padding: '16px 20px',
+                      fontSize: 14,
+                      color: '#111827',
+                      fontWeight: 600
+                    },
+                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(HighlightText, {
+                      text: log.user,
+                      highlight: search
+                    })
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("td", {
+                    style: {
+                      padding: '16px 20px',
+                      fontSize: 14,
+                      color: '#6b7280'
+                    },
+                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(HighlightText, {
+                      text: log.action,
+                      highlight: search
+                    })
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("td", {
+                    style: {
+                      padding: '16px 20px',
+                      fontSize: 14,
+                      color: '#6b7280'
+                    },
+                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("span", {
+                      style: {
+                        display: 'inline-block',
+                        background: '#f3f4f6',
+                        color: '#374151',
+                        padding: '4px 10px',
+                        borderRadius: 12,
+                        fontSize: 12,
+                        fontWeight: 600
+                      },
+                      children: log.type
+                    })
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("td", {
+                    style: {
+                      padding: '16px 20px',
+                      fontSize: 13,
+                      color: '#6b7280'
+                    },
+                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(HighlightText, {
+                      text: log.details,
+                      highlight: search
+                    })
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("td", {
+                    style: {
+                      padding: '16px 20px',
+                      textAlign: 'center'
+                    },
+                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("span", {
+                      style: {
+                        display: 'inline-block',
+                        background: colors.bg,
+                        color: colors.text,
+                        padding: '4px 10px',
+                        borderRadius: 12,
+                        fontSize: 12,
+                        fontWeight: 600,
+                        textTransform: 'capitalize'
+                      },
+                      children: log.status
+                    })
+                  })]
+                }, log.id);
+              })]
+            })]
+          }), filteredLogs.length > 0 && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+            style: {
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              padding: '16px 20px',
+              borderTop: '1px solid #e5e7eb',
+              background: '#f9fafb'
+            },
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+              style: {
+                fontSize: 13,
+                color: '#6b7280'
+              },
+              children: ["Showing ", logsStartIndex + 1, " to ", Math.min(logsEndIndex, filteredLogs.length), " of ", filteredLogs.length, " logs"]
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+              style: {
+                display: 'flex',
+                gap: 8,
+                alignItems: 'center'
+              },
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
+                onClick: function onClick() {
+                  return setLogsCurrentPage(function (prev) {
+                    return Math.max(1, prev - 1);
+                  });
+                },
+                disabled: logsCurrentPage === 1,
+                style: {
+                  padding: '8px 12px',
+                  background: logsCurrentPage === 1 ? '#f3f4f6' : '#fff',
+                  color: logsCurrentPage === 1 ? '#9ca3af' : '#374151',
+                  border: '1px solid #e5e7eb',
+                  borderRadius: 6,
+                  fontSize: 13,
+                  fontWeight: 500,
+                  cursor: logsCurrentPage === 1 ? 'not-allowed' : 'pointer',
+                  transition: 'all 0.2s'
+                },
+                onMouseEnter: function onMouseEnter(e) {
+                  if (logsCurrentPage > 1) e.target.style.background = '#f9fafb';
+                },
+                onMouseLeave: function onMouseLeave(e) {
+                  if (logsCurrentPage > 1) e.target.style.background = '#fff';
+                },
+                children: "\u2190 Previous"
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+                style: {
+                  display: 'flex',
+                  gap: 4
+                },
+                children: Array.from({
+                  length: totalLogsPages
+                }, function (_, i) {
+                  return i + 1;
+                }).map(function (pageNum) {
+                  // Show first page, last page, current page, and pages around current
+                  var showPage = pageNum === 1 || pageNum === totalLogsPages || Math.abs(pageNum - logsCurrentPage) <= 1;
+
+                  // Show ellipsis
+                  if (!showPage && (pageNum === logsCurrentPage - 2 || pageNum === logsCurrentPage + 2)) {
+                    return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("span", {
+                      style: {
+                        padding: '8px 4px',
+                        color: '#9ca3af',
+                        fontSize: 13
+                      },
+                      children: "..."
+                    }, pageNum);
+                  }
+                  if (!showPage) return null;
+                  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
+                    onClick: function onClick() {
+                      return setLogsCurrentPage(pageNum);
+                    },
+                    style: {
+                      padding: '8px 12px',
+                      background: logsCurrentPage === pageNum ? '#111827' : '#fff',
+                      color: logsCurrentPage === pageNum ? '#fff' : '#374151',
+                      border: '1px solid #e5e7eb',
+                      borderRadius: 6,
+                      fontSize: 13,
+                      fontWeight: logsCurrentPage === pageNum ? 600 : 500,
+                      cursor: 'pointer',
+                      minWidth: 40,
+                      transition: 'all 0.2s'
+                    },
+                    onMouseEnter: function onMouseEnter(e) {
+                      if (logsCurrentPage !== pageNum) {
+                        e.target.style.background = '#f9fafb';
+                      }
+                    },
+                    onMouseLeave: function onMouseLeave(e) {
+                      if (logsCurrentPage !== pageNum) {
+                        e.target.style.background = '#fff';
+                      }
+                    },
+                    children: pageNum
+                  }, pageNum);
+                })
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
+                onClick: function onClick() {
+                  return setLogsCurrentPage(function (prev) {
+                    return Math.min(totalLogsPages, prev + 1);
+                  });
+                },
+                disabled: logsCurrentPage === totalLogsPages,
+                style: {
+                  padding: '8px 12px',
+                  background: logsCurrentPage === totalLogsPages ? '#f3f4f6' : '#fff',
+                  color: logsCurrentPage === totalLogsPages ? '#9ca3af' : '#374151',
+                  border: '1px solid #e5e7eb',
+                  borderRadius: 6,
+                  fontSize: 13,
+                  fontWeight: 500,
+                  cursor: logsCurrentPage === totalLogsPages ? 'not-allowed' : 'pointer',
+                  transition: 'all 0.2s'
+                },
+                onMouseEnter: function onMouseEnter(e) {
+                  if (logsCurrentPage < totalLogsPages) e.target.style.background = '#f9fafb';
+                },
+                onMouseLeave: function onMouseLeave(e) {
+                  if (logsCurrentPage < totalLogsPages) e.target.style.background = '#fff';
+                },
+                children: "Next \u2192"
+              })]
+            })]
+          })]
         })
       })]
     })]
@@ -76349,7 +79766,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router/dist/index.js");
 /* harmony import */ var _Navbar__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Navbar */ "./resources/js/components/Navbar.js");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var _utils_logger__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../utils/logger */ "./resources/js/utils/logger.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+function _regeneratorValues(e) { if (null != e) { var t = e["function" == typeof Symbol && Symbol.iterator || "@@iterator"], r = 0; if (t) return t.call(e); if ("function" == typeof e.next) return e; if (!isNaN(e.length)) return { next: function next() { return e && r >= e.length && (e = void 0), { value: e && e[r++], done: !e }; } }; } throw new TypeError(_typeof(e) + " is not iterable"); }
+function _createForOfIteratorHelper(r, e) { var t = "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (!t) { if (Array.isArray(r) || (t = _unsupportedIterableToArray(r)) || e && r && "number" == typeof r.length) { t && (r = t); var _n = 0, F = function F() {}; return { s: F, n: function n() { return _n >= r.length ? { done: !0 } : { done: !1, value: r[_n++] }; }, e: function e(r) { throw r; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var o, a = !0, u = !1; return { s: function s() { t = t.call(r); }, n: function n() { var r = t.next(); return a = r.done, r; }, e: function e(r) { u = !0, o = r; }, f: function f() { try { a || null == t["return"] || t["return"](); } finally { if (u) throw o; } } }; }
 function _toConsumableArray(r) { return _arrayWithoutHoles(r) || _iterableToArray(r) || _unsupportedIterableToArray(r) || _nonIterableSpread(); }
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 function _iterableToArray(r) { if ("undefined" != typeof Symbol && null != r[Symbol.iterator] || null != r["@@iterator"]) return Array.from(r); }
@@ -76377,8 +79797,30 @@ function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e 
 
 
 
-/* Local storage helper */
 
+// Text highlighting component
+
+var HighlightText = function HighlightText(_ref) {
+  var text = _ref.text,
+    highlight = _ref.highlight;
+  if (!highlight || !text) return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.Fragment, {
+    children: text
+  });
+  var parts = String(text).split(new RegExp("(".concat(highlight.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), ")"), 'gi'));
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.Fragment, {
+    children: parts.map(function (part, i) {
+      return part.toLowerCase() === highlight.toLowerCase() ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("span", {
+        style: {
+          backgroundColor: '#fef08a',
+          fontWeight: 600
+        },
+        children: part
+      }, i) : part;
+    })
+  });
+};
+
+/* Local storage helper */
 var LocalDB = /*#__PURE__*/function () {
   function LocalDB() {
     var key = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "students";
@@ -76490,41 +79932,41 @@ var LocalDB = /*#__PURE__*/function () {
 var localDB = new LocalDB();
 
 /* Form component (left narrow card) - copied / adapted from Faculty form */
-var StudentFullForm = /*#__PURE__*/(0,react__WEBPACK_IMPORTED_MODULE_0__.memo)(function (_ref) {
-  var isEdit = _ref.isEdit,
-    onSubmit = _ref.onSubmit,
-    onCancel = _ref.onCancel,
-    form = _ref.form,
-    setForm = _ref.setForm,
-    _ref$departments = _ref.departments,
-    departments = _ref$departments === void 0 ? [] : _ref$departments,
-    _ref$courses = _ref.courses,
-    courses = _ref$courses === void 0 ? [] : _ref$courses;
+var StudentFullForm = /*#__PURE__*/(0,react__WEBPACK_IMPORTED_MODULE_0__.memo)(function (_ref2) {
+  var isEdit = _ref2.isEdit,
+    onSubmit = _ref2.onSubmit,
+    onCancel = _ref2.onCancel,
+    form = _ref2.form,
+    setForm = _ref2.setForm,
+    _ref2$departments = _ref2.departments,
+    departments = _ref2$departments === void 0 ? [] : _ref2$departments,
+    _ref2$courses = _ref2.courses,
+    courses = _ref2$courses === void 0 ? [] : _ref2$courses;
   // Filter courses based on selected department
   var filteredCourses = form.department ? courses.filter(function (c) {
     return c.department === form.department;
   }) : courses;
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
     className: "student-form-overlay",
     role: "dialog",
     "aria-modal": "true",
-    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("form", {
+    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("form", {
       className: "student-full-form",
       onSubmit: onSubmit,
-      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
         className: "student-form-header-row",
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("h2", {
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("h2", {
           className: "student-form-title",
           children: isEdit ? "Edit Student" : "Add Student"
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
           className: "student-form-group",
           style: {
             minWidth: 260
           },
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("label", {
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("label", {
             className: "sr-only",
             children: "Department"
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("select", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("select", {
             name: "department",
             "aria-label": "Department",
             className: "student-form-designation",
@@ -76536,30 +79978,30 @@ var StudentFullForm = /*#__PURE__*/(0,react__WEBPACK_IMPORTED_MODULE_0__.memo)(f
                 course: ""
               }));
             },
-            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("option", {
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("option", {
               value: "",
               children: "Select department"
             }), departments.filter(function (d) {
               return d && d.name;
             }).map(function (d) {
               var _d$id;
-              return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("option", {
+              return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("option", {
                 value: d.name,
                 children: d.name
               }, (_d$id = d.id) !== null && _d$id !== void 0 ? _d$id : d.name);
             })]
           })]
         })]
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
         className: "student-form-row",
-        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
           className: "student-form-group",
           style: {
             flex: 1
           },
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("label", {
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("label", {
             children: "Full Name"
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("input", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", {
             type: "text",
             name: "name",
             required: true,
@@ -76573,16 +80015,16 @@ var StudentFullForm = /*#__PURE__*/(0,react__WEBPACK_IMPORTED_MODULE_0__.memo)(f
             autoComplete: "name"
           })]
         })
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
         className: "student-form-row",
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
           className: "student-form-group",
           style: {
             flex: 2
           },
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("label", {
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("label", {
             children: "Email address"
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("input", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", {
             type: "email",
             name: "email",
             required: true,
@@ -76595,14 +80037,14 @@ var StudentFullForm = /*#__PURE__*/(0,react__WEBPACK_IMPORTED_MODULE_0__.memo)(f
             placeholder: "Email address",
             autoComplete: "email"
           })]
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
           className: "student-form-group",
           style: {
             flex: 1
           },
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("label", {
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("label", {
             children: "Gender"
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("select", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("select", {
             name: "gender",
             required: true,
             value: form.gender,
@@ -76612,26 +80054,26 @@ var StudentFullForm = /*#__PURE__*/(0,react__WEBPACK_IMPORTED_MODULE_0__.memo)(f
               }));
             },
             "aria-label": "Gender",
-            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("option", {
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("option", {
               value: "",
               children: "Select"
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("option", {
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("option", {
               children: "Male"
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("option", {
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("option", {
               children: "Female"
             })]
           })]
         })]
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
         className: "student-form-row",
-        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
           className: "student-form-group",
           style: {
             flex: 1
           },
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("label", {
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("label", {
             children: "Phone number"
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("input", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", {
             type: "tel",
             name: "phone",
             value: form.phone,
@@ -76644,16 +80086,16 @@ var StudentFullForm = /*#__PURE__*/(0,react__WEBPACK_IMPORTED_MODULE_0__.memo)(f
             autoComplete: "tel"
           })]
         })
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
         className: "student-form-row",
-        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
           className: "student-form-group",
           style: {
             flex: 1
           },
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("label", {
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("label", {
             children: "Year Level"
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("input", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", {
             type: "text",
             name: "year",
             value: form.year,
@@ -76665,16 +80107,16 @@ var StudentFullForm = /*#__PURE__*/(0,react__WEBPACK_IMPORTED_MODULE_0__.memo)(f
             placeholder: "Year Level"
           })]
         })
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
         className: "student-form-row",
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
           className: "student-form-group",
           style: {
             flex: 1
           },
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("label", {
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("label", {
             children: "Course"
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("select", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("select", {
             name: "course",
             required: true,
             value: form.course,
@@ -76685,27 +80127,27 @@ var StudentFullForm = /*#__PURE__*/(0,react__WEBPACK_IMPORTED_MODULE_0__.memo)(f
             },
             "aria-label": "Course",
             disabled: !form.department,
-            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("option", {
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("option", {
               value: "",
               children: form.department ? "Select course" : "Select department first"
             }), filteredCourses.filter(function (c) {
               return c && c.name;
             }).map(function (c) {
               var _c$id;
-              return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("option", {
+              return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("option", {
                 value: c.name,
                 children: c.name
               }, (_c$id = c.id) !== null && _c$id !== void 0 ? _c$id : c.name);
             })]
           })]
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
           className: "student-form-group",
           style: {
             flex: 1
           },
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("label", {
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("label", {
             children: "Age"
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("input", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", {
             type: "number",
             name: "age",
             required: true,
@@ -76719,16 +80161,16 @@ var StudentFullForm = /*#__PURE__*/(0,react__WEBPACK_IMPORTED_MODULE_0__.memo)(f
             placeholder: "Age"
           })]
         })]
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
         className: "student-form-row",
-        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
           className: "student-form-group",
           style: {
             flex: 1
           },
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("label", {
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("label", {
             children: "About"
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("textarea", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("textarea", {
             name: "about",
             required: true,
             value: form.about,
@@ -76743,13 +80185,13 @@ var StudentFullForm = /*#__PURE__*/(0,react__WEBPACK_IMPORTED_MODULE_0__.memo)(f
             }
           })]
         })
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
         className: "student-form-actions",
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
           type: "submit",
           className: "student-form-submit",
           children: isEdit ? "Save Changes" : "Add Student"
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
           type: "button",
           className: "student-form-cancel",
           onClick: onCancel,
@@ -76835,10 +80277,27 @@ function Student() {
     _useState24 = _slicedToArray(_useState23, 2),
     loading = _useState24[0],
     setLoading = _useState24[1];
-  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
-    var mounted = true;
-    _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee5() {
-      var res, data, local, _t, _t2;
+
+  // Sorting state
+  var _useState25 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null),
+    _useState26 = _slicedToArray(_useState25, 2),
+    sortField = _useState26[0],
+    setSortField = _useState26[1];
+  var _useState27 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)('asc'),
+    _useState28 = _slicedToArray(_useState27, 2),
+    sortDirection = _useState28[0],
+    setSortDirection = _useState28[1];
+
+  // Checkbox selections for bulk operations
+  var _useState29 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
+    _useState30 = _slicedToArray(_useState29, 2),
+    selectedStudents = _useState30[0],
+    setSelectedStudents = _useState30[1];
+
+  // Function to fetch students
+  var fetchStudents = /*#__PURE__*/function () {
+    var _ref3 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee5() {
+      var res, data, activeStudents, local, _activeStudents, _t, _t2;
       return _regenerator().w(function (_context5) {
         while (1) switch (_context5.p = _context5.n) {
           case 0:
@@ -76857,7 +80316,11 @@ function Student() {
             return res.json();
           case 3:
             data = _context5.v;
-            if (mounted) setStudentList(Array.isArray(data) ? data : []);
+            // Filter out archived students (check for both true and 1)
+            activeStudents = Array.isArray(data) ? data.filter(function (s) {
+              return !s.archived && s.archived !== 1;
+            }) : [];
+            setStudentList(activeStudents);
             _context5.n = 8;
             break;
           case 4:
@@ -76868,104 +80331,194 @@ function Student() {
             return localDB.readAll();
           case 6:
             local = _context5.v;
-            if (mounted) setStudentList(Array.isArray(local) ? local : []);
+            _activeStudents = Array.isArray(local) ? local.filter(function (s) {
+              return !s.archived && s.archived !== 1;
+            }) : [];
+            setStudentList(_activeStudents);
             _context5.n = 8;
             break;
           case 7:
             _context5.p = 7;
             _t2 = _context5.v;
-            if (mounted) setStudentList([]);
+            setStudentList([]);
           case 8:
             _context5.p = 8;
-            if (mounted) setLoading(false);
+            setLoading(false);
             return _context5.f(8);
           case 9:
             return _context5.a(2);
         }
       }, _callee5, null, [[5, 7], [0, 4, 8, 9]]);
+    }));
+    return function fetchStudents() {
+      return _ref3.apply(this, arguments);
+    };
+  }();
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
+    var mounted = true;
+    _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee6() {
+      return _regenerator().w(function (_context6) {
+        while (1) switch (_context6.n) {
+          case 0:
+            if (!mounted) {
+              _context6.n = 1;
+              break;
+            }
+            _context6.n = 1;
+            return fetchStudents();
+          case 1:
+            return _context6.a(2);
+        }
+      }, _callee6);
     }))();
+
+    // Refresh every 15 seconds to check for archived students
+    var interval = setInterval(function () {
+      if (mounted && !document.hidden) fetchStudents();
+    }, 15000);
     return function () {
       mounted = false;
+      clearInterval(interval);
     };
   }, []);
 
   // fetch departments for dropdown
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
-    var mounted = true;
-    _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee6() {
-      var res, json, _t3;
-      return _regenerator().w(function (_context6) {
-        while (1) switch (_context6.p = _context6.n) {
-          case 0:
-            _context6.p = 0;
-            _context6.n = 1;
-            return fetch('/api/departments');
-          case 1:
-            res = _context6.v;
-            if (res.ok) {
-              _context6.n = 2;
+    var isFetching = false;
+    var fetchDepartments = /*#__PURE__*/function () {
+      var _ref5 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee7() {
+        var res, json, activeDepts, _t3;
+        return _regenerator().w(function (_context7) {
+          while (1) switch (_context7.p = _context7.n) {
+            case 0:
+              if (!(document.hidden || isFetching)) {
+                _context7.n = 1;
+                break;
+              }
+              return _context7.a(2);
+            case 1:
+              isFetching = true;
+              _context7.p = 2;
+              _context7.n = 3;
+              return fetch('/api/departments');
+            case 3:
+              res = _context7.v;
+              if (res.ok) {
+                _context7.n = 4;
+                break;
+              }
+              throw new Error('no api');
+            case 4:
+              _context7.n = 5;
+              return res.json();
+            case 5:
+              json = _context7.v;
+              // Filter out archived departments
+              activeDepts = Array.isArray(json) ? json.filter(function (d) {
+                return !d.archived && d.archived !== 1 && d.status !== 'Archived';
+              }) : [];
+              setDepartments(activeDepts);
+              _context7.n = 7;
               break;
-            }
-            throw new Error('no api');
-          case 2:
-            _context6.n = 3;
-            return res.json();
-          case 3:
-            json = _context6.v;
-            if (mounted) setDepartments(Array.isArray(json) ? json : []);
-            _context6.n = 5;
-            break;
-          case 4:
-            _context6.p = 4;
-            _t3 = _context6.v;
-            if (mounted) setDepartments([]);
-          case 5:
-            return _context6.a(2);
-        }
-      }, _callee6, null, [[0, 4]]);
-    }))();
+            case 6:
+              _context7.p = 6;
+              _t3 = _context7.v;
+              setDepartments([]);
+            case 7:
+              _context7.p = 7;
+              isFetching = false;
+              return _context7.f(7);
+            case 8:
+              return _context7.a(2);
+          }
+        }, _callee7, null, [[2, 6, 7, 8]]);
+      }));
+      return function fetchDepartments() {
+        return _ref5.apply(this, arguments);
+      };
+    }();
+    fetchDepartments();
+    // Reduced polling to 60 seconds to prevent rate limiting
+    var interval = setInterval(fetchDepartments, 60000);
+
+    // Refetch when page becomes visible
+    var handleVisibilityChange = function handleVisibilityChange() {
+      if (!document.hidden) fetchDepartments();
+    };
+    document.addEventListener('visibilitychange', handleVisibilityChange);
     return function () {
-      mounted = false;
+      clearInterval(interval);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
     };
   }, []);
 
   // fetch courses for dropdown
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
-    var mounted = true;
-    _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee7() {
-      var res, json, _t4;
-      return _regenerator().w(function (_context7) {
-        while (1) switch (_context7.p = _context7.n) {
-          case 0:
-            _context7.p = 0;
-            _context7.n = 1;
-            return fetch('/api/courses');
-          case 1:
-            res = _context7.v;
-            if (res.ok) {
-              _context7.n = 2;
+    var isFetching = false;
+    var fetchCourses = /*#__PURE__*/function () {
+      var _ref6 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee8() {
+        var res, json, activeCourses, _t4;
+        return _regenerator().w(function (_context8) {
+          while (1) switch (_context8.p = _context8.n) {
+            case 0:
+              if (!(document.hidden || isFetching)) {
+                _context8.n = 1;
+                break;
+              }
+              return _context8.a(2);
+            case 1:
+              isFetching = true;
+              _context8.p = 2;
+              _context8.n = 3;
+              return fetch('/api/courses');
+            case 3:
+              res = _context8.v;
+              if (res.ok) {
+                _context8.n = 4;
+                break;
+              }
+              throw new Error('no api');
+            case 4:
+              _context8.n = 5;
+              return res.json();
+            case 5:
+              json = _context8.v;
+              // Filter out archived courses
+              activeCourses = Array.isArray(json) ? json.filter(function (c) {
+                return !c.archived && c.archived !== 1 && c.status !== 'archived';
+              }) : [];
+              setCourses(activeCourses);
+              _context8.n = 7;
               break;
-            }
-            throw new Error('no api');
-          case 2:
-            _context7.n = 3;
-            return res.json();
-          case 3:
-            json = _context7.v;
-            if (mounted) setCourses(Array.isArray(json) ? json : []);
-            _context7.n = 5;
-            break;
-          case 4:
-            _context7.p = 4;
-            _t4 = _context7.v;
-            if (mounted) setCourses([]);
-          case 5:
-            return _context7.a(2);
-        }
-      }, _callee7, null, [[0, 4]]);
-    }))();
+            case 6:
+              _context8.p = 6;
+              _t4 = _context8.v;
+              setCourses([]);
+            case 7:
+              _context8.p = 7;
+              isFetching = false;
+              return _context8.f(7);
+            case 8:
+              return _context8.a(2);
+          }
+        }, _callee8, null, [[2, 6, 7, 8]]);
+      }));
+      return function fetchCourses() {
+        return _ref6.apply(this, arguments);
+      };
+    }();
+    fetchCourses();
+    // Reduced polling to 60 seconds to prevent rate limiting
+    var interval = setInterval(fetchCourses, 60000);
+
+    // Refetch when page becomes visible
+    var handleVisibilityChange = function handleVisibilityChange() {
+      if (!document.hidden) fetchCourses();
+    };
+    document.addEventListener('visibilitychange', handleVisibilityChange);
     return function () {
-      mounted = false;
+      clearInterval(interval);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
     };
   }, []);
   var handleAdd = function handleAdd() {
@@ -76973,18 +80526,18 @@ function Student() {
     setShowAdd(true);
   };
   var handleAddSubmit = /*#__PURE__*/function () {
-    var _ref5 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee8(e) {
+    var _ref7 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee9(e) {
       var payload, res, newStudent, created, _created, _t5;
-      return _regenerator().w(function (_context8) {
-        while (1) switch (_context8.p = _context8.n) {
+      return _regenerator().w(function (_context9) {
+        while (1) switch (_context9.p = _context9.n) {
           case 0:
             e.preventDefault();
             payload = _objectSpread(_objectSpread({}, form), {}, {
               age: form.age === "" ? null : Number(form.age),
               avatar: form.avatar || "https://randomuser.me/api/portraits/men/34.jpg"
             });
-            _context8.p = 1;
-            _context8.n = 2;
+            _context9.p = 1;
+            _context9.n = 2;
             return fetch("/api/students", {
               method: "POST",
               headers: {
@@ -76993,53 +80546,54 @@ function Student() {
               body: JSON.stringify(payload)
             });
           case 2:
-            res = _context8.v;
+            res = _context9.v;
             if (!res.ok) {
-              _context8.n = 4;
+              _context9.n = 4;
               break;
             }
-            _context8.n = 3;
+            _context9.n = 3;
             return res.json();
           case 3:
-            newStudent = _context8.v;
+            newStudent = _context9.v;
             setStudentList(function (prev) {
               return [].concat(_toConsumableArray(prev), [newStudent]);
             });
-            _context8.n = 6;
+            _utils_logger__WEBPACK_IMPORTED_MODULE_3__["default"].logCreate('Student', "Added student: ".concat(payload.name));
+            _context9.n = 6;
             break;
           case 4:
-            _context8.n = 5;
+            _context9.n = 5;
             return localDB.create(_objectSpread({}, payload));
           case 5:
-            created = _context8.v;
+            created = _context9.v;
             setStudentList(function (prev) {
               return [].concat(_toConsumableArray(prev), [created]);
             });
           case 6:
-            _context8.n = 9;
+            _context9.n = 9;
             break;
           case 7:
-            _context8.p = 7;
-            _t5 = _context8.v;
-            _context8.n = 8;
+            _context9.p = 7;
+            _t5 = _context9.v;
+            _context9.n = 8;
             return localDB.create(_objectSpread({}, payload));
           case 8:
-            _created = _context8.v;
+            _created = _context9.v;
             setStudentList(function (prev) {
               return [].concat(_toConsumableArray(prev), [_created]);
             });
           case 9:
-            _context8.p = 9;
+            _context9.p = 9;
             setShowAdd(false);
             setForm(defaultForm);
-            return _context8.f(9);
+            return _context9.f(9);
           case 10:
-            return _context8.a(2);
+            return _context9.a(2);
         }
-      }, _callee8, null, [[1, 7, 9, 10]]);
+      }, _callee9, null, [[1, 7, 9, 10]]);
     }));
     return function handleAddSubmit(_x5) {
-      return _ref5.apply(this, arguments);
+      return _ref7.apply(this, arguments);
     };
   }();
   var handleEdit = function handleEdit(item) {
@@ -77053,31 +80607,31 @@ function Student() {
     setShowEdit(true);
   };
   var handleEditSubmit = /*#__PURE__*/function () {
-    var _ref6 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee9(e) {
+    var _ref8 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee0(e) {
       var _studentList$editInde;
       var id, payload, res, updated, _updated, _updated2, _t6;
-      return _regenerator().w(function (_context9) {
-        while (1) switch (_context9.p = _context9.n) {
+      return _regenerator().w(function (_context0) {
+        while (1) switch (_context0.p = _context0.n) {
           case 0:
             e.preventDefault();
             if (!(editIndex === null)) {
-              _context9.n = 1;
+              _context0.n = 1;
               break;
             }
-            return _context9.a(2);
+            return _context0.a(2);
           case 1:
             id = (_studentList$editInde = studentList[editIndex]) === null || _studentList$editInde === void 0 ? void 0 : _studentList$editInde.id;
             if (id) {
-              _context9.n = 2;
+              _context0.n = 2;
               break;
             }
-            return _context9.a(2);
+            return _context0.a(2);
           case 2:
             payload = _objectSpread(_objectSpread({}, form), {}, {
               age: form.age === "" ? null : Number(form.age)
             });
-            _context9.p = 3;
-            _context9.n = 4;
+            _context0.p = 3;
+            _context0.n = 4;
             return fetch("/api/students/".concat(id), {
               method: "PUT",
               headers: {
@@ -77086,89 +80640,90 @@ function Student() {
               body: JSON.stringify(payload)
             });
           case 4:
-            res = _context9.v;
+            res = _context0.v;
             if (!res.ok) {
-              _context9.n = 6;
+              _context0.n = 6;
               break;
             }
-            _context9.n = 5;
+            _context0.n = 5;
             return res.json();
           case 5:
-            updated = _context9.v;
+            updated = _context0.v;
             setStudentList(function (prev) {
               return prev.map(function (s) {
                 return s.id === updated.id ? updated : s;
               });
             });
-            _context9.n = 8;
+            _utils_logger__WEBPACK_IMPORTED_MODULE_3__["default"].logUpdate('Student', "Updated student: ".concat(payload.name));
+            _context0.n = 8;
             break;
           case 6:
-            _context9.n = 7;
+            _context0.n = 7;
             return localDB.update(id, payload);
           case 7:
-            _updated = _context9.v;
+            _updated = _context0.v;
             setStudentList(function (prev) {
               return prev.map(function (s) {
                 return s.id === id ? _updated : s;
               });
             });
           case 8:
-            _context9.n = 11;
+            _context0.n = 11;
             break;
           case 9:
-            _context9.p = 9;
-            _t6 = _context9.v;
-            _context9.n = 10;
+            _context0.p = 9;
+            _t6 = _context0.v;
+            _context0.n = 10;
             return localDB.update(id, payload);
           case 10:
-            _updated2 = _context9.v;
+            _updated2 = _context0.v;
             setStudentList(function (prev) {
               return prev.map(function (s) {
                 return s.id === id ? _updated2 : s;
               });
             });
           case 11:
-            _context9.p = 11;
+            _context0.p = 11;
             setShowEdit(false);
             setEditIndex(null);
             setForm(defaultForm);
-            return _context9.f(11);
+            return _context0.f(11);
           case 12:
-            return _context9.a(2);
+            return _context0.a(2);
         }
-      }, _callee9, null, [[3, 9, 11, 12]]);
+      }, _callee0, null, [[3, 9, 11, 12]]);
     }));
     return function handleEditSubmit(_x6) {
-      return _ref6.apply(this, arguments);
+      return _ref8.apply(this, arguments);
     };
   }();
   var handleDelete = /*#__PURE__*/function () {
-    var _ref7 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee0(item) {
+    var _ref9 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee1(item) {
       var res, _t7;
-      return _regenerator().w(function (_context0) {
-        while (1) switch (_context0.p = _context0.n) {
+      return _regenerator().w(function (_context1) {
+        while (1) switch (_context1.p = _context1.n) {
           case 0:
             if (!(!item || !item.id)) {
-              _context0.n = 1;
+              _context1.n = 1;
               break;
             }
-            return _context0.a(2);
+            return _context1.a(2);
           case 1:
             if (window.confirm("Are you sure you want to delete this record?")) {
-              _context0.n = 2;
+              _context1.n = 2;
               break;
             }
-            return _context0.a(2);
+            return _context1.a(2);
           case 2:
-            _context0.p = 2;
-            _context0.n = 3;
+            _context1.p = 2;
+            _context1.n = 3;
             return fetch("/api/students/".concat(item.id), {
               method: "DELETE"
             });
           case 3:
-            res = _context0.v;
+            res = _context1.v;
             if (!res.ok) {
-              _context0.n = 4;
+              _context1.n = 4;
               break;
             }
             setStudentList(function (prev) {
@@ -77176,10 +80731,11 @@ function Student() {
                 return s.id !== item.id;
               });
             });
-            _context0.n = 6;
+            _utils_logger__WEBPACK_IMPORTED_MODULE_3__["default"].logDelete('Student', "Deleted student: ".concat(item.name));
+            _context1.n = 6;
             break;
           case 4:
-            _context0.n = 5;
+            _context1.n = 5;
             return localDB["delete"](item.id);
           case 5:
             setStudentList(function (prev) {
@@ -77188,12 +80744,12 @@ function Student() {
               });
             });
           case 6:
-            _context0.n = 9;
+            _context1.n = 9;
             break;
           case 7:
-            _context0.p = 7;
-            _t7 = _context0.v;
-            _context0.n = 8;
+            _context1.p = 7;
+            _t7 = _context1.v;
+            _context1.n = 8;
             return localDB["delete"](item.id);
           case 8:
             setStudentList(function (prev) {
@@ -77204,20 +80760,250 @@ function Student() {
           case 9:
             if (selectedUser && selectedUser.id === item.id) setSelectedUser(null);
           case 10:
-            return _context0.a(2);
+            return _context1.a(2);
         }
-      }, _callee0, null, [[2, 7]]);
+      }, _callee1, null, [[2, 7]]);
     }));
     return function handleDelete(_x7) {
-      return _ref7.apply(this, arguments);
+      return _ref9.apply(this, arguments);
     };
   }();
+
+  // Bulk archive all selected
+  var handleArchiveAll = /*#__PURE__*/function () {
+    var _ref0 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee10() {
+      var _iterator, _step, _loop, _t8, _t9;
+      return _regenerator().w(function (_context11) {
+        while (1) switch (_context11.p = _context11.n) {
+          case 0:
+            if (!(selectedStudents.length === 0)) {
+              _context11.n = 1;
+              break;
+            }
+            alert('Please select students to archive');
+            return _context11.a(2);
+          case 1:
+            if (window.confirm("Archive ".concat(selectedStudents.length, " selected student(s)?"))) {
+              _context11.n = 2;
+              break;
+            }
+            return _context11.a(2);
+          case 2:
+            _context11.p = 2;
+            _iterator = _createForOfIteratorHelper(selectedStudents);
+            _context11.p = 3;
+            _loop = /*#__PURE__*/_regenerator().m(function _loop() {
+              var id, res, student;
+              return _regenerator().w(function (_context10) {
+                while (1) switch (_context10.n) {
+                  case 0:
+                    id = _step.value;
+                    _context10.n = 1;
+                    return fetch("/api/students/".concat(id), {
+                      method: 'PUT',
+                      headers: {
+                        'Content-Type': 'application/json'
+                      },
+                      body: JSON.stringify({
+                        archived: true
+                      })
+                    });
+                  case 1:
+                    res = _context10.v;
+                    if (res.ok) {
+                      student = studentList.find(function (s) {
+                        return s.id === id;
+                      });
+                      _utils_logger__WEBPACK_IMPORTED_MODULE_3__["default"].logArchive('Student', "Archived student: ".concat((student === null || student === void 0 ? void 0 : student.name) || 'Unknown'));
+                    }
+                  case 2:
+                    return _context10.a(2);
+                }
+              }, _loop);
+            });
+            _iterator.s();
+          case 4:
+            if ((_step = _iterator.n()).done) {
+              _context11.n = 6;
+              break;
+            }
+            return _context11.d(_regeneratorValues(_loop()), 5);
+          case 5:
+            _context11.n = 4;
+            break;
+          case 6:
+            _context11.n = 8;
+            break;
+          case 7:
+            _context11.p = 7;
+            _t8 = _context11.v;
+            _iterator.e(_t8);
+          case 8:
+            _context11.p = 8;
+            _iterator.f();
+            return _context11.f(8);
+          case 9:
+            _context11.n = 10;
+            return fetchStudents();
+          case 10:
+            setSelectedStudents([]);
+            _context11.n = 12;
+            break;
+          case 11:
+            _context11.p = 11;
+            _t9 = _context11.v;
+            console.error('Error archiving students:', _t9);
+          case 12:
+            return _context11.a(2);
+        }
+      }, _callee10, null, [[3, 7, 8, 9], [2, 11]]);
+    }));
+    return function handleArchiveAll() {
+      return _ref0.apply(this, arguments);
+    };
+  }();
+
+  // Bulk restore all selected
+  var handleRestoreAll = /*#__PURE__*/function () {
+    var _ref1 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee11() {
+      var _iterator2, _step2, _loop2, _t0, _t1;
+      return _regenerator().w(function (_context13) {
+        while (1) switch (_context13.p = _context13.n) {
+          case 0:
+            if (!(selectedStudents.length === 0)) {
+              _context13.n = 1;
+              break;
+            }
+            alert('Please select students to restore');
+            return _context13.a(2);
+          case 1:
+            if (window.confirm("Restore ".concat(selectedStudents.length, " selected student(s)?"))) {
+              _context13.n = 2;
+              break;
+            }
+            return _context13.a(2);
+          case 2:
+            _context13.p = 2;
+            _iterator2 = _createForOfIteratorHelper(selectedStudents);
+            _context13.p = 3;
+            _loop2 = /*#__PURE__*/_regenerator().m(function _loop2() {
+              var id, res, student;
+              return _regenerator().w(function (_context12) {
+                while (1) switch (_context12.n) {
+                  case 0:
+                    id = _step2.value;
+                    _context12.n = 1;
+                    return fetch("/api/students/".concat(id), {
+                      method: 'PUT',
+                      headers: {
+                        'Content-Type': 'application/json'
+                      },
+                      body: JSON.stringify({
+                        archived: false
+                      })
+                    });
+                  case 1:
+                    res = _context12.v;
+                    if (res.ok) {
+                      student = studentList.find(function (s) {
+                        return s.id === id;
+                      });
+                      _utils_logger__WEBPACK_IMPORTED_MODULE_3__["default"].logRestore('Student', "Restored student: ".concat((student === null || student === void 0 ? void 0 : student.name) || 'Unknown'));
+                    }
+                  case 2:
+                    return _context12.a(2);
+                }
+              }, _loop2);
+            });
+            _iterator2.s();
+          case 4:
+            if ((_step2 = _iterator2.n()).done) {
+              _context13.n = 6;
+              break;
+            }
+            return _context13.d(_regeneratorValues(_loop2()), 5);
+          case 5:
+            _context13.n = 4;
+            break;
+          case 6:
+            _context13.n = 8;
+            break;
+          case 7:
+            _context13.p = 7;
+            _t0 = _context13.v;
+            _iterator2.e(_t0);
+          case 8:
+            _context13.p = 8;
+            _iterator2.f();
+            return _context13.f(8);
+          case 9:
+            _context13.n = 10;
+            return fetchStudents();
+          case 10:
+            setSelectedStudents([]);
+            _context13.n = 12;
+            break;
+          case 11:
+            _context13.p = 11;
+            _t1 = _context13.v;
+            console.error('Error restoring students:', _t1);
+          case 12:
+            return _context13.a(2);
+        }
+      }, _callee11, null, [[3, 7, 8, 9], [2, 11]]);
+    }));
+    return function handleRestoreAll() {
+      return _ref1.apply(this, arguments);
+    };
+  }();
+
+  // Toggle checkbox
+  var handleCheckboxToggle = function handleCheckboxToggle(id) {
+    setSelectedStudents(function (prev) {
+      return prev.includes(id) ? prev.filter(function (i) {
+        return i !== id;
+      }) : [].concat(_toConsumableArray(prev), [id]);
+    });
+  };
   var filteredList = studentList.filter(function (s) {
     var matchesSearch = (s.name || "").toLowerCase().includes(search.toLowerCase()) || (s.email || "").toLowerCase().includes(search.toLowerCase());
     var matchesDepartment = departmentFilter === "All Departments" || s.department === departmentFilter;
     var matchesCourse = courseFilter === "All Courses" || s.course === courseFilter;
     return matchesSearch && matchesDepartment && matchesCourse;
   });
+
+  // Handle column sorting
+  var handleSort = function handleSort(field) {
+    if (sortField === field) {
+      setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
+    } else {
+      setSortField(field);
+      setSortDirection('asc');
+    }
+  };
+
+  // Apply sorting
+  var sortedList = _toConsumableArray(filteredList).sort(function (a, b) {
+    if (!sortField) return 0;
+    var aVal = a[sortField] || '';
+    var bVal = b[sortField] || '';
+
+    // Convert to string for comparison
+    aVal = String(aVal).toLowerCase();
+    bVal = String(bVal).toLowerCase();
+    if (aVal < bVal) return sortDirection === 'asc' ? -1 : 1;
+    if (aVal > bVal) return sortDirection === 'asc' ? 1 : -1;
+    return 0;
+  });
+
+  // Select all toggle
+  var handleSelectAllToggle = function handleSelectAllToggle() {
+    setSelectedStudents(function (prev) {
+      return prev.length === sortedList.length ? [] : sortedList.map(function (s) {
+        return s.id;
+      });
+    });
+  };
   var handleLogout = function handleLogout() {
     return navigate("/login");
   };
@@ -77230,30 +81016,30 @@ function Student() {
   var fontStyle = {
     fontFamily: "Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial"
   };
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
     style: _objectSpread({
       display: "flex",
       minHeight: "100vh",
       background: "#f8fafc"
     }, fontStyle),
-    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_Navbar__WEBPACK_IMPORTED_MODULE_2__["default"], {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("main", {
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_Navbar__WEBPACK_IMPORTED_MODULE_2__["default"], {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("main", {
       className: "student-container",
       style: _objectSpread({
         flex: 1
       }, fontStyle),
-      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
         className: "dashboard-header",
-        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
           className: "logout-btn",
           onClick: handleLogout,
           children: "Log out"
         })
-      }), !selectedUser && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+      }), !selectedUser && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
         style: {
           padding: '24px 40px',
           borderBottom: '1px solid #e5e7eb'
         },
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("h1", {
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("h1", {
           style: {
             margin: 0,
             fontSize: 28,
@@ -77261,7 +81047,7 @@ function Student() {
             color: '#111827'
           },
           children: "Students"
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("p", {
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("p", {
           style: {
             margin: '4px 0 0 0',
             fontSize: 14,
@@ -77269,7 +81055,7 @@ function Student() {
           },
           children: "Manage student information"
         })]
-      }), !selectedUser && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+      }), !selectedUser && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
         style: {
           display: 'flex',
           gap: 16,
@@ -77277,13 +81063,13 @@ function Student() {
           alignItems: 'center',
           borderBottom: '1px solid #e5e7eb'
         },
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
           style: {
             position: 'relative',
             flex: 1,
             maxWidth: 400
           },
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("svg", {
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("svg", {
             style: {
               position: 'absolute',
               left: 12,
@@ -77296,14 +81082,14 @@ function Student() {
             fill: "none",
             stroke: "#9ca3af",
             strokeWidth: "2",
-            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("circle", {
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("circle", {
               cx: "11",
               cy: "11",
               r: "8"
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("path", {
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("path", {
               d: "m21 21-4.35-4.35"
             })]
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("input", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", {
             type: "text",
             placeholder: "Search students...",
             value: search,
@@ -77326,7 +81112,7 @@ function Student() {
               return e.target.style.borderColor = '#d1d5db';
             }
           })]
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("select", {
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("select", {
           value: courseFilter,
           onChange: function onChange(e) {
             return setCourseFilter(e.target.value);
@@ -77346,17 +81132,17 @@ function Student() {
             backgroundRepeat: 'no-repeat',
             backgroundSize: '20px'
           },
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("option", {
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("option", {
             value: "All Courses",
             children: "All Courses"
           }), courses.map(function (c) {
             var _c$id2;
-            return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("option", {
+            return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("option", {
               value: c.name,
               children: c.name
             }, (_c$id2 = c.id) !== null && _c$id2 !== void 0 ? _c$id2 : c.name);
           })]
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("select", {
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("select", {
           value: departmentFilter,
           onChange: function onChange(e) {
             return setDepartmentFilter(e.target.value);
@@ -77376,19 +81162,36 @@ function Student() {
             backgroundRepeat: 'no-repeat',
             backgroundSize: '20px'
           },
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("option", {
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("option", {
             value: "All Departments",
             children: "All Departments"
           }), departments.filter(function (d) {
             return d && d.name;
           }).map(function (d) {
             var _d$id2;
-            return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("option", {
+            return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("option", {
               value: d.name,
               children: d.name
             }, (_d$id2 = d.id) !== null && _d$id2 !== void 0 ? _d$id2 : d.name);
           })]
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("button", {
+        }), selectedStudents.length > 0 && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("button", {
+          onClick: handleArchiveAll,
+          style: {
+            display: 'flex',
+            alignItems: 'center',
+            gap: 8,
+            padding: '10px 16px',
+            background: '#fef3c7',
+            color: '#ca8a04',
+            border: 'none',
+            borderRadius: 8,
+            fontSize: 13,
+            fontWeight: 600,
+            cursor: 'pointer',
+            whiteSpace: 'nowrap'
+          },
+          children: ["\uD83D\uDCE6 Archive Selected (", selectedStudents.length, ")"]
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("button", {
           onClick: handleAdd,
           style: {
             display: 'flex',
@@ -77404,7 +81207,7 @@ function Student() {
             cursor: 'pointer',
             whiteSpace: 'nowrap'
           },
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("span", {
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("span", {
             style: {
               fontSize: 18,
               lineHeight: 1
@@ -77412,22 +81215,22 @@ function Student() {
             children: "+"
           }), "Add Student"]
         })]
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
         className: "student-header",
         style: {
           display: selectedUser ? 'flex' : 'none'
         },
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
           className: "student-back-btn",
           onClick: function onClick() {
             return selectedUser ? handleBackToList() : navigate(-1);
           },
-          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("svg", {
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("svg", {
             width: "16",
             height: "16",
             viewBox: "0 0 24 24",
             fill: "none",
-            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("path", {
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("path", {
               d: "M14 8l-4 4 4 4",
               stroke: "#111827",
               strokeWidth: "2",
@@ -77435,10 +81238,10 @@ function Student() {
               strokeLinejoin: "round"
             })
           })
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
           className: "student-actions"
         })]
-      }), showAdd && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(StudentFullForm, {
+      }), showAdd && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(StudentFullForm, {
         isEdit: false,
         onSubmit: handleAddSubmit,
         onCancel: function onCancel() {
@@ -77449,7 +81252,7 @@ function Student() {
         setForm: setForm,
         departments: departments,
         courses: courses
-      }), showEdit && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(StudentFullForm, {
+      }), showEdit && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(StudentFullForm, {
         isEdit: true,
         onSubmit: handleEditSubmit,
         onCancel: function onCancel() {
@@ -77461,7 +81264,7 @@ function Student() {
         setForm: setForm,
         departments: departments,
         courses: courses
-      }), !showAdd && !showEdit && selectedUser ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+      }), !showAdd && !showEdit && selectedUser ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
         style: {
           display: "flex",
           justifyContent: "center",
@@ -77469,14 +81272,14 @@ function Student() {
           marginTop: 40,
           gap: 60
         },
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
           style: {
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
             minWidth: 320
           },
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("img", {
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("img", {
             src: selectedUser.avatar || "https://randomuser.me/api/portraits/lego/1.jpg",
             alt: selectedUser.name,
             style: {
@@ -77486,7 +81289,7 @@ function Student() {
               objectFit: "cover",
               boxShadow: "0 4px 24px #e6eaf1"
             }
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
             style: {
               marginTop: 24,
               fontWeight: 700,
@@ -77494,7 +81297,7 @@ function Student() {
               textAlign: "center"
             },
             children: selectedUser.name
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
             style: {
               color: "#888",
               fontSize: "1rem",
@@ -77503,19 +81306,19 @@ function Student() {
               letterSpacing: 1
             },
             children: (selectedUser.department || "").toUpperCase()
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
             style: {
               display: "flex",
               gap: 24,
               marginTop: 16
             },
-            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
               className: "student-form-submit",
               onClick: function onClick() {
                 return handleEdit(selectedUser);
               },
               children: "Edit"
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
               className: "student-form-cancel",
               onClick: function onClick() {
                 handleDelete(selectedUser);
@@ -77524,51 +81327,51 @@ function Student() {
               children: "Delete"
             })]
           })]
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
           style: {
             minWidth: 320,
             maxWidth: 400
           },
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
             style: {
               fontWeight: 700,
               fontSize: "1.1rem",
               marginBottom: 8
             },
             children: "About"
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
             style: {
               color: "#555",
               marginBottom: 24,
               lineHeight: 1.6
             },
             children: selectedUser.about
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
             style: {
               display: "flex",
               gap: 40
             },
-            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
-              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
                 style: {
                   color: "#888",
                   fontSize: 13
                 },
                 children: "Year"
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
                 style: {
                   fontWeight: 600
                 },
                 children: selectedUser.year
               })]
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
-              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
                 style: {
                   color: "#888",
                   fontSize: 13
                 },
                 children: "Gender"
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
                 style: {
                   fontWeight: 600
                 },
@@ -77577,60 +81380,142 @@ function Student() {
             })]
           })]
         })]
-      }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+      }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
         className: "student-table-container",
-        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("table", {
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("table", {
           className: "student-table",
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("thead", {
-            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("tr", {
-              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("th", {
-                children: "Name"
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("th", {
-                children: "Course"
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("th", {
-                children: "Department"
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("th", {
-                children: "Email address"
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("th", {
-                children: "Year Level"
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("th", {
-                children: "Gender"
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("th", {})]
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("thead", {
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("tr", {
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("th", {
+                style: {
+                  width: 40,
+                  textAlign: 'center'
+                },
+                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", {
+                  type: "checkbox",
+                  checked: sortedList.length > 0 && selectedStudents.length === sortedList.length,
+                  onChange: handleSelectAllToggle,
+                  style: {
+                    cursor: 'pointer',
+                    width: 16,
+                    height: 16
+                  }
+                })
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("th", {
+                onClick: function onClick() {
+                  return handleSort('name');
+                },
+                style: {
+                  cursor: 'pointer',
+                  userSelect: 'none'
+                },
+                children: ["Name ", sortField === 'name' && (sortDirection === 'asc' ? '↑' : '↓')]
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("th", {
+                onClick: function onClick() {
+                  return handleSort('course');
+                },
+                style: {
+                  cursor: 'pointer',
+                  userSelect: 'none'
+                },
+                children: ["Course ", sortField === 'course' && (sortDirection === 'asc' ? '↑' : '↓')]
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("th", {
+                onClick: function onClick() {
+                  return handleSort('department');
+                },
+                style: {
+                  cursor: 'pointer',
+                  userSelect: 'none'
+                },
+                children: ["Department ", sortField === 'department' && (sortDirection === 'asc' ? '↑' : '↓')]
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("th", {
+                onClick: function onClick() {
+                  return handleSort('email');
+                },
+                style: {
+                  cursor: 'pointer',
+                  userSelect: 'none'
+                },
+                children: ["Email address ", sortField === 'email' && (sortDirection === 'asc' ? '↑' : '↓')]
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("th", {
+                onClick: function onClick() {
+                  return handleSort('year');
+                },
+                style: {
+                  cursor: 'pointer',
+                  userSelect: 'none'
+                },
+                children: ["Year Level ", sortField === 'year' && (sortDirection === 'asc' ? '↑' : '↓')]
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("th", {
+                onClick: function onClick() {
+                  return handleSort('gender');
+                },
+                style: {
+                  cursor: 'pointer',
+                  userSelect: 'none'
+                },
+                children: ["Gender ", sortField === 'gender' && (sortDirection === 'asc' ? '↑' : '↓')]
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("th", {})]
             })
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("tbody", {
-            children: [!loading && filteredList.length === 0 && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("tr", {
-              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("td", {
-                colSpan: "7",
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("tbody", {
+            children: [!loading && sortedList.length === 0 && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("tr", {
+              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("td", {
+                colSpan: "8",
                 children: "No students found."
               })
-            }), loading && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("tr", {
-              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("td", {
-                colSpan: "7",
+            }), loading && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("tr", {
+              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("td", {
+                colSpan: "8",
                 children: "Loading\u2026"
               })
-            }), filteredList.map(function (s, idx) {
+            }), sortedList.map(function (s, idx) {
               var _s$id;
-              return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("tr", {
+              return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("tr", {
                 style: {
                   cursor: "pointer"
                 },
-                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("td", {
+                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("td", {
+                  style: {
+                    textAlign: 'center'
+                  },
+                  onClick: function onClick(e) {
+                    return e.stopPropagation();
+                  },
+                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", {
+                    type: "checkbox",
+                    checked: selectedStudents.includes(s.id),
+                    onChange: function onChange() {
+                      return handleCheckboxToggle(s.id);
+                    },
+                    style: {
+                      cursor: 'pointer',
+                      width: 16,
+                      height: 16
+                    },
+                    onClick: function onClick(e) {
+                      return e.stopPropagation();
+                    }
+                  })
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("td", {
                   onClick: function onClick() {
                     return handleUserClick(s);
                   },
-                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
                     className: "student-avatar-name",
-                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("img", {
+                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("img", {
                       src: s.avatar || "https://randomuser.me/api/portraits/lego/1.jpg",
                       alt: s.name,
                       className: "student-avatar"
-                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
-                      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+                      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
                         style: {
                           fontWeight: 600
                         },
-                        children: s.name
-                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+                        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(HighlightText, {
+                          text: s.name,
+                          highlight: search
+                        })
+                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
                         style: {
                           color: "#888",
                           fontSize: 13
@@ -77639,33 +81524,42 @@ function Student() {
                       })]
                     })]
                   })
-                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("td", {
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("td", {
                   onClick: function onClick() {
                     return handleUserClick(s);
                   },
-                  children: s.course
-                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("td", {
+                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(HighlightText, {
+                    text: s.course,
+                    highlight: search
+                  })
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("td", {
                   onClick: function onClick() {
                     return handleUserClick(s);
                   },
-                  children: s.department
-                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("td", {
+                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(HighlightText, {
+                    text: s.department,
+                    highlight: search
+                  })
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("td", {
                   onClick: function onClick() {
                     return handleUserClick(s);
                   },
-                  children: s.email
-                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("td", {
+                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(HighlightText, {
+                    text: s.email,
+                    highlight: search
+                  })
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("td", {
                   onClick: function onClick() {
                     return handleUserClick(s);
                   },
                   children: s.year
-                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("td", {
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("td", {
                   onClick: function onClick() {
                     return handleUserClick(s);
                   },
                   children: s.gender
-                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("td", {
-                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("td", {
+                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
                     className: "student-icon-btn",
                     title: "Edit",
                     "aria-label": "Edit student",
@@ -77673,18 +81567,18 @@ function Student() {
                       e.stopPropagation();
                       handleEdit(s);
                     },
-                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("svg", {
+                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("svg", {
                       viewBox: "0 0 24 24",
                       fill: "none",
                       xmlns: "http://www.w3.org/2000/svg",
                       "aria-hidden": "true",
-                      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("path", {
+                      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("path", {
                         d: "M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25z",
                         stroke: "#222",
                         strokeWidth: "1.5",
                         strokeLinecap: "round",
                         strokeLinejoin: "round"
-                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("path", {
+                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("path", {
                         d: "M20.71 7.04a1 1 0 0 0 0-1.41l-2.34-2.34a1 1 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z",
                         stroke: "#222",
                         strokeWidth: "1.5",
@@ -77692,7 +81586,7 @@ function Student() {
                         strokeLinejoin: "round"
                       })]
                     })
-                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
                     className: "student-icon-btn",
                     title: "Delete",
                     "aria-label": "Delete student",
@@ -77700,36 +81594,36 @@ function Student() {
                       e.stopPropagation();
                       handleDelete(s);
                     },
-                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("svg", {
+                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("svg", {
                       viewBox: "0 0 24 24",
                       fill: "none",
                       xmlns: "http://www.w3.org/2000/svg",
                       "aria-hidden": "true",
-                      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("path", {
+                      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("path", {
                         d: "M3 6h18",
                         stroke: "#222",
                         strokeWidth: "1.5",
                         strokeLinecap: "round",
                         strokeLinejoin: "round"
-                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("path", {
+                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("path", {
                         d: "M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L6 6",
                         stroke: "#222",
                         strokeWidth: "1.5",
                         strokeLinecap: "round",
                         strokeLinejoin: "round"
-                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("path", {
+                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("path", {
                         d: "M10 11v6",
                         stroke: "#222",
                         strokeWidth: "1.5",
                         strokeLinecap: "round",
                         strokeLinejoin: "round"
-                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("path", {
+                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("path", {
                         d: "M14 11v6",
                         stroke: "#222",
                         strokeWidth: "1.5",
                         strokeLinecap: "round",
                         strokeLinejoin: "round"
-                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("path", {
+                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("path", {
                         d: "M9 6V4a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2",
                         stroke: "#222",
                         strokeWidth: "1.5",
@@ -77743,15 +81637,15 @@ function Student() {
             })]
           })]
         })
-      }), showFilter && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+      }), showFilter && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
         className: "modal-overlay",
-        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
           className: "modal",
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("h3", {
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("h3", {
             children: "Filter (Demo)"
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("p", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("p", {
             children: "Here you can add filter options."
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
             className: "student-filter-btn",
             onClick: function onClick() {
               return setShowFilter(false);
@@ -77763,6 +81657,140 @@ function Student() {
     })]
   });
 }
+
+/***/ }),
+
+/***/ "./resources/js/utils/logger.js":
+/*!**************************************!*\
+  !*** ./resources/js/utils/logger.js ***!
+  \**************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__),
+/* harmony export */   logger: () => (/* binding */ logger)
+/* harmony export */ });
+function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
+function _toConsumableArray(r) { return _arrayWithoutHoles(r) || _iterableToArray(r) || _unsupportedIterableToArray(r) || _nonIterableSpread(); }
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _unsupportedIterableToArray(r, a) { if (r) { if ("string" == typeof r) return _arrayLikeToArray(r, a); var t = {}.toString.call(r).slice(8, -1); return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? Array.from(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? _arrayLikeToArray(r, a) : void 0; } }
+function _iterableToArray(r) { if ("undefined" != typeof Symbol && null != r[Symbol.iterator] || null != r["@@iterator"]) return Array.from(r); }
+function _arrayWithoutHoles(r) { if (Array.isArray(r)) return _arrayLikeToArray(r); }
+function _arrayLikeToArray(r, a) { (null == a || a > r.length) && (a = r.length); for (var e = 0, n = Array(a); e < a; e++) n[e] = r[e]; return n; }
+function _classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeError("Cannot call a class as a function"); }
+function _defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, _toPropertyKey(o.key), o); } }
+function _createClass(e, r, t) { return r && _defineProperties(e.prototype, r), t && _defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
+function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : i + ""; }
+function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
+// Centralized logging utility
+var Logger = /*#__PURE__*/function () {
+  function Logger() {
+    _classCallCheck(this, Logger);
+    this.storageKey = 'system_logs';
+  }
+
+  // Get all logs from localStorage
+  return _createClass(Logger, [{
+    key: "getLogs",
+    value: function getLogs() {
+      try {
+        var raw = localStorage.getItem(this.storageKey);
+        return raw ? JSON.parse(raw) : [];
+      } catch (_unused) {
+        return [];
+      }
+    }
+
+    // Save logs to localStorage
+  }, {
+    key: "saveLogs",
+    value: function saveLogs(logs) {
+      try {
+        localStorage.setItem(this.storageKey, JSON.stringify(logs));
+      } catch (error) {
+        console.error('Failed to save logs:', error);
+      }
+    }
+
+    // Add a new log entry
+  }, {
+    key: "log",
+    value: function log(action, type, details) {
+      var status = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 'success';
+      var logs = this.getLogs();
+      var newLog = {
+        id: Date.now() + Math.random(),
+        // Ensure unique ID
+        timestamp: new Date().toISOString(),
+        user: this.getCurrentUser(),
+        action: action,
+        type: type,
+        details: details,
+        status: status
+      };
+
+      // Keep only last 100 logs to avoid storage issues
+      var updatedLogs = [newLog].concat(_toConsumableArray(logs)).slice(0, 100);
+      this.saveLogs(updatedLogs);
+      return newLog;
+    }
+
+    // Get current user from localStorage or default
+  }, {
+    key: "getCurrentUser",
+    value: function getCurrentUser() {
+      try {
+        var user = localStorage.getItem('current_user');
+        return user || 'Admin';
+      } catch (_unused2) {
+        return 'Admin';
+      }
+    }
+
+    // Clear all logs
+  }, {
+    key: "clearLogs",
+    value: function clearLogs() {
+      this.saveLogs([]);
+    }
+
+    // Convenience methods for common actions
+  }, {
+    key: "logCreate",
+    value: function logCreate(type, details) {
+      return this.log('Created', type, details, 'success');
+    }
+  }, {
+    key: "logUpdate",
+    value: function logUpdate(type, details) {
+      return this.log('Updated', type, details, 'success');
+    }
+  }, {
+    key: "logDelete",
+    value: function logDelete(type, details) {
+      return this.log('Deleted', type, details, 'warning');
+    }
+  }, {
+    key: "logArchive",
+    value: function logArchive(type, details) {
+      return this.log('Archived', type, details, 'warning');
+    }
+  }, {
+    key: "logRestore",
+    value: function logRestore(type, details) {
+      return this.log('Restored', type, details, 'success');
+    }
+  }, {
+    key: "logError",
+    value: function logError(type, details) {
+      return this.log('Error', type, details, 'error');
+    }
+  }]);
+}(); // Export singleton instance
+var logger = new Logger();
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (logger);
 
 /***/ }),
 

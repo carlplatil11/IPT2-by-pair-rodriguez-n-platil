@@ -1,6 +1,21 @@
 import React, { useState, memo, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "./Navbar";
+import logger from "../utils/logger";
+
+const HighlightText = ({ text, highlight }) => {
+    if (!highlight || !text) return <>{text}</>;
+    const escapedHighlight = highlight.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const regex = new RegExp(`(${escapedHighlight})`, 'gi');
+    const parts = String(text).split(regex);
+    return (
+        <>
+            {parts.map((part, i) =>
+                regex.test(part) ? <span key={i} style={{ backgroundColor: '#fef08a', fontWeight: 600 }}>{part}</span> : part
+            )}
+        </>
+    );
+};
 
 const DepartmentFullForm = memo(({ isEdit, onSubmit, onCancel, form, setForm }) => (
     <div className="department-form-overlay">
@@ -119,6 +134,8 @@ export default function Department() {
     const studentsCount = useMemo(() => {
         const map = Object.create(null);
         for (const s of students) {
+            // Skip archived students
+            if (s.archived) continue;
             const name = (s.department || "").toString();
             if (!name) continue;
             map[name] = (map[name] || 0) + 1;
@@ -129,6 +146,8 @@ export default function Department() {
     const facultiesCount = useMemo(() => {
         const map = Object.create(null);
         for (const f of faculties) {
+            // Skip archived faculties
+            if (f.archived) continue;
             const name = (f.department || "").toString();
             if (!name) continue;
             map[name] = (map[name] || 0) + 1;
@@ -142,6 +161,13 @@ export default function Department() {
     const [form, setForm] = useState(defaultForm);
     const [search, setSearch] = useState("");
     const [selectedDept, setSelectedDept] = useState(null);
+    
+    // Sorting state
+    const [sortField, setSortField] = useState(null);
+    const [sortDirection, setSortDirection] = useState('asc');
+    
+    // Checkbox selections for bulk operations
+    const [selectedDepartments, setSelectedDepartments] = useState([]);
 
     const handleAdd = () => {
         setForm(defaultForm);
@@ -160,6 +186,7 @@ export default function Department() {
             if (res.ok) {
                 const newDept = await res.json();
                 setDepartments(prev => [...prev, newDept]);
+                logger.logCreate('Department', `Added department: ${payload.name}`);
                 setShowAdd(false);
             } else {
                 setDepartments(prev => [...prev, { ...payload, id: Date.now() }]);
@@ -194,6 +221,7 @@ export default function Department() {
             if (res.ok) {
                 const updated = await res.json();
                 setDepartments(prev => prev.map(d => d.id === id ? updated : d));
+                logger.logUpdate('Department', `Updated department: ${payload.name}`);
                 setShowEdit(false);
             } else {
                 setDepartments(prev => prev.map(d => d.id === id ? { ...d, ...payload } : d));
@@ -210,7 +238,7 @@ export default function Department() {
     };
 
     const handleDelete = async (idx) => {
-        if (!window.confirm('Archive this department? All courses in this department will also be archived.')) return;
+        if (!window.confirm('Archive this department? All courses, students, and faculty in this department will also be archived.')) return;
         const dept = activeDepartments[idx];
         if (!dept) return;
         const id = dept.id;
@@ -226,6 +254,10 @@ export default function Department() {
             if (res.ok) {
                 const updated = await res.json();
                 setDepartments(prev => prev.map(d => d.id === id ? updated : d));
+                logger.logArchive('Department', `Archived department: ${deptName}`);
+            } else {
+                // Fallback if API fails
+                setDepartments(prev => prev.map(d => d.id === id ? { ...d, status: 'Archived', archived: true } : d));
             }
             
             // Then, fetch and archive all courses in this department
@@ -245,9 +277,64 @@ export default function Department() {
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ status: 'archived', archived: true })
                     });
+                    logger.logArchive('Course', `Auto-archived course: ${course.name} (department archived)`);
                 }
             }
-        } catch {
+            
+            // Archive all students in this department
+            const studentsRes = await fetch('/api/students');
+            if (studentsRes.ok) {
+                const allStudents = await studentsRes.json();
+                const studentsToArchive = allStudents.filter(s => 
+                    s.department === deptName && 
+                    !s.archived && 
+                    s.archived !== 1
+                );
+                
+                for (const student of studentsToArchive) {
+                    await fetch(`/api/students/${student.id}`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ archived: true })
+                    });
+                    logger.logArchive('Student', `Auto-archived student: ${student.name} (department archived)`);
+                }
+                // Refresh students list
+                const updatedStudents = await fetch('/api/students');
+                if (updatedStudents.ok) {
+                    const data = await updatedStudents.json();
+                    setStudents(Array.isArray(data) ? data : []);
+                }
+            }
+            
+            // Archive all faculty in this department
+            const facultiesRes = await fetch('/api/faculties');
+            if (facultiesRes.ok) {
+                const allFaculties = await facultiesRes.json();
+                const facultiesToArchive = allFaculties.filter(f => 
+                    f.department === deptName && 
+                    !f.archived && 
+                    f.archived !== 1
+                );
+                
+                for (const faculty of facultiesToArchive) {
+                    await fetch(`/api/faculties/${faculty.id}`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ archived: true })
+                    });
+                    logger.logArchive('Faculty', `Auto-archived faculty: ${faculty.name} (department archived)`);
+                }
+                // Refresh faculties list
+                const updatedFaculties = await fetch('/api/faculties');
+                if (updatedFaculties.ok) {
+                    const data = await updatedFaculties.json();
+                    setFaculties(Array.isArray(data) ? data : []);
+                }
+            }
+        } catch (error) {
+            console.error('Error archiving department and related items:', error);
+            // Fallback if API fails
             setDepartments(prev => prev.map(d => d.id === id ? { ...d, status: 'Archived', archived: true } : d));
         }
         // if archiving currently selected, clear view
@@ -262,10 +349,171 @@ export default function Department() {
         setSelectedDept(null);
     };
 
+    // Handle column sorting
+    const handleSort = (field) => {
+        if (sortField === field) {
+            setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
+        } else {
+            setSortField(field);
+            setSortDirection('asc');
+        }
+    };
+
     const filtered = activeDepartments.filter(d =>
         (d.name || "").toLowerCase().includes(search.toLowerCase()) ||
         (d.head || "").toLowerCase().includes(search.toLowerCase())
     );
+
+    // Apply sorting
+    const sortedFiltered = [...filtered].sort((a, b) => {
+        if (!sortField) return 0;
+        
+        let aVal = a[sortField] || '';
+        let bVal = b[sortField] || '';
+        
+        // Special handling for counts
+        if (sortField === 'faculties') {
+            aVal = facultiesCount[a.name] ?? a.faculties ?? 0;
+            bVal = facultiesCount[b.name] ?? b.faculties ?? 0;
+        } else if (sortField === 'students') {
+            aVal = studentsCount[a.name] ?? a.students ?? 0;
+            bVal = studentsCount[b.name] ?? b.students ?? 0;
+        }
+        
+        // Convert to string for comparison
+        aVal = String(aVal).toLowerCase();
+        bVal = String(bVal).toLowerCase();
+        
+        if (aVal < bVal) return sortDirection === 'asc' ? -1 : 1;
+        if (aVal > bVal) return sortDirection === 'asc' ? 1 : -1;
+        return 0;
+    });
+
+    // Bulk archive all selected
+    const handleArchiveAll = async () => {
+        if (selectedDepartments.length === 0) {
+            alert('Please select departments to archive');
+            return;
+        }
+        
+        if (!window.confirm(`Archive ${selectedDepartments.length} selected department(s)? All related courses, students, and faculty will also be archived.`)) return;
+        
+        try {
+            for (const id of selectedDepartments) {
+                const dept = activeDepartments.find(d => d.id === id);
+                if (dept) {
+                    const deptName = dept.name;
+                    
+                    // Archive the department
+                    const res = await fetch(`/api/departments/${id}`, { 
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ status: 'Archived', archived: true })
+                    });
+                    if (res.ok) {
+                        logger.logArchive('Department', `Archived department: ${deptName}`);
+                    }
+                    
+                    // Archive all courses in this department
+                    const coursesRes = await fetch('/api/courses');
+                    if (coursesRes.ok) {
+                        const allCourses = await coursesRes.json();
+                        const coursesToArchive = allCourses.filter(c => 
+                            c.department === deptName && 
+                            c.status !== 'archived' && 
+                            c.archived !== true
+                        );
+                        
+                        for (const course of coursesToArchive) {
+                            await fetch(`/api/courses/${course.id}`, {
+                                method: 'PUT',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({ status: 'archived', archived: true })
+                            });
+                            logger.logArchive('Course', `Auto-archived course: ${course.name} (department archived)`);
+                        }
+                    }
+                    
+                    // Archive all students in this department
+                    const studentsRes = await fetch('/api/students');
+                    if (studentsRes.ok) {
+                        const allStudents = await studentsRes.json();
+                        const studentsToArchive = allStudents.filter(s => 
+                            s.department === deptName && 
+                            !s.archived && 
+                            s.archived !== 1
+                        );
+                        
+                        for (const student of studentsToArchive) {
+                            await fetch(`/api/students/${student.id}`, {
+                                method: 'PUT',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({ archived: true })
+                            });
+                            logger.logArchive('Student', `Auto-archived student: ${student.name} (department archived)`);
+                        }
+                    }
+                    
+                    // Archive all faculty in this department
+                    const facultiesRes = await fetch('/api/faculties');
+                    if (facultiesRes.ok) {
+                        const allFaculties = await facultiesRes.json();
+                        const facultiesToArchive = allFaculties.filter(f => 
+                            f.department === deptName && 
+                            !f.archived && 
+                            f.archived !== 1
+                        );
+                        
+                        for (const faculty of facultiesToArchive) {
+                            await fetch(`/api/faculties/${faculty.id}`, {
+                                method: 'PUT',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({ archived: true })
+                            });
+                            logger.logArchive('Faculty', `Auto-archived faculty: ${faculty.name} (department archived)`);
+                        }
+                    }
+                }
+            }
+            
+            // Refresh all lists
+            const deptRes = await fetch('/api/departments');
+            if (deptRes.ok) {
+                const data = await deptRes.json();
+                setDepartments(Array.isArray(data) ? data : []);
+            }
+            
+            const studRes = await fetch('/api/students');
+            if (studRes.ok) {
+                const data = await studRes.json();
+                setStudents(Array.isArray(data) ? data : []);
+            }
+            
+            const facRes = await fetch('/api/faculties');
+            if (facRes.ok) {
+                const data = await facRes.json();
+                setFaculties(Array.isArray(data) ? data : []);
+            }
+            
+            setSelectedDepartments([]);
+        } catch (error) {
+            console.error('Error archiving departments:', error);
+        }
+    };
+
+    // Toggle checkbox
+    const handleCheckboxToggle = (id) => {
+        setSelectedDepartments(prev => 
+            prev.includes(id) ? prev.filter(i => i !== id) : [...prev, id]
+        );
+    };
+
+    // Select all toggle
+    const handleSelectAllToggle = () => {
+        setSelectedDepartments(prev => 
+            prev.length === sortedFiltered.length ? [] : sortedFiltered.map(d => d.id)
+        );
+    };
 
     return (
         <div style={{ display: "flex", minHeight: "100vh", background: "#f8fafc" }}>
@@ -307,6 +555,27 @@ export default function Department() {
                                 onBlur={e => e.target.style.borderColor = '#d1d5db'}
                             />
                         </div>
+                        {selectedDepartments.length > 0 && (
+                            <button 
+                                onClick={handleArchiveAll}
+                                style={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    gap: 8,
+                                    padding: '10px 16px',
+                                    background: '#fef3c7',
+                                    color: '#ca8a04',
+                                    border: 'none',
+                                    borderRadius: 8,
+                                    fontSize: 13,
+                                    fontWeight: 600,
+                                    cursor: 'pointer',
+                                    whiteSpace: 'nowrap'
+                                }}
+                            >
+                                📦 Archive Selected ({selectedDepartments.length})
+                            </button>
+                        )}
                         <button 
                             onClick={handleAdd}
                             style={{
@@ -458,24 +727,59 @@ export default function Department() {
                         <table className="department-table">
                             <thead>
                                 <tr>
-                                    <th>Department Name</th>
-                                    <th>Dean</th>
-                                    <th>Contact</th>
-                                    <th>No. of Faculties</th>
-                                        <th>No. of Students</th>
-                                    <th>Status</th>
+                                    <th style={{ width: 40, textAlign: 'center' }}>
+                                        <input
+                                            type="checkbox"
+                                            checked={sortedFiltered.length > 0 && selectedDepartments.length === sortedFiltered.length}
+                                            onChange={handleSelectAllToggle}
+                                            style={{ cursor: 'pointer', width: 16, height: 16 }}
+                                        />
+                                    </th>
+                                    <th onClick={() => handleSort('name')} style={{ cursor: 'pointer', userSelect: 'none' }}>
+                                        Department Name {sortField === 'name' && (sortDirection === 'asc' ? '↑' : '↓')}
+                                    </th>
+                                    <th onClick={() => handleSort('head')} style={{ cursor: 'pointer', userSelect: 'none' }}>
+                                        Dean {sortField === 'head' && (sortDirection === 'asc' ? '↑' : '↓')}
+                                    </th>
+                                    <th onClick={() => handleSort('email')} style={{ cursor: 'pointer', userSelect: 'none' }}>
+                                        Contact {sortField === 'email' && (sortDirection === 'asc' ? '↑' : '↓')}
+                                    </th>
+                                    <th onClick={() => handleSort('faculties')} style={{ cursor: 'pointer', userSelect: 'none' }}>
+                                        No. of Faculties {sortField === 'faculties' && (sortDirection === 'asc' ? '↑' : '↓')}
+                                    </th>
+                                    <th onClick={() => handleSort('students')} style={{ cursor: 'pointer', userSelect: 'none' }}>
+                                        No. of Students {sortField === 'students' && (sortDirection === 'asc' ? '↑' : '↓')}
+                                    </th>
+                                    <th onClick={() => handleSort('status')} style={{ cursor: 'pointer', userSelect: 'none' }}>
+                                        Status {sortField === 'status' && (sortDirection === 'asc' ? '↑' : '↓')}
+                                    </th>
                                     <th style={{ width: 84, textAlign: "center" }}></th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {filtered.length === 0 && (
-                                    <tr><td colSpan="6">No programs found.</td></tr>
+                                {sortedFiltered.length === 0 && (
+                                    <tr><td colSpan="8">No programs found.</td></tr>
                                 )}
-                                {filtered.map((d, idx) => (
+                                {sortedFiltered.map((d, idx) => (
                                     <tr key={d.id ?? idx} style={{ cursor: 'pointer' }}>
-                                        <td onClick={() => handleUserClick(d)}>{d.name}</td>
-                                        <td onClick={() => handleUserClick(d)}>{d.head}</td>
-                                        <td onClick={() => handleUserClick(d)}>{d.email}</td>
+                                        <td style={{ textAlign: 'center' }} onClick={e => e.stopPropagation()}>
+                                            <input
+                                                type="checkbox"
+                                                checked={selectedDepartments.includes(d.id)}
+                                                onChange={() => handleCheckboxToggle(d.id)}
+                                                style={{ cursor: 'pointer', width: 16, height: 16 }}
+                                                onClick={e => e.stopPropagation()}
+                                            />
+                                        </td>
+                                        <td onClick={() => handleUserClick(d)}>
+                                            <HighlightText text={d.name} highlight={search} />
+                                        </td>
+                                        <td onClick={() => handleUserClick(d)}>
+                                            <HighlightText text={d.head} highlight={search} />
+                                        </td>
+                                        <td onClick={() => handleUserClick(d)}>
+                                            <HighlightText text={d.email} highlight={search} />
+                                        </td>
                                         <td onClick={() => handleUserClick(d)}>{facultiesCount[d.name] ?? d.faculties ?? 0}</td>
                                         <td onClick={() => handleUserClick(d)}>{studentsCount[d.name] ?? d.students ?? ""}</td>
                                         <td onClick={() => handleUserClick(d)}>{d.status ?? "Active"}</td>

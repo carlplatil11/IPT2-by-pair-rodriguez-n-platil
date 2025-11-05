@@ -51,6 +51,56 @@ class DepartmentController extends Controller
             'students' => 'nullable|integer',
         ]);
 
+        // Check if department is being archived
+        $isBeingArchived = isset($validated['archived']) && $validated['archived'] === true;
+        $wasArchived = $department->archived === true;
+        
+        // If department is being archived, archive all related faculty and students
+        if ($isBeingArchived && !$wasArchived) {
+            // Archive all faculty in this department
+            $affectedFaculty = \App\Models\Faculty::where('department', $department->name)
+                ->where('archived', false)
+                ->get();
+            
+            foreach ($affectedFaculty as $faculty) {
+                $faculty->archived = true;
+                $faculty->save();
+            }
+            
+            // Archive all students in this department
+            $affectedStudents = \App\Models\Student::where('department', $department->name)
+                ->where('archived', false)
+                ->get();
+            
+            foreach ($affectedStudents as $student) {
+                $student->archived = true;
+                $student->save();
+            }
+        }
+        
+        // If department is being unarchived, unarchive related faculty and students
+        if (isset($validated['archived']) && $validated['archived'] === false && $wasArchived) {
+            // Unarchive all faculty in this department
+            $affectedFaculty = \App\Models\Faculty::where('department', $department->name)
+                ->where('archived', true)
+                ->get();
+            
+            foreach ($affectedFaculty as $faculty) {
+                $faculty->archived = false;
+                $faculty->save();
+            }
+            
+            // Unarchive all students in this department
+            $affectedStudents = \App\Models\Student::where('department', $department->name)
+                ->where('archived', true)
+                ->get();
+            
+            foreach ($affectedStudents as $student) {
+                $student->archived = false;
+                $student->save();
+            }
+        }
+
         $department->fill($validated);
         $department->save();
         return response()->json($department);

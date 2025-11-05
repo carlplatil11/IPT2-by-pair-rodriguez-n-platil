@@ -59,6 +59,7 @@ class StudentController extends Controller
             'phone' => 'nullable|string',
             'department' => 'nullable|string',
             'year' => 'nullable|string',
+            'archived' => 'nullable|boolean',
         ]);
 
         // Handle avatar upload (optional)

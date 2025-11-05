@@ -1,6 +1,23 @@
 import React, { useState, useEffect, memo } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "./Navbar";
+import logger from "../utils/logger";
+
+// Text highlighting component
+const HighlightText = ({ text, highlight }) => {
+  if (!highlight || !text) return <>{text}</>;
+  
+  const parts = String(text).split(new RegExp(`(${highlight.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi'));
+  return (
+    <>
+      {parts.map((part, i) => 
+        part.toLowerCase() === highlight.toLowerCase() ? 
+          <span key={i} style={{ backgroundColor: '#fef08a', fontWeight: 600 }}>{part}</span> : 
+          part
+      )}
+    </>
+  );
+};
 
 const CourseFullForm = memo(({ isEdit, onSubmit, onCancel, form, setForm, departments = [] }) => (
     <div className="student-form-overlay">
@@ -112,6 +129,13 @@ export default function Courses() {
     const [search, setSearch] = useState("");
     const [showFilter, setShowFilter] = useState(false);
     const [selectedCourse, setSelectedCourse] = useState(null);
+    
+    // Sorting state
+    const [sortField, setSortField] = useState(null);
+    const [sortDirection, setSortDirection] = useState('asc');
+    
+    // Checkbox selections for bulk operations
+    const [selectedCourses, setSelectedCourses] = useState([]);
 
     useEffect(() => {
         let mounted = true;
@@ -164,6 +188,7 @@ export default function Courses() {
             if (res.ok) {
                 const newCourse = await res.json();
                 setCourseList(prev => [...prev, newCourse]);
+                logger.logCreate('Course', `Added course: ${payload.name}`);
             } else {
                 setCourseList(prev => [...prev, { ...payload, id: Date.now() }]);
             }
@@ -198,6 +223,7 @@ export default function Courses() {
             if (res.ok) {
                 const updated = await res.json();
                 setCourseList(prev => prev.map(s => s.id === updated.id ? updated : s));
+                logger.logUpdate('Course', `Updated course: ${payload.name}`);
             } else {
                 setCourseList(prev => prev.map(c => c.id === id ? { ...c, ...payload } : c));
             }
@@ -213,7 +239,7 @@ export default function Courses() {
     const handleDelete = async (idx) => {
         const target = activeCourseList[idx];
         if (!target) return;
-        if (!window.confirm("Archive this course?")) return;
+        if (!window.confirm("Archive this course? All students and faculty teaching this course will also be archived.")) return;
         try {
             const res = await fetch(`/api/courses/${target.id}`, { 
                 method: 'PUT',
@@ -223,6 +249,39 @@ export default function Courses() {
             if (res.ok) {
                 const updated = await res.json();
                 setCourseList(prev => prev.map(c => c.id === target.id ? updated : c));
+                logger.logArchive('Course', `Archived course: ${target.name}`);
+                
+                // Archive all students enrolled in this course
+                const studentsRes = await fetch('/api/students');
+                if (studentsRes.ok) {
+                    const allStudents = await studentsRes.json();
+                    const studentsToArchive = allStudents.filter(s => s.course === target.name);
+                    
+                    for (const student of studentsToArchive) {
+                        await fetch(`/api/students/${student.id}`, {
+                            method: 'PUT',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ archived: true })
+                        });
+                        logger.logArchive('Student', `Auto-archived student: ${student.name} (course archived)`);
+                    }
+                }
+                
+                // Archive all faculty teaching this course
+                const facultiesRes = await fetch('/api/faculties');
+                if (facultiesRes.ok) {
+                    const allFaculties = await facultiesRes.json();
+                    const facultiesToArchive = allFaculties.filter(f => f.subject === target.name);
+                    
+                    for (const faculty of facultiesToArchive) {
+                        await fetch(`/api/faculties/${faculty.id}`, {
+                            method: 'PUT',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ archived: true })
+                        });
+                        logger.logArchive('Faculty', `Auto-archived faculty: ${faculty.name} (course archived)`);
+                    }
+                }
             } else {
                 setCourseList(prev => prev.map(c => c.id === target.id ? { ...c, status: 'archived', archived: true } : c));
             }
@@ -238,10 +297,83 @@ export default function Courses() {
         (s.email || "").toLowerCase().includes(search.toLowerCase())
     );
 
+    // Handle column sorting
+    const handleSort = (field) => {
+        if (sortField === field) {
+            setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
+        } else {
+            setSortField(field);
+            setSortDirection('asc');
+        }
+    };
+
+    // Apply sorting
+    const sortedList = [...filteredList].sort((a, b) => {
+        if (!sortField) return 0;
+        
+        let aVal = a[sortField] || '';
+        let bVal = b[sortField] || '';
+        
+        // Convert to string for comparison
+        aVal = String(aVal).toLowerCase();
+        bVal = String(bVal).toLowerCase();
+        
+        if (aVal < bVal) return sortDirection === 'asc' ? -1 : 1;
+        if (aVal > bVal) return sortDirection === 'asc' ? 1 : -1;
+        return 0;
+    });
+
     const handleLogout = () => navigate("/login");
 
     const handleCourseClick = (course) => setSelectedCourse(course);
     const handleBackToList = () => setSelectedCourse(null);
+
+    // Bulk archive all selected
+    const handleArchiveAll = async () => {
+        if (selectedCourses.length === 0) {
+            alert('Please select courses to archive');
+            return;
+        }
+        
+        if (!window.confirm(`Archive ${selectedCourses.length} selected course(s)?`)) return;
+        
+        try {
+            for (const id of selectedCourses) {
+                const res = await fetch(`/api/courses/${id}`, { 
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ status: 'archived', archived: true })
+                });
+                if (res.ok) {
+                    const course = courseList.find(c => c.id === id);
+                    logger.logArchive('Course', `Archived course: ${course?.name || 'Unknown'}`);
+                }
+            }
+            // Refresh the list
+            const res = await fetch("/api/courses");
+            if (res.ok) {
+                const data = await res.json();
+                setCourseList(Array.isArray(data) ? data : []);
+            }
+            setSelectedCourses([]);
+        } catch (error) {
+            console.error('Error archiving courses:', error);
+        }
+    };
+
+    // Toggle checkbox
+    const handleCheckboxToggle = (id) => {
+        setSelectedCourses(prev => 
+            prev.includes(id) ? prev.filter(i => i !== id) : [...prev, id]
+        );
+    };
+
+    // Select all toggle
+    const handleSelectAllToggle = () => {
+        setSelectedCourses(prev => 
+            prev.length === sortedList.length ? [] : sortedList.map(c => c.id)
+        );
+    };
 
     return (
         <div style={{ display: "flex", minHeight: "100vh", background: "#f8fafc" }}>
@@ -286,6 +418,27 @@ export default function Courses() {
                                 }}
                             />
                         </div>
+                        {selectedCourses.length > 0 && (
+                            <button 
+                                onClick={handleArchiveAll}
+                                style={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    gap: 8,
+                                    padding: '10px 16px',
+                                    background: '#fef3c7',
+                                    color: '#ca8a04',
+                                    border: 'none',
+                                    borderRadius: 8,
+                                    fontSize: 13,
+                                    fontWeight: 600,
+                                    cursor: 'pointer',
+                                    whiteSpace: 'nowrap'
+                                }}
+                            >
+                                📦 Archive Selected ({selectedCourses.length})
+                            </button>
+                        )}
                         <button
                             onClick={handleAdd}
                             style={{
@@ -413,21 +566,50 @@ export default function Courses() {
                         <table className="student-table">
                             <thead>
                                 <tr>
-                                    <th>Course Name</th>
-                                    <th>Department</th>
-                                    <th>Level</th>
-                                    <th>Credits</th>
+                                    <th style={{ width: 40, textAlign: 'center' }}>
+                                        <input
+                                            type="checkbox"
+                                            checked={sortedList.length > 0 && selectedCourses.length === sortedList.length}
+                                            onChange={handleSelectAllToggle}
+                                            style={{ cursor: 'pointer', width: 16, height: 16 }}
+                                        />
+                                    </th>
+                                    <th onClick={() => handleSort('name')} style={{ cursor: 'pointer', userSelect: 'none' }}>
+                                        Course Name {sortField === 'name' && (sortDirection === 'asc' ? '↑' : '↓')}
+                                    </th>
+                                    <th onClick={() => handleSort('department')} style={{ cursor: 'pointer', userSelect: 'none' }}>
+                                        Department {sortField === 'department' && (sortDirection === 'asc' ? '↑' : '↓')}
+                                    </th>
+                                    <th onClick={() => handleSort('gender')} style={{ cursor: 'pointer', userSelect: 'none' }}>
+                                        Level {sortField === 'gender' && (sortDirection === 'asc' ? '↑' : '↓')}
+                                    </th>
+                                    <th onClick={() => handleSort('age')} style={{ cursor: 'pointer', userSelect: 'none' }}>
+                                        Credits {sortField === 'age' && (sortDirection === 'asc' ? '↑' : '↓')}
+                                    </th>
                                     <th></th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {filteredList.length === 0 && (
-                                    <tr><td colSpan="5">No courses found.</td></tr>
+                                {sortedList.length === 0 && (
+                                    <tr><td colSpan="6">No courses found.</td></tr>
                                 )}
-                                {filteredList.map((s, idx) => (
+                                {sortedList.map((s, idx) => (
                                     <tr key={s.id ?? idx} style={{ cursor: "pointer" }}>
-                                        <td onClick={() => handleCourseClick(s)}>{s.name}</td>
-                                        <td onClick={() => handleCourseClick(s)}>{s.department}</td>
+                                        <td style={{ textAlign: 'center' }} onClick={e => e.stopPropagation()}>
+                                            <input
+                                                type="checkbox"
+                                                checked={selectedCourses.includes(s.id)}
+                                                onChange={() => handleCheckboxToggle(s.id)}
+                                                style={{ cursor: 'pointer', width: 16, height: 16 }}
+                                                onClick={e => e.stopPropagation()}
+                                            />
+                                        </td>
+                                        <td onClick={() => handleCourseClick(s)}>
+                                            <HighlightText text={s.name} highlight={search} />
+                                        </td>
+                                        <td onClick={() => handleCourseClick(s)}>
+                                            <HighlightText text={s.department} highlight={search} />
+                                        </td>
                                         <td onClick={() => handleCourseClick(s)}>{s.gender}</td>
                                         <td onClick={() => handleCourseClick(s)}>{s.age}</td>
                                         <td>
