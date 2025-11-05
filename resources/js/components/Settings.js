@@ -276,229 +276,275 @@ export default function Settings() {
           <button className="logout-btn" onClick={() => window.location.href = '/login'}>Log out</button>
         </div>
 
-        <div style={{ marginBottom: 20 }}>
-          <h2 style={{ margin: 0, fontSize: 28, fontWeight: 700 }}>Archived Items</h2>
-          <p style={{ color: '#6b7280', marginTop: 8 }}>Manage archived courses and departments</p>
+        {/* Modern Header */}
+        <div style={{ padding: '24px 40px', borderBottom: '1px solid #e5e7eb' }}>
+          <h1 style={{ fontSize: 28, fontWeight: 700, color: '#111827', margin: 0, marginBottom: 4 }}>System Settings</h1>
+          <p style={{ fontSize: 14, color: '#6b7280', margin: 0 }}>Manage archived items and system configuration</p>
         </div>
 
-        {/* Search Bar */}
-        <div style={{ marginBottom: 24 }}>
-          <input
-            type="text"
-            placeholder={`Search archived ${activeTab}...`}
-            value={search}
-            onChange={e => setSearch(e.target.value)}
-            style={{
-              width: '100%',
-              maxWidth: 400,
-              padding: '10px 16px',
-              border: '1px solid #d1d5db',
-              borderRadius: 8,
-              fontSize: 14,
-              outline: 'none',
-              transition: 'border-color 0.2s'
-            }}
-            onFocus={e => e.target.style.borderColor = '#222'}
-            onBlur={e => e.target.style.borderColor = '#d1d5db'}
-          />
+        {/* Search and Filters Bar */}
+        <div style={{ display: 'flex', gap: 16, padding: '20px 40px', borderBottom: '1px solid #e5e7eb', alignItems: 'center' }}>
+          <div style={{ position: 'relative', flex: 1, maxWidth: 400 }}>
+            <svg
+              style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)', width: 18, height: 18 }}
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="#9ca3af"
+              strokeWidth="2"
+            >
+              <circle cx="11" cy="11" r="8" />
+              <path d="m21 21-4.35-4.35" />
+            </svg>
+            <input
+              type="text"
+              placeholder={`Search archived ${activeTab}...`}
+              value={search}
+              onChange={e => setSearch(e.target.value)}
+              style={{
+                width: '100%',
+                padding: '10px 12px 10px 40px',
+                border: '1px solid #e5e7eb',
+                borderRadius: 8,
+                fontSize: 14,
+                outline: 'none'
+              }}
+            />
+          </div>
+          <div style={{ fontSize: 13, color: '#6b7280', whiteSpace: 'nowrap' }}>
+            {activeTab === 'courses' && `${filteredCourses.length} of ${archivedCourseList.length} items`}
+            {activeTab === 'departments' && `${filteredDepartments.length} of ${archivedDepartmentList.length} items`}
+          </div>
         </div>
 
         {/* Tab Navigation */}
-        <div style={{ display: 'flex', gap: 16, borderBottom: '2px solid #e5e7eb', marginBottom: 24 }}>
-          <button
-            onClick={() => setActiveTab('courses')}
-            style={{
-              background: 'none',
-              border: 'none',
-              borderBottom: activeTab === 'courses' ? '2px solid #222' : '2px solid transparent',
-              padding: '12px 16px',
-              cursor: 'pointer',
-              fontWeight: activeTab === 'courses' ? 600 : 400,
-              color: activeTab === 'courses' ? '#222' : '#6b7280',
-              marginBottom: -2,
-              fontSize: 15
-            }}
-          >
-            Archived Courses
-          </button>
-          <button
-            onClick={() => setActiveTab('departments')}
-            style={{
-              background: 'none',
-              border: 'none',
-              borderBottom: activeTab === 'departments' ? '2px solid #222' : '2px solid transparent',
-              padding: '12px 16px',
-              cursor: 'pointer',
-              fontWeight: activeTab === 'departments' ? 600 : 400,
-              color: activeTab === 'departments' ? '#222' : '#6b7280',
-              marginBottom: -2,
-              fontSize: 15
-            }}
-          >
-            Archived Departments
-          </button>
-        </div>
-
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
-          <p style={{ color: '#6b7280', margin: 0, fontSize: 14 }}>
-            {activeTab === 'courses' && `${filteredCourses.length} of ${archivedCourseList.length} archived course${archivedCourseList.length !== 1 ? 's' : ''}`}
-            {activeTab === 'departments' && `${filteredDepartments.length} of ${archivedDepartmentList.length} archived department${archivedDepartmentList.length !== 1 ? 's' : ''}`}
-          </p>
+        <div style={{ padding: '0 40px' }}>
+          <div style={{ display: 'flex', gap: 4, borderBottom: '2px solid #e5e7eb', marginBottom: 24 }}>
+            <button
+              onClick={() => setActiveTab('courses')}
+              style={{
+                background: 'none',
+                border: 'none',
+                borderBottom: activeTab === 'courses' ? '3px solid #111827' : '3px solid transparent',
+                padding: '14px 20px',
+                cursor: 'pointer',
+                fontWeight: activeTab === 'courses' ? 600 : 400,
+                color: activeTab === 'courses' ? '#111827' : '#6b7280',
+                marginBottom: -2,
+                fontSize: 14,
+                transition: 'all 0.2s'
+              }}
+            >
+              📚 Archived Courses
+            </button>
+            <button
+              onClick={() => setActiveTab('departments')}
+              style={{
+                background: 'none',
+                border: 'none',
+                borderBottom: activeTab === 'departments' ? '3px solid #111827' : '3px solid transparent',
+                padding: '14px 20px',
+                cursor: 'pointer',
+                fontWeight: activeTab === 'departments' ? 600 : 400,
+                color: activeTab === 'departments' ? '#111827' : '#6b7280',
+                marginBottom: -2,
+                fontSize: 14,
+                transition: 'all 0.2s'
+              }}
+            >
+              🏛️ Archived Departments
+            </button>
+          </div>
         </div>
 
         {/* Courses Table */}
         {activeTab === 'courses' && (
-          <div style={{ background: '#fff', borderRadius: 12, overflow: 'hidden', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
-            <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-              <thead>
-                <tr style={{ background: '#fafbfc', borderBottom: '1px solid #e5e7eb' }}>
-                  <th style={{ textAlign: 'left', padding: '12px 16px', fontWeight: 600, fontSize: 13, color: '#6b7280' }}>Course Name</th>
-                  <th style={{ textAlign: 'left', padding: '12px 16px', fontWeight: 600, fontSize: 13, color: '#6b7280' }}>Department</th>
-                  <th style={{ textAlign: 'left', padding: '12px 16px', fontWeight: 600, fontSize: 13, color: '#6b7280' }}>Level</th>
-                  <th style={{ textAlign: 'left', padding: '12px 16px', fontWeight: 600, fontSize: 13, color: '#6b7280' }}>Credits</th>
-                  <th style={{ textAlign: 'right', padding: '12px 16px', fontWeight: 600, fontSize: 13, color: '#6b7280' }}>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredCourses.length === 0 && (
-                  <tr>
-                    <td colSpan="5" style={{ padding: '40px 16px', textAlign: 'center', color: '#9ca3af' }}>
-                      {search ? 'No archived courses match your search.' : 'No archived courses found.'}
-                    </td>
+          <div style={{ padding: '0 40px', marginBottom: 40 }}>
+            <div style={{ background: '#fff', borderRadius: 12, overflow: 'hidden', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
+              <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                <thead>
+                  <tr style={{ background: '#f9fafb', borderBottom: '1px solid #e5e7eb' }}>
+                    <th style={{ textAlign: 'left', padding: '14px 20px', fontWeight: 600, fontSize: 12, color: '#6b7280', textTransform: 'uppercase', letterSpacing: 0.5 }}>Course Name</th>
+                    <th style={{ textAlign: 'left', padding: '14px 20px', fontWeight: 600, fontSize: 12, color: '#6b7280', textTransform: 'uppercase', letterSpacing: 0.5 }}>Department</th>
+                    <th style={{ textAlign: 'left', padding: '14px 20px', fontWeight: 600, fontSize: 12, color: '#6b7280', textTransform: 'uppercase', letterSpacing: 0.5 }}>Level</th>
+                    <th style={{ textAlign: 'left', padding: '14px 20px', fontWeight: 600, fontSize: 12, color: '#6b7280', textTransform: 'uppercase', letterSpacing: 0.5 }}>Credits</th>
+                    <th style={{ textAlign: 'center', padding: '14px 20px', fontWeight: 600, fontSize: 12, color: '#6b7280', textTransform: 'uppercase', letterSpacing: 0.5 }}>Actions</th>
                   </tr>
-                )}
-                {filteredCourses.map(item => (
-                  <tr key={item.id} style={{ borderBottom: '1px solid #f3f4f6' }}>
-                    <td style={{ padding: '12px 16px', fontSize: 14, color: '#111827', fontWeight: 600 }}>{item.name}</td>
-                    <td style={{ padding: '12px 16px', fontSize: 14, color: '#6b7280' }}>{item.department}</td>
-                    <td style={{ padding: '12px 16px', fontSize: 14, color: '#6b7280' }}>{item.gender}</td>
-                    <td style={{ padding: '12px 16px', fontSize: 14, color: '#6b7280' }}>{item.age}</td>
-                    <td style={{ padding: '12px 16px', textAlign: 'right' }}>
-                      <button 
-                        onClick={() => handleUnarchive(item.id)}
-                        style={{
-                          background: 'none',
-                          border: 'none',
-                          cursor: 'pointer',
-                          padding: 6,
-                          marginRight: 4
-                        }}
-                        title="Restore"
-                      >
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#10b981" strokeWidth="2">
-                          <path d="M3 3h18v4H3z" />
-                          <path d="M3 7v11a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V7" />
-                          <path d="M9 11v6" />
-                          <path d="M15 11v6" />
-                        </svg>
-                      </button>
-                      <button 
-                        onClick={() => handlePermanentDelete(item.id)}
-                        style={{
-                          background: 'none',
-                          border: 'none',
-                          cursor: 'pointer',
-                          padding: 6
-                        }}
-                        title="Delete Permanently"
-                      >
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ef4444" strokeWidth="2">
-                          <path d="M3 6h18" />
-                          <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6" />
-                          <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
-                          <line x1="10" y1="11" x2="10" y2="17" />
-                          <line x1="14" y1="11" x2="14" y2="17" />
-                        </svg>
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {filteredCourses.length === 0 && (
+                    <tr>
+                      <td colSpan="5" style={{ padding: '60px 20px', textAlign: 'center', color: '#9ca3af' }}>
+                        <div style={{ marginBottom: 12 }}>
+                          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#d1d5db" strokeWidth="1.5" style={{ margin: '0 auto' }}>
+                            <path d="M3 3h18v4H3z" />
+                            <path d="M3 7v11a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V7" />
+                          </svg>
+                        </div>
+                        <div style={{ fontSize: 15, fontWeight: 500, color: '#6b7280', marginBottom: 4 }}>
+                          {search ? 'No archived courses match your search' : 'No archived courses'}
+                        </div>
+                        <div style={{ fontSize: 13, color: '#9ca3af' }}>
+                          {search ? 'Try adjusting your search terms' : 'Archived courses will appear here'}
+                        </div>
+                      </td>
+                    </tr>
+                  )}
+                  {filteredCourses.map((item, idx) => (
+                    <tr key={item.id} style={{ borderBottom: '1px solid #f3f4f6', transition: 'background 0.15s' }}
+                        onMouseEnter={e => e.currentTarget.style.background = '#f9fafb'}
+                        onMouseLeave={e => e.currentTarget.style.background = 'transparent'}>
+                      <td style={{ padding: '16px 20px', fontSize: 14, color: '#111827', fontWeight: 600 }}>{item.name}</td>
+                      <td style={{ padding: '16px 20px', fontSize: 14, color: '#6b7280' }}>{item.department}</td>
+                      <td style={{ padding: '16px 20px', fontSize: 14, color: '#6b7280' }}>{item.gender}</td>
+                      <td style={{ padding: '16px 20px', fontSize: 14, color: '#6b7280' }}>{item.age}</td>
+                      <td style={{ padding: '16px 20px', textAlign: 'center' }}>
+                        <button 
+                          onClick={() => handleUnarchive(item.id)}
+                          style={{
+                            background: '#dcfce7',
+                            border: 'none',
+                            cursor: 'pointer',
+                            padding: '6px 12px',
+                            marginRight: 8,
+                            borderRadius: 6,
+                            fontSize: 12,
+                            fontWeight: 600,
+                            color: '#16a34a',
+                            transition: 'all 0.2s'
+                          }}
+                          onMouseEnter={e => e.target.style.background = '#bbf7d0'}
+                          onMouseLeave={e => e.target.style.background = '#dcfce7'}
+                          title="Restore"
+                        >
+                          ↻ Restore
+                        </button>
+                        <button 
+                          onClick={() => handlePermanentDelete(item.id)}
+                          style={{
+                            background: '#fee2e2',
+                            border: 'none',
+                            cursor: 'pointer',
+                            padding: '6px 12px',
+                            borderRadius: 6,
+                            fontSize: 12,
+                            fontWeight: 600,
+                            color: '#dc2626',
+                            transition: 'all 0.2s'
+                          }}
+                          onMouseEnter={e => e.target.style.background = '#fecaca'}
+                          onMouseLeave={e => e.target.style.background = '#fee2e2'}
+                          title="Delete Permanently"
+                        >
+                          🗑️ Delete
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         )}
 
         {/* Departments Tab */}
         {activeTab === 'departments' && (
-          <div style={{ background: '#fff', borderRadius: 12, overflow: 'hidden', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
-            <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-              <thead>
-                <tr style={{ background: '#fafbfc', borderBottom: '1px solid #e5e7eb' }}>
-                  <th style={{ textAlign: 'left', padding: '12px 16px', fontWeight: 600, fontSize: 13, color: '#6b7280' }}>Department Name</th>
-                  <th style={{ textAlign: 'left', padding: '12px 16px', fontWeight: 600, fontSize: 13, color: '#6b7280' }}>Dean</th>
-                  <th style={{ textAlign: 'left', padding: '12px 16px', fontWeight: 600, fontSize: 13, color: '#6b7280' }}>Contact</th>
-                  <th style={{ textAlign: 'left', padding: '12px 16px', fontWeight: 600, fontSize: 13, color: '#6b7280' }}>Status</th>
-                  <th style={{ textAlign: 'right', padding: '12px 16px', fontWeight: 600, fontSize: 13, color: '#6b7280' }}>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredDepartments.length === 0 && (
-                  <tr>
-                    <td colSpan="5" style={{ padding: '40px 16px', textAlign: 'center', color: '#9ca3af' }}>
-                      {search ? 'No archived departments match your search.' : 'No archived departments found.'}
-                    </td>
+          <div style={{ padding: '0 40px', marginBottom: 40 }}>
+            <div style={{ background: '#fff', borderRadius: 12, overflow: 'hidden', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
+              <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                <thead>
+                  <tr style={{ background: '#f9fafb', borderBottom: '1px solid #e5e7eb' }}>
+                    <th style={{ textAlign: 'left', padding: '14px 20px', fontWeight: 600, fontSize: 12, color: '#6b7280', textTransform: 'uppercase', letterSpacing: 0.5 }}>Department Name</th>
+                    <th style={{ textAlign: 'left', padding: '14px 20px', fontWeight: 600, fontSize: 12, color: '#6b7280', textTransform: 'uppercase', letterSpacing: 0.5 }}>Dean</th>
+                    <th style={{ textAlign: 'left', padding: '14px 20px', fontWeight: 600, fontSize: 12, color: '#6b7280', textTransform: 'uppercase', letterSpacing: 0.5 }}>Contact</th>
+                    <th style={{ textAlign: 'left', padding: '14px 20px', fontWeight: 600, fontSize: 12, color: '#6b7280', textTransform: 'uppercase', letterSpacing: 0.5 }}>Status</th>
+                    <th style={{ textAlign: 'center', padding: '14px 20px', fontWeight: 600, fontSize: 12, color: '#6b7280', textTransform: 'uppercase', letterSpacing: 0.5 }}>Actions</th>
                   </tr>
-                )}
-                {filteredDepartments.map(item => (
-                  <tr key={item.id} style={{ borderBottom: '1px solid #f3f4f6' }}>
-                    <td style={{ padding: '12px 16px', fontSize: 14, color: '#111827', fontWeight: 600 }}>{item.name}</td>
-                    <td style={{ padding: '12px 16px', fontSize: 14, color: '#6b7280' }}>{item.head || '-'}</td>
-                    <td style={{ padding: '12px 16px', fontSize: 14, color: '#6b7280' }}>{item.email || '-'}</td>
-                    <td style={{ padding: '12px 16px' }}>
-                      <span style={{
-                        display: 'inline-block',
-                        background: '#9ca3af',
-                        color: '#fff',
-                        padding: '4px 12px',
-                        borderRadius: 12,
-                        fontSize: 12,
-                        fontWeight: 600
-                      }}>
-                        Archived
-                      </span>
-                    </td>
-                    <td style={{ padding: '12px 16px', textAlign: 'right' }}>
-                      <button 
-                        onClick={() => handleUnarchive(item.id)}
-                        style={{
-                          background: 'none',
-                          border: 'none',
-                          cursor: 'pointer',
-                          padding: 6,
-                          marginRight: 4
-                        }}
-                        title="Restore"
-                      >
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#10b981" strokeWidth="2">
-                          <path d="M3 3h18v4H3z" />
-                          <path d="M3 7v11a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V7" />
-                          <path d="M9 11v6" />
-                          <path d="M15 11v6" />
-                        </svg>
-                      </button>
-                      <button 
-                        onClick={() => handlePermanentDelete(item.id)}
-                        style={{
-                          background: 'none',
-                          border: 'none',
-                          cursor: 'pointer',
-                          padding: 6
-                        }}
-                        title="Delete Permanently"
-                      >
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ef4444" strokeWidth="2">
-                          <path d="M3 6h18" />
-                          <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6" />
-                          <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
-                          <line x1="10" y1="11" x2="10" y2="17" />
-                          <line x1="14" y1="11" x2="14" y2="17" />
-                        </svg>
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {filteredDepartments.length === 0 && (
+                    <tr>
+                      <td colSpan="5" style={{ padding: '60px 20px', textAlign: 'center', color: '#9ca3af' }}>
+                        <div style={{ marginBottom: 12 }}>
+                          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#d1d5db" strokeWidth="1.5" style={{ margin: '0 auto' }}>
+                            <path d="M3 3h18v4H3z" />
+                            <path d="M3 7v11a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V7" />
+                          </svg>
+                        </div>
+                        <div style={{ fontSize: 15, fontWeight: 500, color: '#6b7280', marginBottom: 4 }}>
+                          {search ? 'No archived departments match your search' : 'No archived departments'}
+                        </div>
+                        <div style={{ fontSize: 13, color: '#9ca3af' }}>
+                          {search ? 'Try adjusting your search terms' : 'Archived departments will appear here'}
+                        </div>
+                      </td>
+                    </tr>
+                  )}
+                  {filteredDepartments.map((item, idx) => (
+                    <tr key={item.id} style={{ borderBottom: '1px solid #f3f4f6', transition: 'background 0.15s' }}
+                        onMouseEnter={e => e.currentTarget.style.background = '#f9fafb'}
+                        onMouseLeave={e => e.currentTarget.style.background = 'transparent'}>
+                      <td style={{ padding: '16px 20px', fontSize: 14, color: '#111827', fontWeight: 600 }}>{item.name}</td>
+                      <td style={{ padding: '16px 20px', fontSize: 14, color: '#6b7280' }}>{item.head || '-'}</td>
+                      <td style={{ padding: '16px 20px', fontSize: 14, color: '#6b7280' }}>{item.email || '-'}</td>
+                      <td style={{ padding: '16px 20px' }}>
+                        <span style={{
+                          display: 'inline-block',
+                          background: '#f3f4f6',
+                          color: '#6b7280',
+                          padding: '4px 10px',
+                          borderRadius: 12,
+                          fontSize: 12,
+                          fontWeight: 600
+                        }}>
+                          Archived
+                        </span>
+                      </td>
+                      <td style={{ padding: '16px 20px', textAlign: 'center' }}>
+                        <button 
+                          onClick={() => handleUnarchive(item.id)}
+                          style={{
+                            background: '#dcfce7',
+                            border: 'none',
+                            cursor: 'pointer',
+                            padding: '6px 12px',
+                            marginRight: 8,
+                            borderRadius: 6,
+                            fontSize: 12,
+                            fontWeight: 600,
+                            color: '#16a34a',
+                            transition: 'all 0.2s'
+                          }}
+                          onMouseEnter={e => e.target.style.background = '#bbf7d0'}
+                          onMouseLeave={e => e.target.style.background = '#dcfce7'}
+                          title="Restore"
+                        >
+                          ↻ Restore
+                        </button>
+                        <button 
+                          onClick={() => handlePermanentDelete(item.id)}
+                          style={{
+                            background: '#fee2e2',
+                            border: 'none',
+                            cursor: 'pointer',
+                            padding: '6px 12px',
+                            borderRadius: 6,
+                            fontSize: 12,
+                            fontWeight: 600,
+                            color: '#dc2626',
+                            transition: 'all 0.2s'
+                          }}
+                          onMouseEnter={e => e.target.style.background = '#fecaca'}
+                          onMouseLeave={e => e.target.style.background = '#fee2e2'}
+                          title="Delete Permanently"
+                        >
+                          🗑️ Delete
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         )}
       </main>

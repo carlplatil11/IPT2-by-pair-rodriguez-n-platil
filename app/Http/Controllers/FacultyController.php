@@ -22,13 +22,13 @@ class FacultyController extends Controller
         $validated = $request->validate([
             'name' => 'required|string',
             'subject' => 'required|string',
-            'class' => 'required|string',
             'email' => 'required|email|unique:faculties,email',
             'age' => 'nullable|integer',
             'gender' => 'required|in:Male,Female',
             'about' => 'nullable|string',
             'phone' => 'nullable|string',
             'department' => 'nullable|string',
+            'class' => 'nullable|string',
         ]);
 
         // Handle avatar upload
@@ -56,13 +56,13 @@ class FacultyController extends Controller
         $validated = $request->validate([
             'name' => 'sometimes|string',
             'subject' => 'sometimes|string',
-            'class' => 'sometimes|string',
             'email' => 'sometimes|email|unique:faculties,email,' . $id,
             'age' => 'nullable|integer',
             'gender' => 'sometimes|in:Male,Female',
             'about' => 'nullable|string',
             'phone' => 'nullable|string',
             'department' => 'nullable|string',
+            'class' => 'nullable|string',
         ]);
 
         // Handle avatar upload

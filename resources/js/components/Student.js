@@ -39,7 +39,7 @@ const StudentFullForm = memo(({ isEdit, onSubmit, onCancel, form, setForm, depar
               }}
             >
               <option value="">Select department</option>
-              {departments.map(d => (
+              {departments.filter(d => d && d.name).map(d => (
                 <option key={d.id ?? d.name} value={d.name}>{d.name}</option>
               ))}
             </select>
@@ -132,7 +132,7 @@ const StudentFullForm = memo(({ isEdit, onSubmit, onCancel, form, setForm, depar
             <option value="">
               {form.department ? "Select course" : "Select department first"}
             </option>
-            {filteredCourses.map(c => (
+            {filteredCourses.filter(c => c && c.name).map(c => (
               <option key={c.id ?? c.name} value={c.name}>{c.name}</option>
             ))}
           </select>
@@ -273,7 +273,14 @@ export default function Student() {
     finally { setShowAdd(false); setForm(defaultForm); }
   };
 
-  const handleEdit = (idx) => { setEditIndex(idx); setForm({ ...defaultForm, ...studentList[idx] }); setShowEdit(true); };
+  const handleEdit = (item) => { 
+    if (!item || !item.id) return;
+    const idx = studentList.findIndex(s => s && s.id === item.id);
+    if (idx === -1) return;
+    setEditIndex(idx); 
+    setForm({ ...defaultForm, ...item }); 
+    setShowEdit(true); 
+  };
   const handleEditSubmit = async (e) => {
     e.preventDefault();
     if (editIndex === null) return;
@@ -288,15 +295,15 @@ export default function Student() {
     finally { setShowEdit(false); setEditIndex(null); setForm(defaultForm); }
   };
 
-  const handleDelete = async (idx) => {
-    const target = studentList[idx]; if (!target) return;
+  const handleDelete = async (item) => {
+    if (!item || !item.id) return;
     if (!window.confirm("Are you sure you want to delete this record?")) return;
     try {
-      const res = await fetch(`/api/students/${target.id}`, { method: "DELETE" });
-      if (res.ok) setStudentList(prev => prev.filter((_, i) => i !== idx));
-      else { await localDB.delete(target.id); setStudentList(prev => prev.filter((_, i) => i !== idx)); }
-    } catch { await localDB.delete(target.id); setStudentList(prev => prev.filter((_, i) => i !== idx)); }
-    if (selectedUser && selectedUser.id === target.id) setSelectedUser(null);
+      const res = await fetch(`/api/students/${item.id}`, { method: "DELETE" });
+      if (res.ok) setStudentList(prev => prev.filter(s => s.id !== item.id));
+      else { await localDB.delete(item.id); setStudentList(prev => prev.filter(s => s.id !== item.id)); }
+    } catch { await localDB.delete(item.id); setStudentList(prev => prev.filter(s => s.id !== item.id)); }
+    if (selectedUser && selectedUser.id === item.id) setSelectedUser(null);
   };
 
   const filteredList = studentList.filter(s => {
@@ -397,7 +404,7 @@ export default function Student() {
               }}
             >
               <option value="All Departments">All Departments</option>
-              {departments.map(d => (
+              {departments.filter(d => d && d.name).map(d => (
                 <option key={d.id ?? d.name} value={d.name}>{d.name}</option>
               ))}
             </select>
@@ -445,8 +452,8 @@ export default function Student() {
               <div style={{ color: "#888", fontSize: "1rem", marginBottom: 24, textAlign: "center", letterSpacing: 1 }}>{(selectedUser.department || "").toUpperCase()}</div>
 
               <div style={{ display: "flex", gap: 24, marginTop: 16 }}>
-                <button className="student-form-submit" onClick={() => { const idx = studentList.findIndex(s => s.id === selectedUser.id); if (idx !== -1) handleEdit(idx); }}>Edit</button>
-                <button className="student-form-cancel" onClick={() => { const idx = studentList.findIndex(s => s.id === selectedUser.id); if (idx !== -1) handleDelete(idx); handleBackToList(); }}>Delete</button>
+                <button className="student-form-submit" onClick={() => handleEdit(selectedUser)}>Edit</button>
+                <button className="student-form-cancel" onClick={() => { handleDelete(selectedUser); handleBackToList(); }}>Delete</button>
               </div>
             </div>
 
@@ -499,10 +506,10 @@ export default function Student() {
                     <td onClick={() => handleUserClick(s)}>{s.year}</td>
                     <td onClick={() => handleUserClick(s)}>{s.gender}</td>
                     <td>
-                      <button className="student-icon-btn" title="Edit" aria-label="Edit student" onClick={e => { e.stopPropagation(); handleEdit(idx); }}>
+                      <button className="student-icon-btn" title="Edit" aria-label="Edit student" onClick={e => { e.stopPropagation(); handleEdit(s); }}>
                         <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25z" stroke="#222" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/><path d="M20.71 7.04a1 1 0 0 0 0-1.41l-2.34-2.34a1 1 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z" stroke="#222" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
                       </button>
-                      <button className="student-icon-btn" title="Delete" aria-label="Delete student" onClick={e => { e.stopPropagation(); handleDelete(idx); }}>
+                      <button className="student-icon-btn" title="Delete" aria-label="Delete student" onClick={e => { e.stopPropagation(); handleDelete(s); }}>
                         <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M3 6h18" stroke="#222" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L6 6" stroke="#222" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/><path d="M10 11v6" stroke="#222" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/><path d="M14 11v6" stroke="#222" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/><path d="M9 6V4a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2" stroke="#222" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
                       </button>
                     </td>

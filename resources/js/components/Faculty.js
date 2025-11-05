@@ -29,7 +29,7 @@ const FacultyFullForm = memo(({ isEdit, onSubmit, onCancel, form, setForm, depar
             onChange={e => setForm({ ...form, department: e.target.value })}
           >
             <option value="">Select department</option>
-            {departments.map(d => (
+            {departments.filter(d => d && d.name).map(d => (
               <option key={d.id ?? d.name} value={d.name}>{d.name}</option>
             ))}
           </select>
@@ -189,7 +189,14 @@ export default function Faculty() {
     }
   };
 
-  const handleEdit = (idx) => { setEditIndex(idx); setForm({ ...defaultForm, ...facultyList[idx] }); setShowEdit(true); };
+  const handleEdit = (item) => { 
+    if (!item || !item.id) return;
+    const idx = facultyList.findIndex(f => f && f.id === item.id);
+    if (idx === -1) return;
+    setEditIndex(idx); 
+    setForm({ ...defaultForm, ...item }); 
+    setShowEdit(true); 
+  };
   const handleEditSubmit = async (e) => {
     e.preventDefault();
     if (editIndex === null) return;
@@ -215,17 +222,16 @@ export default function Faculty() {
     }
   };
 
-  const handleDelete = async (idx) => {
-    const target = facultyList[idx];
-    if (!target) return;
+  const handleDelete = async (item) => {
+    if (!item || !item.id) return;
     if (!window.confirm("Are you sure you want to delete this record?")) return;
     try {
-      const res = await fetch(`/api/faculties/${target.id}`, { method: 'DELETE' });
-      if (res.ok) setFacultyList(prev => prev.filter((_, i) => i !== idx));
-      else { await localDB.delete(target.id); setFacultyList(prev => prev.filter((_, i) => i !== idx)); }
+      const res = await fetch(`/api/faculties/${item.id}`, { method: 'DELETE' });
+      if (res.ok) setFacultyList(prev => prev.filter(f => f.id !== item.id));
+      else { await localDB.delete(item.id); setFacultyList(prev => prev.filter(f => f.id !== item.id)); }
     } catch {
-      await localDB.delete(target.id);
-      setFacultyList(prev => prev.filter((_, i) => i !== idx));
+      await localDB.delete(item.id);
+      setFacultyList(prev => prev.filter(f => f.id !== item.id));
     }
     if (selectedUser && selectedUser.id === target.id) setSelectedUser(null);
   };
@@ -304,7 +310,7 @@ export default function Faculty() {
               }}
             >
               <option value="All Departments">All Departments</option>
-              {departments.map(d => (
+              {departments.filter(d => d && d.name).map(d => (
                 <option key={d.id ?? d.name} value={d.name}>{d.name}</option>
               ))}
             </select>
@@ -351,10 +357,10 @@ export default function Faculty() {
               <div style={{ color: "#888", fontSize: "1rem", marginBottom: 24, textAlign: "center" }}>{selectedUser.subject}</div>
 
               <div style={{ display: "flex", gap: 24, marginTop: 16 }}>
-                <button style={{ background: "#0033ff", border: "none", borderRadius: 12, padding: 12, cursor: "pointer", fontFamily: fontStyle.fontFamily, fontWeight: 600, color: "#fff" }} onClick={() => { const idx = facultyList.findIndex(f => f.id === selectedUser.id); if (idx !== -1) handleEdit(idx); }}>
+                <button style={{ background: "#0033ff", border: "none", borderRadius: 12, padding: 12, cursor: "pointer", fontFamily: fontStyle.fontFamily, fontWeight: 600, color: "#fff" }} onClick={() => handleEdit(selectedUser)}>
                   Edit
                 </button>
-                <button style={{ background: "#ff2d2d", border: "none", borderRadius: 12, padding: 12, cursor: "pointer", fontFamily: fontStyle.fontFamily, fontWeight: 600, color: "#fff" }} onClick={() => { const idx = facultyList.findIndex(f => f.id === selectedUser.id); if (idx !== -1) handleDelete(idx); handleBackToList(); }}>
+                <button style={{ background: "#ff2d2d", border: "none", borderRadius: 12, padding: 12, cursor: "pointer", fontFamily: fontStyle.fontFamily, fontWeight: 600, color: "#fff" }} onClick={() => { handleDelete(selectedUser); handleBackToList(); }}>
                   Delete
                 </button>
               </div>
@@ -404,10 +410,10 @@ export default function Faculty() {
                     <td onClick={() => handleUserClick(f)}>{f.department}</td>
                     <td onClick={() => handleUserClick(f)}>{f.gender}</td>
                     <td>
-                      <button className="faculty-icon-btn" title="Edit" onClick={e => { e.stopPropagation(); handleEdit(idx); }}>
+                      <button className="faculty-icon-btn" title="Edit" onClick={e => { e.stopPropagation(); handleEdit(f); }}>
                         <svg width="20" height="20" fill="none" stroke="#222" strokeWidth="2" viewBox="0 0 24 24"><path d="M12 20h9" /><path d="M16.5 3.5a2.121 2.121 0 1 1 3 3L7 19.5 3 21l1.5-4L16.5 3.5z" /></svg>
                       </button>
-                      <button className="faculty-icon-btn" title="Delete" onClick={e => { e.stopPropagation(); handleDelete(idx); }}>
+                      <button className="faculty-icon-btn" title="Delete" onClick={e => { e.stopPropagation(); handleDelete(f); }}>
                         <svg width="20" height="20" fill="none" stroke="#222" strokeWidth="2" viewBox="0 0 24 24"><path d="M3 6h18" /><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" /><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" /><path d="M10 11v6" /><path d="M14 11v6" /></svg>
                       </button>
                     </td>

@@ -18,6 +18,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+// Dashboard Statistics API
+Route::get('stats/totals', [App\Http\Controllers\DashboardController::class, 'stats']);
+Route::get('stats/students-by-course', [App\Http\Controllers\DashboardController::class, 'studentsByCourse']);
+Route::get('stats/faculty-by-department', [App\Http\Controllers\DashboardController::class, 'facultyByDepartment']);
+
 // Faculty CRUD API (explicit routes)
 Route::get('faculties', [App\Http\Controllers\FacultyController::class, 'index']); // List all
 Route::post('faculties', [App\Http\Controllers\FacultyController::class, 'store']); // Create

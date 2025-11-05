@@ -16,7 +16,7 @@ const CourseFullForm = memo(({ isEdit, onSubmit, onCancel, form, setForm, depart
                         onChange={e => setForm({ ...form, department: e.target.value })}
                     >
                         <option value="">Select department</option>
-                        {departments.map(d => (
+                        {departments.filter(d => d && d.name).map(d => (
                             <option key={d.id ?? d.name} value={d.name}>{d.name}</option>
                         ))}
                     </select>
