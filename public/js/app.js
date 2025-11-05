@@ -73100,7 +73100,13 @@ var FacultyFullForm = /*#__PURE__*/(0,react__WEBPACK_IMPORTED_MODULE_0__.memo)(f
     form = _ref.form,
     setForm = _ref.setForm,
     _ref$departments = _ref.departments,
-    departments = _ref$departments === void 0 ? [] : _ref$departments;
+    departments = _ref$departments === void 0 ? [] : _ref$departments,
+    _ref$courses = _ref.courses,
+    courses = _ref$courses === void 0 ? [] : _ref$courses;
+  // Filter courses based on selected department
+  var filteredCourses = form.department ? courses.filter(function (c) {
+    return c.department === form.department;
+  }) : courses;
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
     className: "faculty-form-overlay",
     role: "dialog",
@@ -73126,8 +73132,10 @@ var FacultyFullForm = /*#__PURE__*/(0,react__WEBPACK_IMPORTED_MODULE_0__.memo)(f
             className: "faculty-form-designation",
             value: form.department,
             onChange: function onChange(e) {
-              return setForm(_objectSpread(_objectSpread({}, form), {}, {
-                department: e.target.value
+              // Reset course when department changes
+              setForm(_objectSpread(_objectSpread({}, form), {}, {
+                department: e.target.value,
+                subject: ""
               }));
             },
             children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("option", {
@@ -73238,9 +73246,8 @@ var FacultyFullForm = /*#__PURE__*/(0,react__WEBPACK_IMPORTED_MODULE_0__.memo)(f
             flex: 1
           },
           children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("label", {
-            children: "Subject"
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("input", {
-            type: "text",
+            children: "Course"
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("select", {
             required: true,
             value: form.subject,
             onChange: function onChange(e) {
@@ -73248,7 +73255,19 @@ var FacultyFullForm = /*#__PURE__*/(0,react__WEBPACK_IMPORTED_MODULE_0__.memo)(f
                 subject: e.target.value
               }));
             },
-            placeholder: "Subject"
+            disabled: !form.department,
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("option", {
+              value: "",
+              children: form.department ? "Select course" : "Select department first"
+            }), filteredCourses.filter(function (c) {
+              return c && c.name;
+            }).map(function (c) {
+              var _c$id;
+              return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("option", {
+                value: c.name,
+                children: c.name
+              }, (_c$id = c.id) !== null && _c$id !== void 0 ? _c$id : c.name);
+            })]
           })]
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
           className: "faculty-form-group",
@@ -73341,42 +73360,46 @@ function Faculty() {
     _useState4 = _slicedToArray(_useState3, 2),
     departments = _useState4[0],
     setDepartments = _useState4[1];
-  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
+  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
     _useState6 = _slicedToArray(_useState5, 2),
-    showAdd = _useState6[0],
-    setShowAdd = _useState6[1];
+    courses = _useState6[0],
+    setCourses = _useState6[1];
   var _useState7 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
     _useState8 = _slicedToArray(_useState7, 2),
-    showEdit = _useState8[0],
-    setShowEdit = _useState8[1];
-  var _useState9 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null),
+    showAdd = _useState8[0],
+    setShowAdd = _useState8[1];
+  var _useState9 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
     _useState0 = _slicedToArray(_useState9, 2),
-    editIndex = _useState0[0],
-    setEditIndex = _useState0[1];
-  var _useState1 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(defaultForm),
+    showEdit = _useState0[0],
+    setShowEdit = _useState0[1];
+  var _useState1 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null),
     _useState10 = _slicedToArray(_useState1, 2),
-    form = _useState10[0],
-    setForm = _useState10[1];
-  var _useState11 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(""),
+    editIndex = _useState10[0],
+    setEditIndex = _useState10[1];
+  var _useState11 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(defaultForm),
     _useState12 = _slicedToArray(_useState11, 2),
-    search = _useState12[0],
-    setSearch = _useState12[1];
-  var _useState13 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)("All Departments"),
+    form = _useState12[0],
+    setForm = _useState12[1];
+  var _useState13 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(""),
     _useState14 = _slicedToArray(_useState13, 2),
-    departmentFilter = _useState14[0],
-    setDepartmentFilter = _useState14[1];
-  var _useState15 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
+    search = _useState14[0],
+    setSearch = _useState14[1];
+  var _useState15 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)("All Departments"),
     _useState16 = _slicedToArray(_useState15, 2),
-    showFilter = _useState16[0],
-    setShowFilter = _useState16[1];
-  var _useState17 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null),
+    departmentFilter = _useState16[0],
+    setDepartmentFilter = _useState16[1];
+  var _useState17 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
     _useState18 = _slicedToArray(_useState17, 2),
-    selectedUser = _useState18[0],
-    setSelectedUser = _useState18[1];
-  var _useState19 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(true),
+    showFilter = _useState18[0],
+    setShowFilter = _useState18[1];
+  var _useState19 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null),
     _useState20 = _slicedToArray(_useState19, 2),
-    loading = _useState20[0],
-    setLoading = _useState20[1];
+    selectedUser = _useState20[0],
+    setSelectedUser = _useState20[1];
+  var _useState21 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(true),
+    _useState22 = _slicedToArray(_useState21, 2),
+    loading = _useState22[0],
+    setLoading = _useState22[1];
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
     var mounted = true;
     _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee5() {
@@ -73484,22 +73507,62 @@ function Faculty() {
       mounted = false;
     };
   }, []);
+
+  // fetch courses for dropdown
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
+    var mounted = true;
+    _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee7() {
+      var res, json, _t5;
+      return _regenerator().w(function (_context7) {
+        while (1) switch (_context7.p = _context7.n) {
+          case 0:
+            _context7.p = 0;
+            _context7.n = 1;
+            return fetch('/api/courses');
+          case 1:
+            res = _context7.v;
+            if (res.ok) {
+              _context7.n = 2;
+              break;
+            }
+            throw new Error('no api');
+          case 2:
+            _context7.n = 3;
+            return res.json();
+          case 3:
+            json = _context7.v;
+            if (mounted) setCourses(Array.isArray(json) ? json : []);
+            _context7.n = 5;
+            break;
+          case 4:
+            _context7.p = 4;
+            _t5 = _context7.v;
+            if (mounted) setCourses([]);
+          case 5:
+            return _context7.a(2);
+        }
+      }, _callee7, null, [[0, 4]]);
+    }))();
+    return function () {
+      mounted = false;
+    };
+  }, []);
   var handleAdd = function handleAdd() {
     setForm(defaultForm);
     setShowAdd(true);
   };
   var handleAddSubmit = /*#__PURE__*/function () {
-    var _ref4 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee7(e) {
-      var payload, res, created, _created, _created2, _t5;
-      return _regenerator().w(function (_context7) {
-        while (1) switch (_context7.p = _context7.n) {
+    var _ref5 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee8(e) {
+      var payload, res, created, _created, _created2, _t6;
+      return _regenerator().w(function (_context8) {
+        while (1) switch (_context8.p = _context8.n) {
           case 0:
             e.preventDefault();
             payload = _objectSpread(_objectSpread({}, form), {}, {
               avatar: form.avatar || "https://randomuser.me/api/portraits/lego/1.jpg"
             });
-            _context7.p = 1;
-            _context7.n = 2;
+            _context8.p = 1;
+            _context8.n = 2;
             return fetch('/api/faculties', {
               method: 'POST',
               headers: {
@@ -73508,53 +73571,53 @@ function Faculty() {
               body: JSON.stringify(payload)
             });
           case 2:
-            res = _context7.v;
+            res = _context8.v;
             if (!res.ok) {
-              _context7.n = 4;
+              _context8.n = 4;
               break;
             }
-            _context7.n = 3;
+            _context8.n = 3;
             return res.json();
           case 3:
-            created = _context7.v;
+            created = _context8.v;
             setFacultyList(function (prev) {
               return [].concat(_toConsumableArray(prev), [created]);
             });
-            _context7.n = 6;
+            _context8.n = 6;
             break;
           case 4:
-            _context7.n = 5;
+            _context8.n = 5;
             return localDB.create(payload);
           case 5:
-            _created = _context7.v;
+            _created = _context8.v;
             setFacultyList(function (prev) {
               return [].concat(_toConsumableArray(prev), [_created]);
             });
           case 6:
-            _context7.n = 9;
+            _context8.n = 9;
             break;
           case 7:
-            _context7.p = 7;
-            _t5 = _context7.v;
-            _context7.n = 8;
+            _context8.p = 7;
+            _t6 = _context8.v;
+            _context8.n = 8;
             return localDB.create(payload);
           case 8:
-            _created2 = _context7.v;
+            _created2 = _context8.v;
             setFacultyList(function (prev) {
               return [].concat(_toConsumableArray(prev), [_created2]);
             });
           case 9:
-            _context7.p = 9;
+            _context8.p = 9;
             setShowAdd(false);
             setForm(defaultForm);
-            return _context7.f(9);
+            return _context8.f(9);
           case 10:
-            return _context7.a(2);
+            return _context8.a(2);
         }
-      }, _callee7, null, [[1, 7, 9, 10]]);
+      }, _callee8, null, [[1, 7, 9, 10]]);
     }));
     return function handleAddSubmit(_x5) {
-      return _ref4.apply(this, arguments);
+      return _ref5.apply(this, arguments);
     };
   }();
   var handleEdit = function handleEdit(item) {
@@ -73568,29 +73631,29 @@ function Faculty() {
     setShowEdit(true);
   };
   var handleEditSubmit = /*#__PURE__*/function () {
-    var _ref5 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee8(e) {
+    var _ref6 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee9(e) {
       var _facultyList$editInde;
-      var id, payload, res, updated, _updated, _updated2, _t6;
-      return _regenerator().w(function (_context8) {
-        while (1) switch (_context8.p = _context8.n) {
+      var id, payload, res, updated, _updated, _updated2, _t7;
+      return _regenerator().w(function (_context9) {
+        while (1) switch (_context9.p = _context9.n) {
           case 0:
             e.preventDefault();
             if (!(editIndex === null)) {
-              _context8.n = 1;
+              _context9.n = 1;
               break;
             }
-            return _context8.a(2);
+            return _context9.a(2);
           case 1:
             id = (_facultyList$editInde = facultyList[editIndex]) === null || _facultyList$editInde === void 0 ? void 0 : _facultyList$editInde.id;
             if (id) {
-              _context8.n = 2;
+              _context9.n = 2;
               break;
             }
-            return _context8.a(2);
+            return _context9.a(2);
           case 2:
             payload = _objectSpread({}, form);
-            _context8.p = 3;
-            _context8.n = 4;
+            _context9.p = 3;
+            _context9.n = 4;
             return fetch("/api/faculties/".concat(id), {
               method: 'PUT',
               headers: {
@@ -73599,89 +73662,89 @@ function Faculty() {
               body: JSON.stringify(payload)
             });
           case 4:
-            res = _context8.v;
+            res = _context9.v;
             if (!res.ok) {
-              _context8.n = 6;
+              _context9.n = 6;
               break;
             }
-            _context8.n = 5;
+            _context9.n = 5;
             return res.json();
           case 5:
-            updated = _context8.v;
+            updated = _context9.v;
             setFacultyList(function (prev) {
               return prev.map(function (f) {
                 return f.id === updated.id ? updated : f;
               });
             });
-            _context8.n = 8;
+            _context9.n = 8;
             break;
           case 6:
-            _context8.n = 7;
+            _context9.n = 7;
             return localDB.update(id, payload);
           case 7:
-            _updated = _context8.v;
+            _updated = _context9.v;
             setFacultyList(function (prev) {
               return prev.map(function (f) {
                 return f.id === id ? _updated : f;
               });
             });
           case 8:
-            _context8.n = 11;
+            _context9.n = 11;
             break;
           case 9:
-            _context8.p = 9;
-            _t6 = _context8.v;
-            _context8.n = 10;
+            _context9.p = 9;
+            _t7 = _context9.v;
+            _context9.n = 10;
             return localDB.update(id, payload);
           case 10:
-            _updated2 = _context8.v;
+            _updated2 = _context9.v;
             setFacultyList(function (prev) {
               return prev.map(function (f) {
                 return f.id === id ? _updated2 : f;
               });
             });
           case 11:
-            _context8.p = 11;
+            _context9.p = 11;
             setShowEdit(false);
             setEditIndex(null);
             setForm(defaultForm);
-            return _context8.f(11);
+            return _context9.f(11);
           case 12:
-            return _context8.a(2);
+            return _context9.a(2);
         }
-      }, _callee8, null, [[3, 9, 11, 12]]);
+      }, _callee9, null, [[3, 9, 11, 12]]);
     }));
     return function handleEditSubmit(_x6) {
-      return _ref5.apply(this, arguments);
+      return _ref6.apply(this, arguments);
     };
   }();
   var handleDelete = /*#__PURE__*/function () {
-    var _ref6 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee9(item) {
-      var res, _t7;
-      return _regenerator().w(function (_context9) {
-        while (1) switch (_context9.p = _context9.n) {
+    var _ref7 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee0(item) {
+      var res, _t8;
+      return _regenerator().w(function (_context0) {
+        while (1) switch (_context0.p = _context0.n) {
           case 0:
             if (!(!item || !item.id)) {
-              _context9.n = 1;
+              _context0.n = 1;
               break;
             }
-            return _context9.a(2);
+            return _context0.a(2);
           case 1:
             if (window.confirm("Are you sure you want to delete this record?")) {
-              _context9.n = 2;
+              _context0.n = 2;
               break;
             }
-            return _context9.a(2);
+            return _context0.a(2);
           case 2:
-            _context9.p = 2;
-            _context9.n = 3;
+            _context0.p = 2;
+            _context0.n = 3;
             return fetch("/api/faculties/".concat(item.id), {
               method: 'DELETE'
             });
           case 3:
-            res = _context9.v;
+            res = _context0.v;
             if (!res.ok) {
-              _context9.n = 4;
+              _context0.n = 4;
               break;
             }
             setFacultyList(function (prev) {
@@ -73689,10 +73752,10 @@ function Faculty() {
                 return f.id !== item.id;
               });
             });
-            _context9.n = 6;
+            _context0.n = 6;
             break;
           case 4:
-            _context9.n = 5;
+            _context0.n = 5;
             return localDB["delete"](item.id);
           case 5:
             setFacultyList(function (prev) {
@@ -73701,12 +73764,12 @@ function Faculty() {
               });
             });
           case 6:
-            _context9.n = 9;
+            _context0.n = 9;
             break;
           case 7:
-            _context9.p = 7;
-            _t7 = _context9.v;
-            _context9.n = 8;
+            _context0.p = 7;
+            _t8 = _context0.v;
+            _context0.n = 8;
             return localDB["delete"](item.id);
           case 8:
             setFacultyList(function (prev) {
@@ -73717,12 +73780,12 @@ function Faculty() {
           case 9:
             if (selectedUser && selectedUser.id === target.id) setSelectedUser(null);
           case 10:
-            return _context9.a(2);
+            return _context0.a(2);
         }
-      }, _callee9, null, [[2, 7]]);
+      }, _callee0, null, [[2, 7]]);
     }));
     return function handleDelete(_x7) {
-      return _ref6.apply(this, arguments);
+      return _ref7.apply(this, arguments);
     };
   }();
   var handleFilter = function handleFilter() {
@@ -73937,7 +74000,8 @@ function Faculty() {
         },
         form: form,
         setForm: setForm,
-        departments: departments
+        departments: departments,
+        courses: courses
       }), showEdit && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(FacultyFullForm, {
         isEdit: true,
         onSubmit: handleEditSubmit,
@@ -73946,7 +74010,8 @@ function Faculty() {
         },
         form: form,
         setForm: setForm,
-        departments: departments
+        departments: departments,
+        courses: courses
       }), !showAdd && !showEdit && selectedUser ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
         style: {
           display: "flex",
@@ -74089,7 +74154,7 @@ function Faculty() {
               children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("th", {
                 children: "Name"
               }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("th", {
-                children: "Subject"
+                children: "Course"
               }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("th", {
                 children: "Email address"
               }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("th", {

@@ -15,26 +15,35 @@ class LocalDB {
 const localDB = new LocalDB();
 
 /* Form overlay (left card) */
-const FacultyFullForm = memo(({ isEdit, onSubmit, onCancel, form, setForm, departments = [] }) => (
-  <div className="faculty-form-overlay" role="dialog" aria-modal="true">
-    <form className="faculty-full-form" onSubmit={onSubmit}>
-      <div className="faculty-form-header-row">
-        <h2 className="faculty-form-title">{isEdit ? "Edit Faculty" : "Add Faculty"}</h2>
-        <div className="faculty-form-group" style={{ minWidth: 260 }}>
-          <label className="sr-only">Department</label>
-          <select
-            required
-            className="faculty-form-designation"
-            value={form.department}
-            onChange={e => setForm({ ...form, department: e.target.value })}
-          >
-            <option value="">Select department</option>
-            {departments.filter(d => d && d.name).map(d => (
-              <option key={d.id ?? d.name} value={d.name}>{d.name}</option>
-            ))}
-          </select>
+const FacultyFullForm = memo(({ isEdit, onSubmit, onCancel, form, setForm, departments = [], courses = [] }) => {
+  // Filter courses based on selected department
+  const filteredCourses = form.department 
+    ? courses.filter(c => c.department === form.department)
+    : courses;
+
+  return (
+    <div className="faculty-form-overlay" role="dialog" aria-modal="true">
+      <form className="faculty-full-form" onSubmit={onSubmit}>
+        <div className="faculty-form-header-row">
+          <h2 className="faculty-form-title">{isEdit ? "Edit Faculty" : "Add Faculty"}</h2>
+          <div className="faculty-form-group" style={{ minWidth: 260 }}>
+            <label className="sr-only">Department</label>
+            <select
+              required
+              className="faculty-form-designation"
+              value={form.department}
+              onChange={e => {
+                // Reset course when department changes
+                setForm({ ...form, department: e.target.value, subject: "" });
+              }}
+            >
+              <option value="">Select department</option>
+              {departments.filter(d => d && d.name).map(d => (
+                <option key={d.id ?? d.name} value={d.name}>{d.name}</option>
+              ))}
+            </select>
+          </div>
         </div>
-      </div>
 
       <div className="faculty-form-row">
         <div className="faculty-form-group" style={{ flex: 1 }}>
@@ -67,8 +76,20 @@ const FacultyFullForm = memo(({ isEdit, onSubmit, onCancel, form, setForm, depar
 
       <div className="faculty-form-row">
         <div className="faculty-form-group" style={{ flex: 1 }}>
-          <label>Subject</label>
-          <input type="text" required value={form.subject} onChange={e => setForm({ ...form, subject: e.target.value })} placeholder="Subject" />
+          <label>Course</label>
+          <select
+            required
+            value={form.subject}
+            onChange={e => setForm({ ...form, subject: e.target.value })}
+            disabled={!form.department}
+          >
+            <option value="">
+              {form.department ? "Select course" : "Select department first"}
+            </option>
+            {filteredCourses.filter(c => c && c.name).map(c => (
+              <option key={c.id ?? c.name} value={c.name}>{c.name}</option>
+            ))}
+          </select>
         </div>
         <div className="faculty-form-group" style={{ flex: 1 }}>
           <label>Age</label>
@@ -89,7 +110,8 @@ const FacultyFullForm = memo(({ isEdit, onSubmit, onCancel, form, setForm, depar
       </div>
     </form>
   </div>
-));
+  );
+});
 
 export default function Faculty() {
   const navigate = useNavigate();
@@ -112,6 +134,7 @@ export default function Faculty() {
 
   const [facultyList, setFacultyList] = useState([]);
   const [departments, setDepartments] = useState([]);
+  const [courses, setCourses] = useState([]);
   const [showAdd, setShowAdd] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
   const [editIndex, setEditIndex] = useState(null);
@@ -162,6 +185,22 @@ export default function Faculty() {
         } catch {
           if (mounted) setDepartments([]);
         }
+      }
+    })();
+    return () => { mounted = false; };
+  }, []);
+
+  // fetch courses for dropdown
+  useEffect(() => {
+    let mounted = true;
+    (async () => {
+      try {
+        const res = await fetch('/api/courses');
+        if (!res.ok) throw new Error('no api');
+        const json = await res.json();
+        if (mounted) setCourses(Array.isArray(json) ? json : []);
+      } catch {
+        if (mounted) setCourses([]);
       }
     })();
     return () => { mounted = false; };
@@ -346,8 +385,8 @@ export default function Faculty() {
           </div>
         </div>
 
-  {showAdd && <FacultyFullForm isEdit={false} onSubmit={handleAddSubmit} onCancel={() => setShowAdd(false)} form={form} setForm={setForm} departments={departments} />}
-  {showEdit && <FacultyFullForm isEdit={true} onSubmit={handleEditSubmit} onCancel={() => setShowEdit(false)} form={form} setForm={setForm} departments={departments} />}
+  {showAdd && <FacultyFullForm isEdit={false} onSubmit={handleAddSubmit} onCancel={() => setShowAdd(false)} form={form} setForm={setForm} departments={departments} courses={courses} />}
+  {showEdit && <FacultyFullForm isEdit={true} onSubmit={handleEditSubmit} onCancel={() => setShowEdit(false)} form={form} setForm={setForm} departments={departments} courses={courses} />}
 
         {!showAdd && !showEdit && selectedUser ? (
           <div style={{ display: "flex", justifyContent: "center", alignItems: "flex-start", marginTop: 40, gap: 60 }}>
@@ -387,7 +426,7 @@ export default function Faculty() {
               <thead>
                 <tr>
                   <th>Name</th>
-                  <th>Subject</th>
+                  <th>Course</th>
                   <th>Email address</th>
                   <th>Department</th>
                   <th>Gender</th>
