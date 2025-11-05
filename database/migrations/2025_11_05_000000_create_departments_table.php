@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('email')->nullable();
             $table->text('description')->nullable();
             $table->string('status')->default('Active');
+            $table->boolean('archived')->default(false);
             $table->unsignedInteger('students')->default(0);
             $table->timestamps();
         });

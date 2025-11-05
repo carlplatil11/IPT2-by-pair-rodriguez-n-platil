@@ -16,15 +16,12 @@ return new class extends Migration
         Schema::create('courses', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('subject');
-            $table->string('class')->nullable();
-            $table->string('email')->nullable()->unique();
             $table->integer('age')->nullable(); // credits
-            $table->string('gender')->nullable(); // level
-            $table->string('avatar')->nullable();
+            $table->string('gender')->nullable(); // level (Undergraduate/Postgraduate)
             $table->text('about')->nullable();
-            $table->string('phone')->nullable();
             $table->string('department')->nullable();
+            $table->string('status')->default('active'); // active or archived
+            $table->boolean('archived')->default(false);
             $table->timestamps();
         });
     }

@@ -39,17 +39,6 @@ const CourseFullForm = memo(({ isEdit, onSubmit, onCancel, form, setForm, depart
             </div>
 
             <div className="student-form-row">
-                <div className="student-form-group" style={{ flex: 2 }}>
-                    <label>Instructor</label>
-                    <input
-                        type="text"
-                        required
-                        value={form.instructor}
-                        onChange={e => setForm({ ...form, instructor: e.target.value })}
-                        placeholder="Instructor"
-                    />
-                </div>
-                
                 <div className="student-form-group" style={{ flex: 1 }}>
                     <label>Level</label>
                     <select
@@ -61,31 +50,6 @@ const CourseFullForm = memo(({ isEdit, onSubmit, onCancel, form, setForm, depart
                         <option>Undergraduate</option>
                         <option>Postgraduate</option>
                     </select>
-                </div>
-            </div>
-
-            <div className="student-form-row">
-                <div className="student-form-group" style={{ flex: 1 }}>
-                    <label>Contact number</label>
-                    <input
-                        type="text"
-                        value={form.phone}
-                        onChange={e => setForm({ ...form, phone: e.target.value })}
-                        placeholder="Contact number"
-                    />
-                </div>
-            </div>
-
-            <div className="student-form-row">
-                <div className="student-form-group" style={{ flex: 1 }}>
-                    <label>Subject</label>
-                    <input
-                        type="text"
-                        required
-                        value={form.subject}
-                        onChange={e => setForm({ ...form, subject: e.target.value })}
-                        placeholder="Subject"
-                    />
                 </div>
                 <div className="student-form-group" style={{ flex: 1 }}>
                     <label>Credits</label>
@@ -129,18 +93,18 @@ export default function Courses() {
 
     const defaultForm = {
         name: "",
-        subject: "",
-        email: "",
+        department: "",
         age: "",
         gender: "Undergraduate",
-        avatar: "",
-        about: "",
-        phone: "",
-        department: ""
+        about: ""
     };
 
     const [courseList, setCourseList] = useState([]);
     const [departments, setDepartments] = useState([]);
+    
+    // Filter to show only active (non-archived) courses
+    const activeCourseList = courseList.filter(c => c.status !== 'archived' && c.archived !== true);
+    
     const [showAdd, setShowAdd] = useState(false);
     const [showEdit, setShowEdit] = useState(false);
     const [editIndex, setEditIndex] = useState(null);
@@ -189,8 +153,7 @@ export default function Courses() {
         e.preventDefault();
         const payload = {
             ...form,
-            age: form.age === "" ? null : Number(form.age),
-            avatar: form.avatar || "https://randomuser.me/api/portraits/men/34.jpg"
+            age: form.age === "" ? null : Number(form.age)
         };
         try {
             const res = await fetch("/api/courses", {
@@ -214,15 +177,17 @@ export default function Courses() {
 
     const handleEdit = (idx) => {
         setEditIndex(idx);
-        setForm({ ...defaultForm, ...courseList[idx] });
+        const course = activeCourseList[idx];
+        setForm({ ...defaultForm, ...course });
         setShowEdit(true);
     };
 
     const handleEditSubmit = async (e) => {
         e.preventDefault();
         if (editIndex === null) return;
-        const id = courseList[editIndex]?.id;
-        if (!id) return;
+        const course = activeCourseList[editIndex];
+        if (!course) return;
+        const id = course.id;
         const payload = { ...form, age: form.age === "" ? null : Number(form.age) };
         try {
             const res = await fetch(`/api/courses/${id}`, {
@@ -234,18 +199,10 @@ export default function Courses() {
                 const updated = await res.json();
                 setCourseList(prev => prev.map(s => s.id === updated.id ? updated : s));
             } else {
-                setCourseList(prev => {
-                    const copy = [...prev];
-                    copy[editIndex] = { ...copy[editIndex], ...payload };
-                    return copy;
-                });
+                setCourseList(prev => prev.map(c => c.id === id ? { ...c, ...payload } : c));
             }
         } catch {
-            setCourseList(prev => {
-                const copy = [...prev];
-                copy[editIndex] = { ...copy[editIndex], ...payload };
-                return copy;
-            });
+            setCourseList(prev => prev.map(c => c.id === id ? { ...c, ...payload } : c));
         } finally {
             setShowEdit(false);
             setEditIndex(null);
@@ -254,24 +211,29 @@ export default function Courses() {
     };
 
     const handleDelete = async (idx) => {
-        const target = courseList[idx];
+        const target = activeCourseList[idx];
         if (!target) return;
-        if (!window.confirm("Are you sure you want to delete this record?")) return;
+        if (!window.confirm("Archive this course?")) return;
         try {
-            const res = await fetch(`/api/courses/${target.id}`, { method: "DELETE" });
+            const res = await fetch(`/api/courses/${target.id}`, { 
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ status: 'archived', archived: true })
+            });
             if (res.ok) {
-                setCourseList(prev => prev.filter((_, i) => i !== idx));
+                const updated = await res.json();
+                setCourseList(prev => prev.map(c => c.id === target.id ? updated : c));
             } else {
-                setCourseList(prev => prev.filter((_, i) => i !== idx));
+                setCourseList(prev => prev.map(c => c.id === target.id ? { ...c, status: 'archived', archived: true } : c));
             }
         } catch {
-            setCourseList(prev => prev.filter((_, i) => i !== idx));
+            setCourseList(prev => prev.map(c => c.id === target.id ? { ...c, status: 'archived', archived: true } : c));
         }
     };
 
     const handleFilter = () => setShowFilter(true);
 
-    const filteredList = courseList.filter(s =>
+    const filteredList = activeCourseList.filter(s =>
         (s.name || "").toLowerCase().includes(search.toLowerCase()) ||
         (s.email || "").toLowerCase().includes(search.toLowerCase())
     );
@@ -342,24 +304,20 @@ export default function Courses() {
                         marginTop: "40px",
                         gap: "60px"
                     }}>
-                        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", minWidth: 320 }}>
-                            <img
-                                src={selectedCourse.avatar || "https://randomuser.me/api/portraits/lego/1.jpg"}
-                                alt={selectedCourse.name}
-                                style={{ width: 220, height: 220, borderRadius: "50%", objectFit: "cover", boxShadow: "0 4px 24px #e6eaf1" }}
-                            />
-                            <div style={{ marginTop: 24, fontWeight: 700, fontSize: "1.3rem", textAlign: "center" }}>
-                                {selectedCourse.name}
+                        <div style={{ minWidth: 320, maxWidth: 600 }}>
+                            <div style={{ marginBottom: 24 }}>
+                                <div style={{ fontWeight: 700, fontSize: "1.5rem", marginBottom: 8 }}>
+                                    {selectedCourse.name}
+                                </div>
+                                <div style={{ color: "#888", fontSize: "1rem" }}>
+                                    {selectedCourse.department}
+                                </div>
                             </div>
-                            <div style={{ color: "#888", fontSize: "1rem", marginBottom: 24, textAlign: "center" }}>
-                                {selectedCourse.subject}
-                            </div>
-                        </div>
 
-                        <div style={{ minWidth: 320, maxWidth: 400 }}>
                             <div style={{ fontWeight: 700, fontSize: "1.1rem", marginBottom: 8 }}>About</div>
                             <div style={{ color: "#555", marginBottom: 24, lineHeight: 1.6 }}>{selectedCourse.about}</div>
-                            <div style={{ display: "flex", gap: 40 }}>
+                            
+                            <div style={{ display: "flex", gap: 40, marginBottom: 24 }}>
                                 <div>
                                     <div style={{ color: "#888", fontSize: 13 }}>Credits</div>
                                     <div style={{ fontWeight: 600 }}>{selectedCourse.age}</div>
@@ -370,16 +328,15 @@ export default function Courses() {
                                 </div>
                             </div>
 
-                            <div style={{ marginTop: 16 }}>
+                            <div style={{ display: "flex", gap: 8 }}>
                                 <button
                                     className="student-icon-btn"
                                     title="Edit"
                                     aria-label="Edit course"
                                     onClick={() => {
-                                        const idx = courseList.findIndex(s => s.id === selectedCourse.id);
+                                        const idx = activeCourseList.findIndex(s => s.id === selectedCourse.id);
                                         if (idx !== -1) handleEdit(idx);
                                     }}
-                                    style={{ marginRight: 8 }}
                                 >
                                     <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                                         <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25z" stroke="#222" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
@@ -388,20 +345,18 @@ export default function Courses() {
                                 </button>
                                 <button
                                     className="student-icon-btn"
-                                    title="Delete"
-                                    aria-label="Delete course"
+                                    title="Archive"
+                                    aria-label="Archive course"
                                     onClick={() => {
-                                        const idx = courseList.findIndex(s => s.id === selectedCourse.id);
+                                        const idx = activeCourseList.findIndex(s => s.id === selectedCourse.id);
                                         if (idx !== -1) handleDelete(idx);
                                         handleBackToList();
                                     }}
                                 >
                                     <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                                        <path d="M3 6h18" stroke="#222" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                                        <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L6 6" stroke="#222" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                                        <path d="M10 11v6" stroke="#222" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                                        <path d="M14 11v6" stroke="#222" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                                        <path d="M9 6V4a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2" stroke="#222" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                                        <path d="M3 3h18v4H3z" stroke="#222" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                                        <path d="M3 7v11a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V7" stroke="#222" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                                        <path d="M9 11h6" stroke="#222" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                                     </svg>
                                 </button>
                             </div>
@@ -413,30 +368,22 @@ export default function Courses() {
                             <thead>
                                 <tr>
                                     <th>Course Name</th>
-                                    <th>Subject</th>
-                                    <th>Instructor</th>
                                     <th>Department</th>
                                     <th>Level</th>
+                                    <th>Credits</th>
                                     <th></th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {filteredList.length === 0 && (
-                                    <tr><td colSpan="7">No courses found.</td></tr>
+                                    <tr><td colSpan="5">No courses found.</td></tr>
                                 )}
                                 {filteredList.map((s, idx) => (
                                     <tr key={s.id ?? idx} style={{ cursor: "pointer" }}>
-                                        <td onClick={() => handleCourseClick(s)}>
-                                            <div className="student-avatar-name">
-                                                <img src={s.avatar || "https://randomuser.me/api/portraits/lego/1.jpg"} alt={s.name} className="student-avatar" />
-                                                <span>{s.name}</span>
-                                            </div>
-                                        </td>
-                                        <td onClick={() => handleCourseClick(s)}>{s.subject}</td>
-                                        <td onClick={() => handleCourseClick(s)}>{s.class}</td>
-                                        <td onClick={() => handleCourseClick(s)}>{s.email}</td>
+                                        <td onClick={() => handleCourseClick(s)}>{s.name}</td>
                                         <td onClick={() => handleCourseClick(s)}>{s.department}</td>
                                         <td onClick={() => handleCourseClick(s)}>{s.gender}</td>
+                                        <td onClick={() => handleCourseClick(s)}>{s.age}</td>
                                         <td>
                                             <button
                                                 className="student-icon-btn"
@@ -451,16 +398,14 @@ export default function Courses() {
                                             </button>
                                             <button
                                                 className="student-icon-btn"
-                                                title="Delete"
-                                                aria-label="Delete course"
+                                                title="Archive"
+                                                aria-label="Archive course"
                                                 onClick={e => { e.stopPropagation(); handleDelete(idx); }}
                                             >
                                                 <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                                                    <path d="M3 6h18" stroke="#222" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                                                    <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L6 6" stroke="#222" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                                                    <path d="M10 11v6" stroke="#222" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                                                    <path d="M14 11v6" stroke="#222" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                                                    <path d="M9 6V4a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2" stroke="#222" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                                                    <path d="M3 3h18v4H3z" stroke="#222" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                                                    <path d="M3 7v11a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V7" stroke="#222" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                                                    <path d="M9 11h6" stroke="#222" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                                                 </svg>
                                             </button>
                                         </td>

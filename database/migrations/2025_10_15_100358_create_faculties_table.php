@@ -17,15 +17,16 @@ class CreateFacultiesTable extends Migration
             $table->id();
             $table->string('name');
             $table->string('subject');
-            $table->string('class');
+            $table->string('class')->nullable();
             $table->string('email')->unique();
             $table->integer('age')->nullable();
             $table->enum('gender', ['Male', 'Female']);
             $table->string('avatar')->nullable();
             $table->text('about')->nullable();
-            $table->string('password');
+            $table->string('password')->nullable();
             $table->string('phone')->nullable();
             $table->string('designation')->nullable();
+            $table->string('department')->nullable();
             $table->timestamps();
         });
     }

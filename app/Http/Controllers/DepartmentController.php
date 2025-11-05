@@ -22,7 +22,8 @@ class DepartmentController extends Controller
             'head' => 'nullable|string',
             'email' => 'nullable|email|unique:departments,email',
             'description' => 'nullable|string',
-            'status' => 'nullable|in:Active,Deactivated',
+            'status' => 'nullable|in:Active,Deactivated,Archived',
+            'archived' => 'nullable|boolean',
             'students' => 'nullable|integer',
         ]);
 
@@ -45,7 +46,8 @@ class DepartmentController extends Controller
             'head' => 'nullable|string',
             'email' => 'sometimes|email|unique:departments,email,' . $id,
             'description' => 'nullable|string',
-            'status' => 'nullable|in:Active,Deactivated',
+            'status' => 'nullable|in:Active,Deactivated,Archived',
+            'archived' => 'nullable|boolean',
             'students' => 'nullable|integer',
         ]);
 

@@ -117,6 +117,7 @@ export default function Faculty() {
   const [editIndex, setEditIndex] = useState(null);
   const [form, setForm] = useState(defaultForm);
   const [search, setSearch] = useState("");
+  const [departmentFilter, setDepartmentFilter] = useState("All Departments");
   const [showFilter, setShowFilter] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -234,10 +235,12 @@ export default function Faculty() {
   const handleUserClick = (user) => setSelectedUser(user);
   const handleBackToList = () => setSelectedUser(null);
 
-  const filteredList = facultyList.filter(f =>
-    (f.name || "").toLowerCase().includes(search.toLowerCase()) ||
-    (f.email || "").toLowerCase().includes(search.toLowerCase())
-  );
+  const filteredList = facultyList.filter(f => {
+    const matchesSearch = (f.name || "").toLowerCase().includes(search.toLowerCase()) ||
+                         (f.email || "").toLowerCase().includes(search.toLowerCase());
+    const matchesDepartment = departmentFilter === "All Departments" || f.department === departmentFilter;
+    return matchesSearch && matchesDepartment;
+  });
 
   const fontStyle = { fontFamily: "Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial" };
 
@@ -249,18 +252,91 @@ export default function Faculty() {
           <button className="logout-btn" onClick={handleLogout}>Log out</button>
         </div>
 
-        <div className="faculty-header">
+        {!selectedUser && (
+          <div style={{ padding: '24px 40px', borderBottom: '1px solid #e5e7eb' }}>
+            <h1 style={{ margin: 0, fontSize: 28, fontWeight: 700, color: '#111827' }}>Faculty</h1>
+            <p style={{ margin: '4px 0 0 0', fontSize: 14, color: '#6b7280' }}>Manage faculty information</p>
+          </div>
+        )}
+
+        {!selectedUser && (
+          <div style={{ display: 'flex', gap: 16, padding: '20px 40px', alignItems: 'center', borderBottom: '1px solid #e5e7eb' }}>
+            <div style={{ position: 'relative', flex: 1, maxWidth: 400 }}>
+              <svg style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)', width: 20, height: 20 }} viewBox="0 0 24 24" fill="none" stroke="#9ca3af" strokeWidth="2">
+                <circle cx="11" cy="11" r="8"/>
+                <path d="m21 21-4.35-4.35"/>
+              </svg>
+              <input 
+                type="text" 
+                placeholder="Search faculty..." 
+                value={search} 
+                onChange={e => setSearch(e.target.value)}
+                style={{
+                  width: '100%',
+                  padding: '10px 12px 10px 40px',
+                  border: '1px solid #d1d5db',
+                  borderRadius: 8,
+                  fontSize: 14,
+                  outline: 'none',
+                  transition: 'border-color 0.2s'
+                }}
+                onFocus={e => e.target.style.borderColor = '#3b82f6'}
+                onBlur={e => e.target.style.borderColor = '#d1d5db'}
+              />
+            </div>
+            <select
+              value={departmentFilter}
+              onChange={e => setDepartmentFilter(e.target.value)}
+              style={{
+                padding: '10px 32px 10px 12px',
+                border: '1px solid #d1d5db',
+                borderRadius: 8,
+                fontSize: 14,
+                color: '#374151',
+                background: '#fff',
+                cursor: 'pointer',
+                outline: 'none',
+                appearance: 'none',
+                backgroundImage: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' fill=\'none\' viewBox=\'0 0 20 20\'%3E%3Cpath stroke=\'%236b7280\' stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'1.5\' d=\'M6 8l4 4 4-4\'/%3E%3C/svg%3E")',
+                backgroundPosition: 'right 8px center',
+                backgroundRepeat: 'no-repeat',
+                backgroundSize: '20px'
+              }}
+            >
+              <option value="All Departments">All Departments</option>
+              {departments.map(d => (
+                <option key={d.id ?? d.name} value={d.name}>{d.name}</option>
+              ))}
+            </select>
+            <button 
+              onClick={handleAdd}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: 8,
+                padding: '10px 20px',
+                background: '#111827',
+                color: '#fff',
+                border: 'none',
+                borderRadius: 8,
+                fontSize: 14,
+                fontWeight: 600,
+                cursor: 'pointer',
+                whiteSpace: 'nowrap'
+              }}
+            >
+              <span style={{ fontSize: 18, lineHeight: 1 }}>+</span>
+              Add Faculty
+            </button>
+          </div>
+        )}
+
+        <div className="faculty-header" style={{ display: selectedUser ? 'flex' : 'none' }}>
           <button className="faculty-back-btn" onClick={() => selectedUser ? handleBackToList() : navigate(-1)}>
             <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="12" fill="#222" opacity="0.12"/><path d="M14 8l-4 4 4 4" stroke="#222" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
           </button>
 
           <div className="faculty-actions">
-            {!selectedUser && (
-              <>
-                <button className="faculty-add-btn" onClick={handleAdd}>Add Faculty</button>
-                <input className="faculty-search" type="text" placeholder="Search for by name or email" value={search} onChange={e => setSearch(e.target.value)} />
-              </>
-            )}
           </div>
         </div>
 

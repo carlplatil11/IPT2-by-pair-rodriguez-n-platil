@@ -13,6 +13,7 @@ class Department extends Model
         'email',
         'description',
         'status',
+        'archived',
         'students',
     ];
 }

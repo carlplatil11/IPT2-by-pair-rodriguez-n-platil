@@ -90,6 +90,10 @@ export default function Department() {
     const [departments, setDepartments] = useState([]);
     const [students, setStudents] = useState([]);
     const [faculties, setFaculties] = useState([]);
+    
+    // Filter to show only active (non-archived) departments
+    const activeDepartments = departments.filter(d => d.status !== 'Archived' && d.archived !== true);
+    
     useEffect(() => {
         fetch('/api/departments')
             .then(res => res.json())
@@ -170,15 +174,18 @@ export default function Department() {
 
     const handleEdit = (idx) => {
         setEditIndex(idx);
-        setForm({ ...defaultForm, ...departments[idx] });
+        const dept = activeDepartments[idx];
+        setForm({ ...defaultForm, ...dept });
         setShowEdit(true);
     };
 
     const handleEditSubmit = async (e) => {
         e.preventDefault();
         if (editIndex === null) return;
+        const dept = activeDepartments[editIndex];
+        if (!dept) return;
         try {
-            const id = departments[editIndex].id;
+            const id = dept.id;
             const payload = { ...form };
             const res = await fetch(`/api/departments/${id}`, {
                 method: 'PUT',
@@ -187,20 +194,15 @@ export default function Department() {
             });
             if (res.ok) {
                 const updated = await res.json();
-                const copy = [...departments];
-                copy[editIndex] = updated;
-                setDepartments(copy);
+                setDepartments(prev => prev.map(d => d.id === id ? updated : d));
                 setShowEdit(false);
             } else {
-                const copy = [...departments];
-                copy[editIndex] = { ...copy[editIndex], ...payload };
-                setDepartments(copy);
+                setDepartments(prev => prev.map(d => d.id === id ? { ...d, ...payload } : d));
                 setShowEdit(false);
             }
         } catch {
-            const copy = [...departments];
-            copy[editIndex] = { ...copy[editIndex], ...form };
-            setDepartments(copy);
+            const id = dept.id;
+            setDepartments(prev => prev.map(d => d.id === id ? { ...d, ...form } : d));
             setShowEdit(false);
         } finally {
             setEditIndex(null);
@@ -209,15 +211,47 @@ export default function Department() {
     };
 
     const handleDelete = async (idx) => {
-        if (!window.confirm('Delete this department?')) return;
-        const id = departments[idx].id;
+        if (!window.confirm('Archive this department? All courses in this department will also be archived.')) return;
+        const dept = activeDepartments[idx];
+        if (!dept) return;
+        const id = dept.id;
+        const deptName = dept.name;
+        
         try {
-            const res = await fetch(`/api/departments/${id}`, { method: 'DELETE' });
-            if (res.ok) setDepartments(prev => prev.filter((_, i) => i !== idx));
+            // First, archive the department
+            const res = await fetch(`/api/departments/${id}`, { 
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ status: 'Archived', archived: true })
+            });
+            if (res.ok) {
+                const updated = await res.json();
+                setDepartments(prev => prev.map(d => d.id === id ? updated : d));
+            }
+            
+            // Then, fetch and archive all courses in this department
+            const coursesRes = await fetch('/api/courses');
+            if (coursesRes.ok) {
+                const allCourses = await coursesRes.json();
+                const coursesToArchive = allCourses.filter(c => 
+                    c.department === deptName && 
+                    c.status !== 'archived' && 
+                    c.archived !== true
+                );
+                
+                // Archive each course
+                for (const course of coursesToArchive) {
+                    await fetch(`/api/courses/${course.id}`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ status: 'archived', archived: true })
+                    });
+                }
+            }
         } catch {
-            setDepartments(prev => prev.filter((_, i) => i !== idx));
+            setDepartments(prev => prev.map(d => d.id === id ? { ...d, status: 'Archived', archived: true } : d));
         }
-        // if deleting currently selected, clear view
+        // if archiving currently selected, clear view
         if (selectedDept && selectedDept.id === id) setSelectedDept(null);
     };
 
@@ -229,7 +263,7 @@ export default function Department() {
         setSelectedDept(null);
     };
 
-    const filtered = departments.filter(d =>
+    const filtered = activeDepartments.filter(d =>
         (d.name || "").toLowerCase().includes(search.toLowerCase()) ||
         (d.head || "").toLowerCase().includes(search.toLowerCase())
     );
@@ -319,7 +353,7 @@ export default function Department() {
                                     className="department-icon-btn"
                                     title="Edit"
                                     onClick={() => {
-                                        const idx = departments.findIndex(d => d.id === selectedDept.id);
+                                        const idx = activeDepartments.findIndex(d => d.id === selectedDept.id);
                                         if (idx !== -1) handleEdit(idx);
                                     }}
                                 >
@@ -331,19 +365,17 @@ export default function Department() {
 
                                 <button
                                     className="department-icon-btn"
-                                    title="Delete"
+                                    title="Archive"
                                     onClick={() => {
-                                        const idx = departments.findIndex(d => d.id === selectedDept.id);
+                                        const idx = activeDepartments.findIndex(d => d.id === selectedDept.id);
                                         if (idx !== -1) handleDelete(idx);
                                         handleBackToList();
                                     }}
                                 >
                                     <svg width="20" height="20" fill="none" stroke="#222" strokeWidth="2" viewBox="0 0 24 24">
-                                        <path d="M3 6h18" />
-                                        <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
-                                        <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" />
-                                        <path d="M10 11v6" />
-                                        <path d="M14 11v6" />
+                                        <path d="M3 3h18v4H3z" />
+                                        <path d="M3 7v11a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V7" />
+                                        <path d="M9 11h6" />
                                     </svg>
                                 </button>
                             </div>
@@ -409,13 +441,11 @@ export default function Department() {
                                                         <path d="M16.5 3.5a2.121 2.121 0 1 1 3 3L7 19.5 3 21l1.5-4L16.5 3.5z" />
                                                     </svg>
                                                 </button>
-                                                <button className="department-icon-btn" title="Delete" onClick={e => { e.stopPropagation(); handleDelete(idx); }}>
+                                                <button className="department-icon-btn" title="Archive" onClick={e => { e.stopPropagation(); handleDelete(idx); }}>
                                                     <svg width="20" height="20" fill="none" stroke="#222" strokeWidth="2" viewBox="0 0 24 24">
-                                                        <path d="M3 6h18" />
-                                                        <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
-                                                        <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" />
-                                                        <path d="M10 11v6" />
-                                                        <path d="M14 11v6" />
+                                                        <path d="M3 3h18v4H3z" />
+                                                        <path d="M3 7v11a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V7" />
+                                                        <path d="M9 11h6" />
                                                     </svg>
                                                 </button>
                                             </div>

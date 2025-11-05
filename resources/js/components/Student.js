@@ -14,28 +14,37 @@ class LocalDB {
 const localDB = new LocalDB();
 
 /* Form component (left narrow card) - copied / adapted from Faculty form */
-const StudentFullForm = memo(({ isEdit, onSubmit, onCancel, form, setForm, departments = [] }) => (
-  <div className="student-form-overlay" role="dialog" aria-modal="true">
-    <form className="student-full-form" onSubmit={onSubmit}>
-      <div className="student-form-header-row">
-        <h2 className="student-form-title">{isEdit ? "Edit Student" : "Add Student"}</h2>
+const StudentFullForm = memo(({ isEdit, onSubmit, onCancel, form, setForm, departments = [], courses = [] }) => {
+  // Filter courses based on selected department
+  const filteredCourses = form.department 
+    ? courses.filter(c => c.department === form.department)
+    : courses;
 
-        <div className="student-form-group" style={{ minWidth: 260 }}>
-          <label className="sr-only">Department</label>
-          <select
-            name="department"
-            aria-label="Department"
-            className="student-form-designation"
-            value={form.department}
-            onChange={e => setForm({ ...form, department: e.target.value })}
-          >
-            <option value="">Select department</option>
-            {departments.map(d => (
-              <option key={d.id ?? d.name} value={d.name}>{d.name}</option>
-            ))}
-          </select>
+  return (
+    <div className="student-form-overlay" role="dialog" aria-modal="true">
+      <form className="student-full-form" onSubmit={onSubmit}>
+        <div className="student-form-header-row">
+          <h2 className="student-form-title">{isEdit ? "Edit Student" : "Add Student"}</h2>
+
+          <div className="student-form-group" style={{ minWidth: 260 }}>
+            <label className="sr-only">Department</label>
+            <select
+              name="department"
+              aria-label="Department"
+              className="student-form-designation"
+              value={form.department}
+              onChange={e => {
+                // Reset course when department changes
+                setForm({ ...form, department: e.target.value, course: "" });
+              }}
+            >
+              <option value="">Select department</option>
+              {departments.map(d => (
+                <option key={d.id ?? d.name} value={d.name}>{d.name}</option>
+              ))}
+            </select>
+          </div>
         </div>
-      </div>
 
       <div className="student-form-row">
         <div className="student-form-group" style={{ flex: 1 }}>
@@ -111,15 +120,22 @@ const StudentFullForm = memo(({ isEdit, onSubmit, onCancel, form, setForm, depar
 
       <div className="student-form-row">
         <div className="student-form-group" style={{ flex: 1 }}>
-          <label>Subject</label>
-          <input
-            type="text"
-            name="subject"
+          <label>Course</label>
+          <select
+            name="course"
             required
-            value={form.subject}
-            onChange={e => setForm({ ...form, subject: e.target.value })}
-            placeholder="Subject"
-          />
+            value={form.course}
+            onChange={e => setForm({ ...form, course: e.target.value })}
+            aria-label="Course"
+            disabled={!form.department}
+          >
+            <option value="">
+              {form.department ? "Select course" : "Select department first"}
+            </option>
+            {filteredCourses.map(c => (
+              <option key={c.id ?? c.name} value={c.name}>{c.name}</option>
+            ))}
+          </select>
         </div>
 
         <div className="student-form-group" style={{ flex: 1 }}>
@@ -156,7 +172,8 @@ const StudentFullForm = memo(({ isEdit, onSubmit, onCancel, form, setForm, depar
       </div>
     </form>
   </div>
-));
+  );
+});
 
 export default function Student() {
   const navigate = useNavigate();
@@ -173,16 +190,19 @@ export default function Student() {
   }, []);
 
   const defaultForm = {
-    name: "", subject: "", email: "", age: "", gender: "Male", avatar: "", about: "", phone: "", department: "", year: ""
+    name: "", course: "", email: "", age: "", gender: "Male", avatar: "", about: "", phone: "", department: "", year: ""
   };
 
   const [studentList, setStudentList] = useState([]);
   const [departments, setDepartments] = useState([]);
+  const [courses, setCourses] = useState([]);
   const [showAdd, setShowAdd] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
   const [editIndex, setEditIndex] = useState(null);
   const [form, setForm] = useState(defaultForm);
   const [search, setSearch] = useState("");
+  const [departmentFilter, setDepartmentFilter] = useState("All Departments");
+  const [courseFilter, setCourseFilter] = useState("All Courses");
   const [showFilter, setShowFilter] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -220,6 +240,22 @@ export default function Student() {
         if (mounted) setDepartments(Array.isArray(json) ? json : []);
       } catch {
         if (mounted) setDepartments([]);
+      }
+    })();
+    return () => { mounted = false; };
+  }, []);
+
+  // fetch courses for dropdown
+  useEffect(() => {
+    let mounted = true;
+    (async () => {
+      try {
+        const res = await fetch('/api/courses');
+        if (!res.ok) throw new Error('no api');
+        const json = await res.json();
+        if (mounted) setCourses(Array.isArray(json) ? json : []);
+      } catch {
+        if (mounted) setCourses([]);
       }
     })();
     return () => { mounted = false; };
@@ -263,10 +299,13 @@ export default function Student() {
     if (selectedUser && selectedUser.id === target.id) setSelectedUser(null);
   };
 
-  const filteredList = studentList.filter(s =>
-    (s.name || "").toLowerCase().includes(search.toLowerCase()) ||
-    (s.email || "").toLowerCase().includes(search.toLowerCase())
-  );
+  const filteredList = studentList.filter(s => {
+    const matchesSearch = (s.name || "").toLowerCase().includes(search.toLowerCase()) ||
+                         (s.email || "").toLowerCase().includes(search.toLowerCase());
+    const matchesDepartment = departmentFilter === "All Departments" || s.department === departmentFilter;
+    const matchesCourse = courseFilter === "All Courses" || s.course === courseFilter;
+    return matchesSearch && matchesDepartment && matchesCourse;
+  });
 
   const handleLogout = () => navigate("/login");
   const handleUserClick = (user) => setSelectedUser(user);
@@ -282,24 +321,121 @@ export default function Student() {
           <button className="logout-btn" onClick={handleLogout}>Log out</button>
         </div>
 
-        <div className="student-header">
+        {!selectedUser && (
+          <div style={{ padding: '24px 40px', borderBottom: '1px solid #e5e7eb' }}>
+            <h1 style={{ margin: 0, fontSize: 28, fontWeight: 700, color: '#111827' }}>Students</h1>
+            <p style={{ margin: '4px 0 0 0', fontSize: 14, color: '#6b7280' }}>Manage student information</p>
+          </div>
+        )}
+
+        {!selectedUser && (
+          <div style={{ display: 'flex', gap: 16, padding: '20px 40px', alignItems: 'center', borderBottom: '1px solid #e5e7eb' }}>
+            <div style={{ position: 'relative', flex: 1, maxWidth: 400 }}>
+              <svg style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)', width: 20, height: 20 }} viewBox="0 0 24 24" fill="none" stroke="#9ca3af" strokeWidth="2">
+                <circle cx="11" cy="11" r="8"/>
+                <path d="m21 21-4.35-4.35"/>
+              </svg>
+              <input 
+                type="text" 
+                placeholder="Search students..." 
+                value={search} 
+                onChange={e => setSearch(e.target.value)}
+                style={{
+                  width: '100%',
+                  padding: '10px 12px 10px 40px',
+                  border: '1px solid #d1d5db',
+                  borderRadius: 8,
+                  fontSize: 14,
+                  outline: 'none',
+                  transition: 'border-color 0.2s'
+                }}
+                onFocus={e => e.target.style.borderColor = '#3b82f6'}
+                onBlur={e => e.target.style.borderColor = '#d1d5db'}
+              />
+            </div>
+            <select
+              value={courseFilter}
+              onChange={e => setCourseFilter(e.target.value)}
+              style={{
+                padding: '10px 32px 10px 12px',
+                border: '1px solid #d1d5db',
+                borderRadius: 8,
+                fontSize: 14,
+                color: '#374151',
+                background: '#fff',
+                cursor: 'pointer',
+                outline: 'none',
+                appearance: 'none',
+                backgroundImage: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' fill=\'none\' viewBox=\'0 0 20 20\'%3E%3Cpath stroke=\'%236b7280\' stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'1.5\' d=\'M6 8l4 4 4-4\'/%3E%3C/svg%3E")',
+                backgroundPosition: 'right 8px center',
+                backgroundRepeat: 'no-repeat',
+                backgroundSize: '20px'
+              }}
+            >
+              <option value="All Courses">All Courses</option>
+              {courses.map(c => (
+                <option key={c.id ?? c.name} value={c.name}>{c.name}</option>
+              ))}
+            </select>
+            <select
+              value={departmentFilter}
+              onChange={e => setDepartmentFilter(e.target.value)}
+              style={{
+                padding: '10px 32px 10px 12px',
+                border: '1px solid #d1d5db',
+                borderRadius: 8,
+                fontSize: 14,
+                color: '#374151',
+                background: '#fff',
+                cursor: 'pointer',
+                outline: 'none',
+                appearance: 'none',
+                backgroundImage: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' fill=\'none\' viewBox=\'0 0 20 20\'%3E%3Cpath stroke=\'%236b7280\' stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'1.5\' d=\'M6 8l4 4 4-4\'/%3E%3C/svg%3E")',
+                backgroundPosition: 'right 8px center',
+                backgroundRepeat: 'no-repeat',
+                backgroundSize: '20px'
+              }}
+            >
+              <option value="All Departments">All Departments</option>
+              {departments.map(d => (
+                <option key={d.id ?? d.name} value={d.name}>{d.name}</option>
+              ))}
+            </select>
+            <button 
+              onClick={handleAdd}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: 8,
+                padding: '10px 20px',
+                background: '#111827',
+                color: '#fff',
+                border: 'none',
+                borderRadius: 8,
+                fontSize: 14,
+                fontWeight: 600,
+                cursor: 'pointer',
+                whiteSpace: 'nowrap'
+              }}
+            >
+              <span style={{ fontSize: 18, lineHeight: 1 }}>+</span>
+              Add Student
+            </button>
+          </div>
+        )}
+
+        <div className="student-header" style={{ display: selectedUser ? 'flex' : 'none' }}>
           <button className="student-back-btn" onClick={() => selectedUser ? handleBackToList() : navigate(-1)}>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M14 8l-4 4 4 4" stroke="#111827" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
           </button>
 
           <div className="student-actions">
-            {!selectedUser && (
-              <>
-                <button className="student-add-btn" onClick={handleAdd}>Add Student</button>
-                <input className="student-search" type="text" placeholder="Search for by name or email" value={search} onChange={e => setSearch(e.target.value)} />
-              </>
-            )}
           </div>
         </div>
 
-  {showAdd && <StudentFullForm isEdit={false} onSubmit={handleAddSubmit} onCancel={() => { setShowAdd(false); setForm(defaultForm); }} form={form} setForm={setForm} departments={departments} />}
+  {showAdd && <StudentFullForm isEdit={false} onSubmit={handleAddSubmit} onCancel={() => { setShowAdd(false); setForm(defaultForm); }} form={form} setForm={setForm} departments={departments} courses={courses} />}
 
-  {showEdit && <StudentFullForm isEdit={true} onSubmit={handleEditSubmit} onCancel={() => { setShowEdit(false); setForm(defaultForm); setEditIndex(null); }} form={form} setForm={setForm} departments={departments} />}
+  {showEdit && <StudentFullForm isEdit={true} onSubmit={handleEditSubmit} onCancel={() => { setShowEdit(false); setForm(defaultForm); setEditIndex(null); }} form={form} setForm={setForm} departments={departments} courses={courses} />}
 
         {!showAdd && !showEdit && selectedUser ? (
           <div style={{ display: "flex", justifyContent: "center", alignItems: "flex-start", marginTop: 40, gap: 60 }}>
@@ -335,7 +471,7 @@ export default function Student() {
               <thead>
                 <tr>
                   <th>Name</th>
-                  <th>Subject</th>
+                  <th>Course</th>
                   <th>Department</th>
                   <th>Email address</th>
                   <th>Year Level</th>
@@ -357,7 +493,7 @@ export default function Student() {
                         </div>
                       </div>
                     </td>
-                    <td onClick={() => handleUserClick(s)}>{s.subject}</td>
+                    <td onClick={() => handleUserClick(s)}>{s.course}</td>
                     <td onClick={() => handleUserClick(s)}>{s.department}</td>
                     <td onClick={() => handleUserClick(s)}>{s.email}</td>
                     <td onClick={() => handleUserClick(s)}>{s.year}</td>

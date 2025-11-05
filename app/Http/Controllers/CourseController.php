@@ -19,21 +19,17 @@ class CourseController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string',
-            'subject' => 'required|string',
-            'class' => 'sometimes|string',
-            'email' => 'nullable|email|unique:courses,email',
-            'age' => 'nullable|integer',
-            'gender' => 'sometimes|string',
-            'about' => 'nullable|string',
-            'phone' => 'nullable|string',
             'department' => 'nullable|string',
+            'age' => 'nullable|integer', // credits
+            'gender' => 'nullable|string', // level
+            'about' => 'nullable|string',
+            'status' => 'nullable|string',
+            'archived' => 'nullable|boolean',
         ]);
 
-        // Handle avatar upload
-        if ($request->hasFile('avatar')) {
-            $path = $request->file('avatar')->store('avatars', 'public');
-            $validated['avatar'] = '/storage/' . $path;
-        }
+        // Set defaults
+        $validated['status'] = $validated['status'] ?? 'active';
+        $validated['archived'] = $validated['archived'] ?? false;
 
         $course = Course::create($validated);
         return response()->json($course, 201);
@@ -51,21 +47,13 @@ class CourseController extends Controller
         $course = Course::findOrFail($id);
         $validated = $request->validate([
             'name' => 'sometimes|string',
-            'subject' => 'sometimes|string',
-            'class' => 'sometimes|string',
-            'email' => 'nullable|email|unique:courses,email,' . $id,
-            'age' => 'nullable|integer',
-            'gender' => 'sometimes|string',
-            'about' => 'nullable|string',
-            'phone' => 'nullable|string',
             'department' => 'nullable|string',
+            'age' => 'nullable|integer', // credits
+            'gender' => 'nullable|string', // level
+            'about' => 'nullable|string',
+            'status' => 'nullable|string',
+            'archived' => 'nullable|boolean',
         ]);
-
-        // Handle avatar upload
-        if ($request->hasFile('avatar')) {
-            $path = $request->file('avatar')->store('avatars', 'public');
-            $validated['avatar'] = '/storage/' . $path;
-        }
 
         $course->fill($validated);
         $course->save();

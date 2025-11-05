@@ -8,7 +8,7 @@ class Student extends Model
 {
     protected $fillable = [
         'name',
-        'subject',
+        'course',
         'email',
         'age',
         'gender',

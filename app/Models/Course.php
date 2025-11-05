@@ -11,14 +11,11 @@ class Course extends Model
 
     protected $fillable = [
         'name',
-        'subject',
-        'class',
-        'email',
         'age', // used for credits
         'gender', // used for level: Undergraduate/Postgraduate
-        'avatar',
         'about',
-        'phone',
         'department',
+        'status', // active or archived
+        'archived', // boolean flag
     ];
 }
