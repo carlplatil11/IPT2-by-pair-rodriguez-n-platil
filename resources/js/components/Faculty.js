@@ -15,20 +15,24 @@ class LocalDB {
 const localDB = new LocalDB();
 
 /* Form overlay (left card) */
-const FacultyFullForm = memo(({ isEdit, onSubmit, onCancel, form, setForm }) => (
+const FacultyFullForm = memo(({ isEdit, onSubmit, onCancel, form, setForm, departments = [] }) => (
   <div className="faculty-form-overlay" role="dialog" aria-modal="true">
     <form className="faculty-full-form" onSubmit={onSubmit}>
       <div className="faculty-form-header-row">
         <h2 className="faculty-form-title">{isEdit ? "Edit Faculty" : "Add Faculty"}</h2>
         <div className="faculty-form-group" style={{ minWidth: 260 }}>
-          <input
-            type="text"
+          <label className="sr-only">Department</label>
+          <select
             required
             className="faculty-form-designation"
             value={form.department}
             onChange={e => setForm({ ...form, department: e.target.value })}
-            placeholder="Department"
-          />
+          >
+            <option value="">Select department</option>
+            {departments.map(d => (
+              <option key={d.id ?? d.name} value={d.name}>{d.name}</option>
+            ))}
+          </select>
         </div>
       </div>
 
@@ -107,6 +111,7 @@ export default function Faculty() {
   };
 
   const [facultyList, setFacultyList] = useState([]);
+  const [departments, setDepartments] = useState([]);
   const [showAdd, setShowAdd] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
   const [editIndex, setEditIndex] = useState(null);
@@ -134,6 +139,28 @@ export default function Faculty() {
         }
       } finally {
         if (mounted) setLoading(false);
+      }
+    })();
+    return () => { mounted = false; };
+  }, []);
+
+  // fetch departments for dropdown
+  useEffect(() => {
+    let mounted = true;
+    (async () => {
+      try {
+        const res = await fetch('/api/departments');
+        if (!res.ok) throw new Error('no api');
+        const json = await res.json();
+        if (mounted) setDepartments(Array.isArray(json) ? json : []);
+      } catch {
+        try {
+          // fallback to local DB keys if available
+          const local = await localDB.readAll();
+          if (mounted) setDepartments([]);
+        } catch {
+          if (mounted) setDepartments([]);
+        }
       }
     })();
     return () => { mounted = false; };
@@ -237,8 +264,8 @@ export default function Faculty() {
           </div>
         </div>
 
-        {showAdd && <FacultyFullForm isEdit={false} onSubmit={handleAddSubmit} onCancel={() => setShowAdd(false)} form={form} setForm={setForm} />}
-        {showEdit && <FacultyFullForm isEdit={true} onSubmit={handleEditSubmit} onCancel={() => setShowEdit(false)} form={form} setForm={setForm} />}
+  {showAdd && <FacultyFullForm isEdit={false} onSubmit={handleAddSubmit} onCancel={() => setShowAdd(false)} form={form} setForm={setForm} departments={departments} />}
+  {showEdit && <FacultyFullForm isEdit={true} onSubmit={handleEditSubmit} onCancel={() => setShowEdit(false)} form={form} setForm={setForm} departments={departments} />}
 
         {!showAdd && !showEdit && selectedUser ? (
           <div style={{ display: "flex", justifyContent: "center", alignItems: "flex-start", marginTop: 40, gap: 60 }}>

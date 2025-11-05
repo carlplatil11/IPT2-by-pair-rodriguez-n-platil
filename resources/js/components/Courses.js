@@ -2,20 +2,24 @@ import React, { useState, useEffect, memo } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "./Navbar";
 
-const CourseFullForm = memo(({ isEdit, onSubmit, onCancel, form, setForm }) => (
+const CourseFullForm = memo(({ isEdit, onSubmit, onCancel, form, setForm, departments = [] }) => (
     <div className="student-form-overlay">
         <form className="student-full-form" onSubmit={onSubmit}>
             <div className="student-form-header-row">
                 <h2 className="student-form-title">{isEdit ? "Edit Course" : "Add Course"}</h2>
                 <div className="student-form-group" style={{ minWidth: 260 }}>
-                    <input
-                        type="text"
+                    <label className="sr-only">Department</label>
+                    <select
                         required
                         className="student-form-designation"
                         value={form.department}
                         onChange={e => setForm({ ...form, department: e.target.value })}
-                        placeholder="Department"
-                    />
+                    >
+                        <option value="">Select department</option>
+                        {departments.map(d => (
+                            <option key={d.id ?? d.name} value={d.name}>{d.name}</option>
+                        ))}
+                    </select>
                 </div>
             </div>
 
@@ -136,6 +140,7 @@ export default function Courses() {
     };
 
     const [courseList, setCourseList] = useState([]);
+    const [departments, setDepartments] = useState([]);
     const [showAdd, setShowAdd] = useState(false);
     const [showEdit, setShowEdit] = useState(false);
     const [editIndex, setEditIndex] = useState(null);
@@ -154,6 +159,22 @@ export default function Courses() {
                 if (mounted) setCourseList(Array.isArray(data) ? data : []);
             } catch {
                 if (mounted) setCourseList([]);
+            }
+        })();
+        return () => { mounted = false; };
+    }, []);
+
+    // fetch departments for dropdown
+    useEffect(() => {
+        let mounted = true;
+        (async () => {
+            try {
+                const res = await fetch('/api/departments');
+                if (!res.ok) throw new Error('no api');
+                const json = await res.json();
+                if (mounted) setDepartments(Array.isArray(json) ? json : []);
+            } catch {
+                if (mounted) setDepartments([]);
             }
         })();
         return () => { mounted = false; };
@@ -298,6 +319,7 @@ export default function Courses() {
                         onCancel={() => { setShowAdd(false); setForm(defaultForm); }}
                         form={form}
                         setForm={setForm}
+                        departments={departments}
                     />
                 )}
 
@@ -308,6 +330,7 @@ export default function Courses() {
                         onCancel={() => { setShowEdit(false); setForm(defaultForm); setEditIndex(null); }}
                         form={form}
                         setForm={setForm}
+                        departments={departments}
                     />
                 )}
 

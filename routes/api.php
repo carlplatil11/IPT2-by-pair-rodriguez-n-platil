@@ -33,3 +33,19 @@ Route::get('courses/{id}', [App\Http\Controllers\CourseController::class, 'show'
 Route::put('courses/{id}', [App\Http\Controllers\CourseController::class, 'update']); // Update
 Route::patch('courses/{id}', [App\Http\Controllers\CourseController::class, 'update']); // Partial update
 Route::delete('courses/{id}', [App\Http\Controllers\CourseController::class, 'destroy']); // Delete
+
+// Departments CRUD API (explicit routes)
+Route::get('departments', [App\Http\Controllers\DepartmentController::class, 'index']); // List all
+Route::post('departments', [App\Http\Controllers\DepartmentController::class, 'store']); // Create
+Route::get('departments/{id}', [App\Http\Controllers\DepartmentController::class, 'show']); // Read
+Route::put('departments/{id}', [App\Http\Controllers\DepartmentController::class, 'update']); // Update
+Route::patch('departments/{id}', [App\Http\Controllers\DepartmentController::class, 'update']); // Partial update
+Route::delete('departments/{id}', [App\Http\Controllers\DepartmentController::class, 'destroy']); // Delete
+
+// Students CRUD API (explicit routes)
+Route::get('students', [App\Http\Controllers\StudentController::class, 'index']); // List all
+Route::post('students', [App\Http\Controllers\StudentController::class, 'store']); // Create
+Route::get('students/{id}', [App\Http\Controllers\StudentController::class, 'show']); // Read
+Route::put('students/{id}', [App\Http\Controllers\StudentController::class, 'update']); // Update
+Route::patch('students/{id}', [App\Http\Controllers\StudentController::class, 'update']); // Partial update
+Route::delete('students/{id}', [App\Http\Controllers\StudentController::class, 'destroy']); // Delete

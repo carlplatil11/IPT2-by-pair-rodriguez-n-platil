@@ -1,5 +1,5 @@
 // ...existing code...
-import React, { useState, memo, useEffect } from "react";
+import React, { useState, memo, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "./Navbar";
 
@@ -47,7 +47,7 @@ const DepartmentFullForm = memo(({ isEdit, onSubmit, onCancel, form, setForm }) 
                         className="department-form-status"
                     >
                         <option value="Active">Active</option>
-                        <option value="Offline">Offline</option>
+                        <option value="Deactivated">Deactivate</option>
                     </select>
                 </div>
             </div>
@@ -88,12 +88,50 @@ export default function Department() {
     };
 
     const [departments, setDepartments] = useState([]);
+    const [students, setStudents] = useState([]);
+    const [faculties, setFaculties] = useState([]);
     useEffect(() => {
         fetch('/api/departments')
             .then(res => res.json())
             .then(data => setDepartments(Array.isArray(data) ? data : []))
             .catch(() => setDepartments([]));
     }, []);
+
+    // fetch students to compute per-department counts
+    useEffect(() => {
+        fetch('/api/students')
+            .then(res => res.json())
+            .then(data => setStudents(Array.isArray(data) ? data : []))
+            .catch(() => setStudents([]));
+    }, []);
+
+    // fetch faculties to compute per-department faculty counts
+    useEffect(() => {
+        fetch('/api/faculties')
+            .then(res => res.json())
+            .then(data => setFaculties(Array.isArray(data) ? data : []))
+            .catch(() => setFaculties([]));
+    }, []);
+
+    const studentsCount = useMemo(() => {
+        const map = Object.create(null);
+        for (const s of students) {
+            const name = (s.department || "").toString();
+            if (!name) continue;
+            map[name] = (map[name] || 0) + 1;
+        }
+        return map;
+    }, [students]);
+
+    const facultiesCount = useMemo(() => {
+        const map = Object.create(null);
+        for (const f of faculties) {
+            const name = (f.department || "").toString();
+            if (!name) continue;
+            map[name] = (map[name] || 0) + 1;
+        }
+        return map;
+    }, [faculties]);
 
     const [showAdd, setShowAdd] = useState(false);
     const [showEdit, setShowEdit] = useState(false);
@@ -323,6 +361,14 @@ export default function Department() {
                                     <div style={{ fontWeight: 600 }}>{selectedDept.email}</div>
                                 </div>
                                 <div>
+                                    <div style={{ color: "#888", fontSize: 13 }}>Faculties</div>
+                                    <div style={{ fontWeight: 600 }}>{facultiesCount[selectedDept.name] ?? 0}</div>
+                                </div>
+                                <div>
+                                    <div style={{ color: "#888", fontSize: 13 }}>Students</div>
+                                    <div style={{ fontWeight: 600 }}>{studentsCount[selectedDept.name] ?? 0}</div>
+                                </div>
+                                <div>
                                     <div style={{ color: "#888", fontSize: 13 }}>Status</div>
                                     <div style={{ fontWeight: 600 }}>{selectedDept.status}</div>
                                 </div>
@@ -337,7 +383,8 @@ export default function Department() {
                                     <th>Department Name</th>
                                     <th>Dean</th>
                                     <th>Contact</th>
-                                    <th>No. of Students</th>
+                                    <th>No. of Faculties</th>
+                                        <th>No. of Students</th>
                                     <th>Status</th>
                                     <th style={{ width: 84, textAlign: "center" }}></th>
                                 </tr>
@@ -351,7 +398,8 @@ export default function Department() {
                                         <td onClick={() => handleUserClick(d)}>{d.name}</td>
                                         <td onClick={() => handleUserClick(d)}>{d.head}</td>
                                         <td onClick={() => handleUserClick(d)}>{d.email}</td>
-                                        <td onClick={() => handleUserClick(d)}>{d.students ?? ""}</td>
+                                        <td onClick={() => handleUserClick(d)}>{facultiesCount[d.name] ?? d.faculties ?? 0}</td>
+                                        <td onClick={() => handleUserClick(d)}>{studentsCount[d.name] ?? d.students ?? ""}</td>
                                         <td onClick={() => handleUserClick(d)}>{d.status ?? "Active"}</td>
                                         <td style={{ textAlign: "center" }}>
                                             <div className="actions-cell">
