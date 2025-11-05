@@ -1,4 +1,3 @@
-// ...existing code...
 import React, { useState, memo, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "./Navbar";
@@ -276,7 +275,62 @@ export default function Department() {
                     <button className="logout-btn" onClick={() => navigate('/login')}>Log out</button>
                 </div>
 
-                <div className="department-header">
+                {!selectedDept && (
+                    <div style={{ padding: '24px 40px', borderBottom: '1px solid #e5e7eb' }}>
+                        <h1 style={{ margin: 0, fontSize: 28, fontWeight: 700, color: '#111827' }}>Departments</h1>
+                        <p style={{ margin: '4px 0 0 0', fontSize: 14, color: '#6b7280' }}>Manage department information</p>
+                    </div>
+                )}
+
+                {!selectedDept && (
+                    <div style={{ display: 'flex', gap: 16, padding: '20px 40px', alignItems: 'center', borderBottom: '1px solid #e5e7eb' }}>
+                        <div style={{ position: 'relative', flex: 1, maxWidth: 400 }}>
+                            <svg style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)', width: 20, height: 20 }} viewBox="0 0 24 24" fill="none" stroke="#9ca3af" strokeWidth="2">
+                                <circle cx="11" cy="11" r="8"/>
+                                <path d="m21 21-4.35-4.35"/>
+                            </svg>
+                            <input 
+                                type="text" 
+                                placeholder="Search departments..." 
+                                value={search} 
+                                onChange={e => setSearch(e.target.value)}
+                                style={{
+                                    width: '100%',
+                                    padding: '10px 12px 10px 40px',
+                                    border: '1px solid #d1d5db',
+                                    borderRadius: 8,
+                                    fontSize: 14,
+                                    outline: 'none',
+                                    transition: 'border-color 0.2s'
+                                }}
+                                onFocus={e => e.target.style.borderColor = '#3b82f6'}
+                                onBlur={e => e.target.style.borderColor = '#d1d5db'}
+                            />
+                        </div>
+                        <button 
+                            onClick={handleAdd}
+                            style={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: 8,
+                                padding: '10px 20px',
+                                background: '#111827',
+                                color: '#fff',
+                                border: 'none',
+                                borderRadius: 8,
+                                fontSize: 14,
+                                fontWeight: 600,
+                                cursor: 'pointer',
+                                whiteSpace: 'nowrap'
+                            }}
+                        >
+                            <span style={{ fontSize: 18, lineHeight: 1 }}>+</span>
+                            Add Department
+                        </button>
+                    </div>
+                )}
+
+                <div className="department-header" style={{ display: selectedDept ? 'flex' : 'none' }}>
                     <button className="department-back-btn" onClick={() => selectedDept ? handleBackToList() : navigate(-1)}>
                         <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
                             <circle cx="12" cy="12" r="12" fill="#222" opacity="0.12"/>
@@ -284,14 +338,6 @@ export default function Department() {
                         </svg>
                     </button>
                     <div className="department-actions">
-                        <button className="department-add-btn" onClick={handleAdd}>Add Department</button>
-                        <input
-                            className="department-search"
-                            type="text"
-                            placeholder="Search by name"
-                            value={search}
-                            onChange={e => setSearch(e.target.value)}
-                        />
                     </div>
                 </div>
 
@@ -460,4 +506,3 @@ export default function Department() {
         </div>
     );
 }
-// ...existing code...

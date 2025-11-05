@@ -251,28 +251,74 @@ export default function Courses() {
                     <button className="logout-btn" onClick={handleLogout}>Log out</button>
                 </div>
 
-                <div className="student-header">
-                    <button className="student-back-btn" onClick={() => selectedCourse ? handleBackToList() : navigate(-1)}>
-                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
-                            <circle cx="12" cy="12" r="12" fill="#222" opacity="0.12"/>
-                            <path d="M14 8l-4 4 4 4" stroke="#222" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                        </svg>
-                    </button>
-                    <div className="student-actions">
-                        {!selectedCourse && (
-                            <>
-                                <button className="student-add-btn" onClick={handleAdd}>Add Course</button>
-                                <input
-                                    className="student-search"
-                                    type="text"
-                                    placeholder="Search Course"
-                                    value={search}
-                                    onChange={e => setSearch(e.target.value)}
-                                />
-                            </>
-                        )}
+                {!selectedCourse && (
+                    <div style={{ padding: '24px 40px', borderBottom: '1px solid #e5e7eb' }}>
+                        <h1 style={{ fontSize: 28, fontWeight: 700, color: '#111827', margin: 0, marginBottom: 4 }}>Courses</h1>
+                        <p style={{ fontSize: 14, color: '#6b7280', margin: 0 }}>Manage course information</p>
                     </div>
-                </div>
+                )}
+
+                {!selectedCourse && (
+                    <div style={{ display: 'flex', gap: 16, padding: '20px 40px', borderBottom: '1px solid #e5e7eb' }}>
+                        <div style={{ position: 'relative', flex: 1, maxWidth: 400 }}>
+                            <svg
+                                style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)', width: 18, height: 18 }}
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="#9ca3af"
+                                strokeWidth="2"
+                            >
+                                <circle cx="11" cy="11" r="8" />
+                                <path d="m21 21-4.35-4.35" />
+                            </svg>
+                            <input
+                                type="text"
+                                placeholder="Search courses..."
+                                value={search}
+                                onChange={e => setSearch(e.target.value)}
+                                style={{
+                                    width: '100%',
+                                    padding: '10px 12px 10px 40px',
+                                    border: '1px solid #e5e7eb',
+                                    borderRadius: 8,
+                                    fontSize: 14,
+                                    outline: 'none'
+                                }}
+                            />
+                        </div>
+                        <button
+                            onClick={handleAdd}
+                            style={{
+                                padding: '10px 20px',
+                                background: '#111827',
+                                color: 'white',
+                                border: 'none',
+                                borderRadius: 8,
+                                fontSize: 14,
+                                fontWeight: 500,
+                                cursor: 'pointer',
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: 6,
+                                whiteSpace: 'nowrap'
+                            }}
+                        >
+                            <span style={{ fontSize: 18, lineHeight: 1 }}>+</span>
+                            Add Course
+                        </button>
+                    </div>
+                )}
+
+                {selectedCourse && (
+                    <div className="student-header">
+                        <button className="student-back-btn" onClick={handleBackToList}>
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
+                                <circle cx="12" cy="12" r="12" fill="#222" opacity="0.12"/>
+                                <path d="M14 8l-4 4 4 4" stroke="#222" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                            </svg>
+                        </button>
+                    </div>
+                )}
 
                 {showAdd && (
                     <CourseFullForm

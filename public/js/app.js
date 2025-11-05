@@ -70592,13 +70592,106 @@ function Courses() {
           onClick: handleLogout,
           children: "Log out"
         })
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
-        className: "student-header",
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
-          className: "student-back-btn",
-          onClick: function onClick() {
-            return selectedCourse ? handleBackToList() : navigate(-1);
+      }), !selectedCourse && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+        style: {
+          padding: '24px 40px',
+          borderBottom: '1px solid #e5e7eb'
+        },
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("h1", {
+          style: {
+            fontSize: 28,
+            fontWeight: 700,
+            color: '#111827',
+            margin: 0,
+            marginBottom: 4
           },
+          children: "Courses"
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("p", {
+          style: {
+            fontSize: 14,
+            color: '#6b7280',
+            margin: 0
+          },
+          children: "Manage course information"
+        })]
+      }), !selectedCourse && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+        style: {
+          display: 'flex',
+          gap: 16,
+          padding: '20px 40px',
+          borderBottom: '1px solid #e5e7eb'
+        },
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+          style: {
+            position: 'relative',
+            flex: 1,
+            maxWidth: 400
+          },
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("svg", {
+            style: {
+              position: 'absolute',
+              left: 12,
+              top: '50%',
+              transform: 'translateY(-50%)',
+              width: 18,
+              height: 18
+            },
+            viewBox: "0 0 24 24",
+            fill: "none",
+            stroke: "#9ca3af",
+            strokeWidth: "2",
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("circle", {
+              cx: "11",
+              cy: "11",
+              r: "8"
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("path", {
+              d: "m21 21-4.35-4.35"
+            })]
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("input", {
+            type: "text",
+            placeholder: "Search courses...",
+            value: search,
+            onChange: function onChange(e) {
+              return setSearch(e.target.value);
+            },
+            style: {
+              width: '100%',
+              padding: '10px 12px 10px 40px',
+              border: '1px solid #e5e7eb',
+              borderRadius: 8,
+              fontSize: 14,
+              outline: 'none'
+            }
+          })]
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("button", {
+          onClick: handleAdd,
+          style: {
+            padding: '10px 20px',
+            background: '#111827',
+            color: 'white',
+            border: 'none',
+            borderRadius: 8,
+            fontSize: 14,
+            fontWeight: 500,
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            gap: 6,
+            whiteSpace: 'nowrap'
+          },
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("span", {
+            style: {
+              fontSize: 18,
+              lineHeight: 1
+            },
+            children: "+"
+          }), "Add Course"]
+        })]
+      }), selectedCourse && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+        className: "student-header",
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
+          className: "student-back-btn",
+          onClick: handleBackToList,
           children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("svg", {
             width: "28",
             height: "28",
@@ -70618,24 +70711,7 @@ function Courses() {
               strokeLinejoin: "round"
             })]
           })
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
-          className: "student-actions",
-          children: !selectedCourse && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.Fragment, {
-            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
-              className: "student-add-btn",
-              onClick: handleAdd,
-              children: "Add Course"
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("input", {
-              className: "student-search",
-              type: "text",
-              placeholder: "Search Course",
-              value: search,
-              onChange: function onChange(e) {
-                return setSearch(e.target.value);
-              }
-            })]
-          })
-        })]
+        })
       }), showAdd && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(CourseFullForm, {
         isEdit: false,
         onSubmit: handleAddSubmit,
@@ -71382,7 +71458,6 @@ function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t =
 function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
 function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : i + ""; }
 function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
-// ...existing code...
 
 
 
@@ -71944,8 +72019,113 @@ function Department() {
           },
           children: "Log out"
         })
+      }), !selectedDept && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+        style: {
+          padding: '24px 40px',
+          borderBottom: '1px solid #e5e7eb'
+        },
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("h1", {
+          style: {
+            margin: 0,
+            fontSize: 28,
+            fontWeight: 700,
+            color: '#111827'
+          },
+          children: "Departments"
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("p", {
+          style: {
+            margin: '4px 0 0 0',
+            fontSize: 14,
+            color: '#6b7280'
+          },
+          children: "Manage department information"
+        })]
+      }), !selectedDept && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+        style: {
+          display: 'flex',
+          gap: 16,
+          padding: '20px 40px',
+          alignItems: 'center',
+          borderBottom: '1px solid #e5e7eb'
+        },
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+          style: {
+            position: 'relative',
+            flex: 1,
+            maxWidth: 400
+          },
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("svg", {
+            style: {
+              position: 'absolute',
+              left: 12,
+              top: '50%',
+              transform: 'translateY(-50%)',
+              width: 20,
+              height: 20
+            },
+            viewBox: "0 0 24 24",
+            fill: "none",
+            stroke: "#9ca3af",
+            strokeWidth: "2",
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("circle", {
+              cx: "11",
+              cy: "11",
+              r: "8"
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("path", {
+              d: "m21 21-4.35-4.35"
+            })]
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("input", {
+            type: "text",
+            placeholder: "Search departments...",
+            value: search,
+            onChange: function onChange(e) {
+              return setSearch(e.target.value);
+            },
+            style: {
+              width: '100%',
+              padding: '10px 12px 10px 40px',
+              border: '1px solid #d1d5db',
+              borderRadius: 8,
+              fontSize: 14,
+              outline: 'none',
+              transition: 'border-color 0.2s'
+            },
+            onFocus: function onFocus(e) {
+              return e.target.style.borderColor = '#3b82f6';
+            },
+            onBlur: function onBlur(e) {
+              return e.target.style.borderColor = '#d1d5db';
+            }
+          })]
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("button", {
+          onClick: handleAdd,
+          style: {
+            display: 'flex',
+            alignItems: 'center',
+            gap: 8,
+            padding: '10px 20px',
+            background: '#111827',
+            color: '#fff',
+            border: 'none',
+            borderRadius: 8,
+            fontSize: 14,
+            fontWeight: 600,
+            cursor: 'pointer',
+            whiteSpace: 'nowrap'
+          },
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("span", {
+            style: {
+              fontSize: 18,
+              lineHeight: 1
+            },
+            children: "+"
+          }), "Add Department"]
+        })]
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
         className: "department-header",
+        style: {
+          display: selectedDept ? 'flex' : 'none'
+        },
         children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
           className: "department-back-btn",
           onClick: function onClick() {
@@ -71970,21 +72150,8 @@ function Department() {
               strokeLinejoin: "round"
             })]
           })
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
-          className: "department-actions",
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
-            className: "department-add-btn",
-            onClick: handleAdd,
-            children: "Add Department"
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("input", {
-            className: "department-search",
-            type: "text",
-            placeholder: "Search by name",
-            value: search,
-            onChange: function onChange(e) {
-              return setSearch(e.target.value);
-            }
-          })]
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+          className: "department-actions"
         })]
       }), showAdd && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(DepartmentFullForm, {
         isEdit: false,
@@ -72318,7 +72485,6 @@ function Department() {
     })]
   });
 }
-// ...existing code...
 
 /***/ }),
 
