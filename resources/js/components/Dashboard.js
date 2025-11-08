@@ -2,6 +2,54 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "./Navbar";
 
+// API Cache utility - same as in Student.js
+const apiCache = {
+    cache: new Map(),
+    pendingRequests: new Map(),
+    
+    async fetch(url, ttl = 60000) {
+        const now = Date.now();
+        const cached = this.cache.get(url);
+        
+        // Return cached data if still valid
+        if (cached && (now - cached.timestamp) < ttl) {
+            return cached.data;
+        }
+        
+        // If there's already a pending request for this URL, wait for it
+        if (this.pendingRequests.has(url)) {
+            return this.pendingRequests.get(url);
+        }
+        
+        // Make new request
+        const promise = fetch(url)
+            .then(res => {
+                if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+                return res.json();
+            })
+            .then(data => {
+                this.cache.set(url, { data, timestamp: now });
+                this.pendingRequests.delete(url);
+                return data;
+            })
+            .catch(err => {
+                this.pendingRequests.delete(url);
+                throw err;
+            });
+        
+        this.pendingRequests.set(url, promise);
+        return promise;
+    },
+    
+    clear(url) {
+        if (url) {
+            this.cache.delete(url);
+        } else {
+            this.cache.clear();
+        }
+    }
+};
+
 function SimpleBarChart({ data = [], labelKey = "label", valueKey = "value", height = 240 }) {
     if (!data || data.length === 0) return (
         <div style={{ 
@@ -251,10 +299,6 @@ export default function Dashboard() {
     const [facultyByDept, setFacultyByDept] = useState([]);
     const [loading, setLoading] = useState(true);
 
-    const handleLogout = () => {
-        navigate("/login");
-    };
-
     useEffect(() => {
         let mounted = true;
 
@@ -263,17 +307,18 @@ export default function Dashboard() {
             if (document.hidden) return;
             
             try {
-                const [tRes, sRes, fRes] = await Promise.allSettled([
-                    fetch('/api/stats/totals'),
-                    fetch('/api/stats/students-by-course'),
-                    fetch('/api/stats/faculty-by-department'),
+                // Use apiCache with 2-minute TTL for dashboard stats
+                const [totalsData, studentsCourseData, facultyDeptData] = await Promise.allSettled([
+                    apiCache.fetch('/api/stats/totals', 120000),
+                    apiCache.fetch('/api/stats/students-by-course', 120000),
+                    apiCache.fetch('/api/stats/faculty-by-department', 120000),
                 ]);
 
                 if (!mounted) return;
 
                 // Totals
-                if (tRes.status === "fulfilled" && tRes.value.ok) {
-                    const json = await tRes.value.json();
+                if (totalsData.status === "fulfilled") {
+                    const json = totalsData.value;
                     setTotals({ 
                         students: json.students ?? json.total_students ?? 0, 
                         faculty: json.faculty ?? json.total_faculty ?? 0 
@@ -283,16 +328,16 @@ export default function Dashboard() {
                 }
 
                 // Students per course
-                if (sRes.status === "fulfilled" && sRes.value.ok) {
-                    const json = await sRes.value.json();
+                if (studentsCourseData.status === "fulfilled") {
+                    const json = studentsCourseData.value;
                     setStudentsByCourse(Array.isArray(json) ? json : []);
                 } else {
                     setStudentsByCourse([]);
                 }
 
                 // Faculty per department
-                if (fRes.status === "fulfilled" && fRes.value.ok) {
-                    const json = await fRes.value.json();
+                if (facultyDeptData.status === "fulfilled") {
+                    const json = facultyDeptData.value;
                     setFacultyByDept(Array.isArray(json) ? json : []);
                 } else {
                     setFacultyByDept([]);
@@ -311,14 +356,24 @@ export default function Dashboard() {
 
         fetchData();
         
-        // Refresh dashboard every 15 seconds to reflect archive/restore changes
+        // Refresh dashboard every 10 minutes to reflect archive/restore changes
+        // Combined with 2-minute cache TTL, this prevents excessive API calls
         const interval = setInterval(() => {
-            if (mounted) fetchData();
-        }, 15000);
+            if (mounted && !document.hidden) fetchData();
+        }, 600000); // 10 minutes
+
+        // Also refresh when tab becomes visible
+        const handleVisibilityChange = () => {
+            if (!document.hidden && mounted) {
+                fetchData();
+            }
+        };
+        document.addEventListener('visibilitychange', handleVisibilityChange);
 
         return () => { 
             mounted = false;
             clearInterval(interval);
+            document.removeEventListener('visibilitychange', handleVisibilityChange);
         };
     }, []);
 
@@ -326,10 +381,6 @@ export default function Dashboard() {
         <div style={{ display: "flex", minHeight: "100vh", background: "#f8fafc" }}>
             <Navbar />
             <main style={{ flex: 1 }}>
-                <div className="dashboard-header">
-                    <button className="logout-btn" onClick={handleLogout}>Log out</button>
-                </div>
-
                 {/* Modern Header Section */}
                 <div style={{ 
                     padding: '32px 40px', 

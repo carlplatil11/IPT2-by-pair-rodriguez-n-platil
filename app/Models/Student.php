@@ -18,5 +18,6 @@ class Student extends Model
         'year',
         'avatar',
         'archived',
+        'academic_year',
     ];
 }

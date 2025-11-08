@@ -11,7 +11,7 @@ const HighlightText = ({ text, highlight }) => {
     return (
         <>
             {parts.map((part, i) =>
-                regex.test(part) ? <span key={i} style={{ backgroundColor: '#fef08a', fontWeight: 600 }}>{part}</span> : part
+                regex.test(part) ? <span key={i} className="highlight-text">{part}</span> : part
             )}
         </>
     );
@@ -36,39 +36,28 @@ const DepartmentFullForm = memo(({ isEdit, onSubmit, onCancel, form, setForm }) 
 
             <div className="department-form-row">
                 <div className="department-form-group" style={{ flex: 1 }}>
-                    <label>Head of Department</label>
+                    <label>Department Head</label>
                     <input
                         type="text"
                         value={form.head}
                         onChange={e => setForm({ ...form, head: e.target.value })}
-                        placeholder="Complete Name"
+                        placeholder="Full name of department head"
                     />
                 </div>
                 <div className="department-form-group" style={{ flex: 1 }}>
-                    <label>Contact Email</label>
+                    <label>Official Email</label>
                     <input
                         type="email"
                         value={form.email}
                         onChange={e => setForm({ ...form, email: e.target.value })}
-                        placeholder="Contact email"
+                        placeholder="department@university.edu"
                     />
-                </div>
-                <div className="department-form-group" style={{ width: 160 }}>
-                    <label>Status</label>
-                    <select
-                        value={form.status}
-                        onChange={e => setForm({ ...form, status: e.target.value })}
-                        className="department-form-status"
-                    >
-                        <option value="Active">Active</option>
-                        <option value="Deactivated">Deactivate</option>
-                    </select>
                 </div>
             </div>
 
             <div className="department-form-row">
                 <div className="department-form-group" style={{ flex: 1 }}>
-                    <label>Description</label>
+                    <label>Department Description</label>
                     <textarea
                         value={form.description}
                         onChange={e => setForm({ ...form, description: e.target.value })}
@@ -97,8 +86,7 @@ export default function Department() {
         name: "",
         head: "",
         email: "",
-        description: "",
-        status: "Active" // default status
+        description: ""
     };
 
     const [departments, setDepartments] = useState([]);
@@ -161,6 +149,9 @@ export default function Department() {
     const [form, setForm] = useState(defaultForm);
     const [search, setSearch] = useState("");
     const [selectedDept, setSelectedDept] = useState(null);
+    
+    // Filter state
+    const [countFilter, setCountFilter] = useState('all');
     
     // Sorting state
     const [sortField, setSortField] = useState(null);
@@ -359,10 +350,27 @@ export default function Department() {
         }
     };
 
-    const filtered = activeDepartments.filter(d =>
-        (d.name || "").toLowerCase().includes(search.toLowerCase()) ||
-        (d.head || "").toLowerCase().includes(search.toLowerCase())
-    );
+    const filtered = activeDepartments.filter(d => {
+        const matchesSearch = (d.name || "").toLowerCase().includes(search.toLowerCase()) ||
+                             (d.head || "").toLowerCase().includes(search.toLowerCase());
+        
+        // Filter by student count
+        let matchesCount = true;
+        if (countFilter !== 'all') {
+            const studentCount = studentsCount[d.name] || 0;
+            if (countFilter === 'empty') {
+                matchesCount = studentCount === 0;
+            } else if (countFilter === 'small') {
+                matchesCount = studentCount > 0 && studentCount <= 50;
+            } else if (countFilter === 'medium') {
+                matchesCount = studentCount > 50 && studentCount <= 200;
+            } else if (countFilter === 'large') {
+                matchesCount = studentCount > 200;
+            }
+        }
+        
+        return matchesSearch && matchesCount;
+    });
 
     // Apply sorting
     const sortedFiltered = [...filtered].sort((a, b) => {
@@ -516,24 +524,20 @@ export default function Department() {
     };
 
     return (
-        <div style={{ display: "flex", minHeight: "100vh", background: "#f8fafc" }}>
+        <div className="department-page-wrapper">
             <Navbar />
-            <main className="department-container" style={{ flex: 1 }}>
-                <div className="dashboard-header">
-                    <button className="logout-btn" onClick={() => navigate('/login')}>Log out</button>
-                </div>
-
+            <main className="department-main-container">
                 {!selectedDept && (
-                    <div style={{ padding: '24px 40px', borderBottom: '1px solid #e5e7eb' }}>
-                        <h1 style={{ margin: 0, fontSize: 28, fontWeight: 700, color: '#111827' }}>Departments</h1>
-                        <p style={{ margin: '4px 0 0 0', fontSize: 14, color: '#6b7280' }}>Manage department information</p>
+                    <div className="department-page-header">
+                        <h1>Departments</h1>
+                        <p>Manage department information</p>
                     </div>
                 )}
 
                 {!selectedDept && (
-                    <div style={{ display: 'flex', gap: 16, padding: '20px 40px', alignItems: 'center', borderBottom: '1px solid #e5e7eb' }}>
-                        <div style={{ position: 'relative', flex: 1, maxWidth: 400 }}>
-                            <svg style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)', width: 20, height: 20 }} viewBox="0 0 24 24" fill="none" stroke="#9ca3af" strokeWidth="2">
+                    <div className="department-toolbar">
+                        <div className="department-search-wrapper">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="#9ca3af" strokeWidth="2">
                                 <circle cx="11" cy="11" r="8"/>
                                 <path d="m21 21-4.35-4.35"/>
                             </svg>
@@ -542,68 +546,41 @@ export default function Department() {
                                 placeholder="Search departments..." 
                                 value={search} 
                                 onChange={e => setSearch(e.target.value)}
-                                style={{
-                                    width: '100%',
-                                    padding: '10px 12px 10px 40px',
-                                    border: '1px solid #d1d5db',
-                                    borderRadius: 8,
-                                    fontSize: 14,
-                                    outline: 'none',
-                                    transition: 'border-color 0.2s'
-                                }}
-                                onFocus={e => e.target.style.borderColor = '#3b82f6'}
-                                onBlur={e => e.target.style.borderColor = '#d1d5db'}
                             />
                         </div>
+                        <select
+                            className="department-filter-select"
+                            value={countFilter}
+                            onChange={e => setCountFilter(e.target.value)}
+                        >
+                            <option value="all">All Departments</option>
+                            <option value="empty">Empty (0 students)</option>
+                            <option value="small">Small (1-50 students)</option>
+                            <option value="medium">Medium (51-200 students)</option>
+                            <option value="large">Large (200+ students)</option>
+                        </select>
                         {selectedDepartments.length > 0 && (
                             <button 
+                                className="department-archive-btn"
                                 onClick={handleArchiveAll}
-                                style={{
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    gap: 8,
-                                    padding: '10px 16px',
-                                    background: '#fef3c7',
-                                    color: '#ca8a04',
-                                    border: 'none',
-                                    borderRadius: 8,
-                                    fontSize: 13,
-                                    fontWeight: 600,
-                                    cursor: 'pointer',
-                                    whiteSpace: 'nowrap'
-                                }}
                             >
                                 📦 Archive Selected ({selectedDepartments.length})
                             </button>
                         )}
                         <button 
+                            className="department-add-btn-primary"
                             onClick={handleAdd}
-                            style={{
-                                display: 'flex',
-                                alignItems: 'center',
-                                gap: 8,
-                                padding: '10px 20px',
-                                background: '#111827',
-                                color: '#fff',
-                                border: 'none',
-                                borderRadius: 8,
-                                fontSize: 14,
-                                fontWeight: 600,
-                                cursor: 'pointer',
-                                whiteSpace: 'nowrap'
-                            }}
                         >
-                            <span style={{ fontSize: 18, lineHeight: 1 }}>+</span>
+                            <span>+</span>
                             Add Department
                         </button>
                     </div>
                 )}
 
                 <div className="department-header" style={{ display: selectedDept ? 'flex' : 'none' }}>
-                    <button className="department-back-btn" onClick={() => selectedDept ? handleBackToList() : navigate(-1)}>
-                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
-                            <circle cx="12" cy="12" r="12" fill="#222" opacity="0.12"/>
-                            <path d="M14 8l-4 4 4 4" stroke="#222" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    <button className="department-back-btn" onClick={() => selectedDept ? handleBackToList() : navigate(-1)} aria-label="Go back">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#183153" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                            <path d="M19 12H5M12 19l-7-7 7-7"/>
                         </svg>
                     </button>
                     <div className="department-actions">
@@ -632,38 +609,23 @@ export default function Department() {
 
                 {/* If a department is selected show detail panel like Faculty.js */}
                 {!showAdd && !showEdit && selectedDept ? (
-                    <div style={{
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "flex-start",
-                        marginTop: "40px",
-                        gap: "60px"
-                    }}>
-                        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", minWidth: 320 }}>
-                            <div style={{
-                                width: 220,
-                                height: 220,
-                                borderRadius: "10px",
-                                background: "#f3f6f9",
-                                display: "flex",
-                                alignItems: "center",
-                                justifyContent: "center",
-                                boxShadow: "0 4px 24px #e6eaf1"
-                            }}>
+                    <div className="department-detail-wrapper">
+                        <div className="department-detail-left">
+                            <div className="department-detail-avatar">
                                 <svg width="64" height="64" viewBox="0 0 24 24" fill="none">
                                     <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4z" stroke="#94a3b8" strokeWidth="1.5"/>
                                     <path d="M4 20v-1c0-2.8 3.6-4 8-4s8 1.2 8 4v1" stroke="#94a3b8" strokeWidth="1.5"/>
                                 </svg>
                             </div>
 
-                            <div style={{ marginTop: 24, fontWeight: 700, fontSize: "1.3rem", textAlign: "center" }}>
+                            <div className="department-detail-name">
                                 {selectedDept.name}
                             </div>
-                            <div style={{ color: "#888", fontSize: "1rem", marginBottom: 24, textAlign: "center" }}>
+                            <div className="department-detail-head">
                                 {selectedDept.head}
                             </div>
 
-                            <div style={{ display: "flex", gap: 16 }}>
+                            <div className="department-detail-actions">
                                 <button
                                     className="department-icon-btn"
                                     title="Edit"
@@ -696,78 +658,69 @@ export default function Department() {
                             </div>
                         </div>
 
-                        <div style={{ minWidth: 320, maxWidth: 600 }}>
-                            <div style={{ fontWeight: 700, fontSize: "1.1rem", marginBottom: 8 }}>Description</div>
-                            <div style={{ color: "#555", marginBottom: 24, lineHeight: 1.6 }}>
+                        <div className="department-detail-right">
+                            <div className="department-detail-section-title">Description</div>
+                            <div className="department-detail-description">
                                 {selectedDept.description}
                             </div>
 
-                            <div style={{ display: "flex", gap: 40 }}>
-                                <div>
-                                    <div style={{ color: "#888", fontSize: 13 }}>Contact</div>
-                                    <div style={{ fontWeight: 600 }}>{selectedDept.email}</div>
+                            <div className="department-detail-stats">
+                                <div className="department-detail-stat-item">
+                                    <div className="stat-label">Contact</div>
+                                    <div className="stat-value">{selectedDept.email}</div>
                                 </div>
-                                <div>
-                                    <div style={{ color: "#888", fontSize: 13 }}>Faculties</div>
-                                    <div style={{ fontWeight: 600 }}>{facultiesCount[selectedDept.name] ?? 0}</div>
+                                <div className="department-detail-stat-item">
+                                    <div className="stat-label">Faculties</div>
+                                    <div className="stat-value">{facultiesCount[selectedDept.name] ?? 0}</div>
                                 </div>
-                                <div>
-                                    <div style={{ color: "#888", fontSize: 13 }}>Students</div>
-                                    <div style={{ fontWeight: 600 }}>{studentsCount[selectedDept.name] ?? 0}</div>
-                                </div>
-                                <div>
-                                    <div style={{ color: "#888", fontSize: 13 }}>Status</div>
-                                    <div style={{ fontWeight: 600 }}>{selectedDept.status}</div>
+                                <div className="department-detail-stat-item">
+                                    <div className="stat-label">Students</div>
+                                    <div className="stat-value">{studentsCount[selectedDept.name] ?? 0}</div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 ) : (
-                    <div className="department-table-container">
+                    <div className="department-table-container department-table-wrapper">
                         <table className="department-table">
                             <thead>
                                 <tr>
-                                    <th style={{ width: 40, textAlign: 'center' }}>
+                                    <th className="checkbox-col">
                                         <input
                                             type="checkbox"
                                             checked={sortedFiltered.length > 0 && selectedDepartments.length === sortedFiltered.length}
                                             onChange={handleSelectAllToggle}
-                                            style={{ cursor: 'pointer', width: 16, height: 16 }}
                                         />
                                     </th>
-                                    <th onClick={() => handleSort('name')} style={{ cursor: 'pointer', userSelect: 'none' }}>
+                                    <th className="sortable" onClick={() => handleSort('name')}>
                                         Department Name {sortField === 'name' && (sortDirection === 'asc' ? '↑' : '↓')}
                                     </th>
-                                    <th onClick={() => handleSort('head')} style={{ cursor: 'pointer', userSelect: 'none' }}>
+                                    <th className="sortable" onClick={() => handleSort('head')}>
                                         Dean {sortField === 'head' && (sortDirection === 'asc' ? '↑' : '↓')}
                                     </th>
-                                    <th onClick={() => handleSort('email')} style={{ cursor: 'pointer', userSelect: 'none' }}>
+                                    <th className="sortable" onClick={() => handleSort('email')}>
                                         Contact {sortField === 'email' && (sortDirection === 'asc' ? '↑' : '↓')}
                                     </th>
-                                    <th onClick={() => handleSort('faculties')} style={{ cursor: 'pointer', userSelect: 'none' }}>
+                                    <th className="sortable" onClick={() => handleSort('faculties')}>
                                         No. of Faculties {sortField === 'faculties' && (sortDirection === 'asc' ? '↑' : '↓')}
                                     </th>
-                                    <th onClick={() => handleSort('students')} style={{ cursor: 'pointer', userSelect: 'none' }}>
+                                    <th className="sortable" onClick={() => handleSort('students')}>
                                         No. of Students {sortField === 'students' && (sortDirection === 'asc' ? '↑' : '↓')}
                                     </th>
-                                    <th onClick={() => handleSort('status')} style={{ cursor: 'pointer', userSelect: 'none' }}>
-                                        Status {sortField === 'status' && (sortDirection === 'asc' ? '↑' : '↓')}
-                                    </th>
-                                    <th style={{ width: 84, textAlign: "center" }}></th>
+                                    <th className="actions-col"></th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {sortedFiltered.length === 0 && (
-                                    <tr><td colSpan="8">No programs found.</td></tr>
+                                    <tr><td colSpan="7">No programs found.</td></tr>
                                 )}
                                 {sortedFiltered.map((d, idx) => (
-                                    <tr key={d.id ?? idx} style={{ cursor: 'pointer' }}>
-                                        <td style={{ textAlign: 'center' }} onClick={e => e.stopPropagation()}>
+                                    <tr key={d.id ?? idx} className="clickable">
+                                        <td className="checkbox-cell" onClick={e => e.stopPropagation()}>
                                             <input
                                                 type="checkbox"
                                                 checked={selectedDepartments.includes(d.id)}
                                                 onChange={() => handleCheckboxToggle(d.id)}
-                                                style={{ cursor: 'pointer', width: 16, height: 16 }}
                                                 onClick={e => e.stopPropagation()}
                                             />
                                         </td>
@@ -782,8 +735,7 @@ export default function Department() {
                                         </td>
                                         <td onClick={() => handleUserClick(d)}>{facultiesCount[d.name] ?? d.faculties ?? 0}</td>
                                         <td onClick={() => handleUserClick(d)}>{studentsCount[d.name] ?? d.students ?? ""}</td>
-                                        <td onClick={() => handleUserClick(d)}>{d.status ?? "Active"}</td>
-                                        <td style={{ textAlign: "center" }}>
+                                        <td className="actions-cell">
                                             <div className="actions-cell">
                                                 <button className="department-icon-btn" title="Edit" onClick={e => { e.stopPropagation(); handleEdit(idx); }}>
                                                     <svg width="20" height="20" fill="none" stroke="#222" strokeWidth="2" viewBox="0 0 24 24">

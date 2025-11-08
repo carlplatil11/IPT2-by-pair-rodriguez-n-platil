@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Student;
+use App\Services\LogService;
 
 class StudentController extends Controller
 {
@@ -27,6 +28,7 @@ class StudentController extends Controller
             'phone' => 'nullable|string',
             'department' => 'nullable|string',
             'year' => 'nullable|string',
+            'academic_year' => 'nullable|string',
         ]);
 
         // Handle avatar upload (optional)
@@ -36,6 +38,10 @@ class StudentController extends Controller
         }
 
         $student = Student::create($validated);
+        
+        // Log the creation
+        LogService::logCreate('Student', "Created student: {$student->name}");
+        
         return response()->json($student, 201);
     }
 
@@ -49,6 +55,8 @@ class StudentController extends Controller
     public function update(Request $request, $id)
     {
         $student = Student::findOrFail($id);
+        $oldArchived = $student->archived;
+        
         $validated = $request->validate([
             'name' => 'sometimes|string',
             'course' => 'sometimes|string',
@@ -59,6 +67,7 @@ class StudentController extends Controller
             'phone' => 'nullable|string',
             'department' => 'nullable|string',
             'year' => 'nullable|string',
+            'academic_year' => 'nullable|string',
             'archived' => 'nullable|boolean',
         ]);
 
@@ -70,6 +79,16 @@ class StudentController extends Controller
 
         $student->fill($validated);
         $student->save();
+        
+        // Log the appropriate action
+        if (isset($validated['archived']) && $validated['archived'] == true && $oldArchived != true) {
+            LogService::logArchive('Student', "Archived student: {$student->name}");
+        } elseif (isset($validated['archived']) && $validated['archived'] == false && $oldArchived == true) {
+            LogService::logRestore('Student', "Restored student: {$student->name}");
+        } else {
+            LogService::logUpdate('Student', "Updated student: {$student->name}");
+        }
+        
         return response()->json($student);
     }
 
@@ -77,7 +96,13 @@ class StudentController extends Controller
     public function destroy($id)
     {
         $student = Student::findOrFail($id);
+        $studentName = $student->name;
+        
         $student->delete();
+        
+        // Log the deletion
+        LogService::logDelete('Student', "Permanently deleted student: {$studentName}");
+        
         return response()->json(['message' => 'Deleted successfully']);
     }
 }

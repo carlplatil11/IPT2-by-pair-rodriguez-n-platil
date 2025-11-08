@@ -26,12 +26,16 @@ class DashboardController extends Controller
             $query->where('archived', false)
                   ->orWhereNull('archived');
         })->count();
+        
+        $totalCourses = Course::count();
 
         return response()->json([
             'students' => $totalStudents,
             'faculty' => $totalFaculty,
+            'courses' => $totalCourses,
             'total_students' => $totalStudents,
-            'total_faculty' => $totalFaculty
+            'total_faculty' => $totalFaculty,
+            'total_courses' => $totalCourses
         ]);
     }
 

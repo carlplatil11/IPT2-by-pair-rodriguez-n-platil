@@ -1,0 +1,346 @@
+// Profile Page Styles
+.profile-container {
+    background-color: #f5f7fa;
+    min-height: 100vh;
+    padding: 40px;
+    width: 100%;
+    overflow-y: auto;
+}
+
+.profile-wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+// Alert Messages
+.profile-alert {
+    padding: 16px 20px;
+    border-radius: 8px;
+    margin-bottom: 24px;
+    font-size: 15px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    animation: slideIn 0.3s ease;
+}
+
+.profile-alert-success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.profile-alert-error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+// Profile Cards
+.profile-card {
+    background: white;
+    border-radius: 12px;
+    padding: 32px;
+    margin-bottom: 24px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+// Profile Header Card
+.profile-header-card {
+    background: linear-gradient(135deg, #183153 0%, #25406b 100%);
+    color: white;
+}
+
+.profile-avatar-section {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+}
+
+.profile-avatar {
+    width: 120px;
+    height: 120px;
+    background: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+
+    svg {
+        width: 80px;
+        height: 80px;
+    }
+}
+
+.profile-header-info {
+    flex: 1;
+}
+
+.profile-name {
+    font-size: 32px;
+    font-weight: 700;
+    margin: 0 0 8px 0;
+    color: white;
+}
+
+.profile-role {
+    font-size: 16px;
+    color: #b8c5d6;
+    margin: 0 0 4px 0;
+    font-weight: 500;
+}
+
+.profile-location {
+    font-size: 14px;
+    color: #b8c5d6;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+// Card Header
+.profile-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 28px;
+    padding-bottom: 16px;
+    border-bottom: 2px solid #f0f2f5;
+}
+
+.profile-card-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #183153;
+    margin: 0;
+}
+
+// Edit Button
+.profile-edit-btn {
+    background: #4e8cff;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    transition: all 0.2s ease;
+
+    &:hover {
+        background: #3d7ae8;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(78, 140, 255, 0.3);
+    }
+
+    &:active {
+        transform: translateY(0);
+    }
+}
+
+// Edit Actions
+.profile-edit-actions {
+    display: flex;
+    gap: 12px;
+}
+
+.profile-cancel-btn {
+    background: #e9ecef;
+    color: #495057;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+        background: #dee2e6;
+    }
+}
+
+.profile-save-btn {
+    background: #28a745;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+        background: #218838;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
+    }
+
+    &:active {
+        transform: translateY(0);
+    }
+}
+
+// Info Grid
+.profile-info-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+}
+
+.profile-info-item {
+    display: flex;
+    flex-direction: column;
+}
+
+.profile-info-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #6c757d;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+}
+
+.profile-info-value {
+    font-size: 15px;
+    color: #183153;
+    font-weight: 500;
+    margin: 0;
+    padding: 10px 0;
+}
+
+.profile-role-badge {
+    background: linear-gradient(135deg, #4e8cff 0%, #3d7ae8 100%);
+    color: white;
+    padding: 10px 16px;
+    border-radius: 6px;
+    display: inline-block;
+    width: fit-content;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+// Input Styles
+.profile-input {
+    width: 100%;
+    padding: 12px 16px;
+    border: 2px solid #e9ecef;
+    border-radius: 8px;
+    font-size: 15px;
+    color: #183153;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    font-family: 'Nunito', sans-serif;
+
+    &:focus {
+        outline: none;
+        border-color: #4e8cff;
+        box-shadow: 0 0 0 4px rgba(78, 140, 255, 0.1);
+    }
+
+    &::placeholder {
+        color: #adb5bd;
+    }
+}
+
+// Credentials Info
+.profile-credentials-info {
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border-left: 4px solid #4e8cff;
+}
+
+.profile-info-text {
+    margin: 0;
+    font-size: 15px;
+    color: #183153;
+    display: flex;
+    align-items: center;
+
+    strong {
+        color: #4e8cff;
+        font-weight: 700;
+    }
+}
+
+// Responsive Design
+@media (max-width: 1024px) {
+    .profile-info-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 900px) {
+    .profile-container {
+        padding: 24px 20px;
+    }
+
+    .profile-card {
+        padding: 24px;
+    }
+
+    .profile-avatar-section {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .profile-name {
+        font-size: 26px;
+    }
+}
+
+@media (max-width: 600px) {
+    .profile-info-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .profile-card-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+    }
+
+    .profile-edit-btn,
+    .profile-edit-actions {
+        width: 100%;
+    }
+
+    .profile-edit-actions {
+        button {
+            flex: 1;
+        }
+    }
+
+    .profile-avatar {
+        width: 100px;
+        height: 100px;
+
+        svg {
+            width: 60px;
+            height: 60px;
+        }
+    }
+
+    .profile-name {
+        font-size: 22px;
+    }
+}

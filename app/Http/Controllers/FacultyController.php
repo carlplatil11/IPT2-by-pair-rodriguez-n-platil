@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Faculty;
+use App\Services\LogService;
 
 class FacultyController extends Controller
 {
@@ -29,6 +30,7 @@ class FacultyController extends Controller
             'phone' => 'nullable|string',
             'department' => 'nullable|string',
             'class' => 'nullable|string',
+            'academic_year' => 'nullable|string',
         ]);
 
         // Handle avatar upload
@@ -38,6 +40,10 @@ class FacultyController extends Controller
         }
 
         $faculty = Faculty::create($validated);
+        
+        // Log the creation
+        LogService::logCreate('Faculty', "Created faculty: {$faculty->name}");
+        
         return response()->json($faculty, 201);
     }
 
@@ -53,6 +59,8 @@ class FacultyController extends Controller
     public function update(Request $request, $id)
     {
         $faculty = Faculty::findOrFail($id);
+        $oldArchived = $faculty->archived;
+        
         $validated = $request->validate([
             'name' => 'sometimes|string',
             'subject' => 'sometimes|string',
@@ -63,6 +71,7 @@ class FacultyController extends Controller
             'phone' => 'nullable|string',
             'department' => 'nullable|string',
             'class' => 'nullable|string',
+            'academic_year' => 'nullable|string',
             'archived' => 'nullable|boolean',
         ]);
 
@@ -74,6 +83,16 @@ class FacultyController extends Controller
 
         $faculty->fill($validated);
         $faculty->save();
+        
+        // Log the appropriate action
+        if (isset($validated['archived']) && $validated['archived'] == true && $oldArchived != true) {
+            LogService::logArchive('Faculty', "Archived faculty: {$faculty->name}");
+        } elseif (isset($validated['archived']) && $validated['archived'] == false && $oldArchived == true) {
+            LogService::logRestore('Faculty', "Restored faculty: {$faculty->name}");
+        } else {
+            LogService::logUpdate('Faculty', "Updated faculty: {$faculty->name}");
+        }
+        
         return response()->json($faculty);
     }
 
@@ -81,7 +100,13 @@ class FacultyController extends Controller
     public function destroy($id)
     {
         $faculty = Faculty::findOrFail($id);
+        $facultyName = $faculty->name;
+        
         $faculty->delete();
+        
+        // Log the deletion
+        LogService::logDelete('Faculty', "Permanently deleted faculty: {$facultyName}");
+        
         return response()->json(['message' => 'Deleted successfully']);
     }
 }

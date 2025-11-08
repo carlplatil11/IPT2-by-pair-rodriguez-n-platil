@@ -12,7 +12,7 @@ const HighlightText = ({ text, highlight }) => {
     <>
       {parts.map((part, i) => 
         part.toLowerCase() === highlight.toLowerCase() ? 
-          <span key={i} style={{ backgroundColor: '#fef08a', fontWeight: 600 }}>{part}</span> : 
+          <span key={i} className="highlight-text">{part}</span> : 
           part
       )}
     </>
@@ -24,7 +24,7 @@ const CourseFullForm = memo(({ isEdit, onSubmit, onCancel, form, setForm, depart
         <form className="student-full-form" onSubmit={onSubmit}>
             <div className="student-form-header-row">
                 <h2 className="student-form-title">{isEdit ? "Edit Course" : "Add Course"}</h2>
-                <div className="student-form-group" style={{ minWidth: 260 }}>
+                <div className="student-form-group min-width-260">
                     <label className="sr-only">Department</label>
                     <select
                         required
@@ -43,52 +43,67 @@ const CourseFullForm = memo(({ isEdit, onSubmit, onCancel, form, setForm, depart
             <div className="student-form-section-label"></div>
 
             <div className="student-form-row">
-                <div className="student-form-group" style={{ flex: 1 }}>
+                <div className="student-form-group flex-1">
+                    <label>Course Code</label>
+                    <input
+                        type="text"
+                        required
+                        value={form.code}
+                        onChange={e => setForm({ ...form, code: e.target.value.toUpperCase() })}
+                        placeholder="e.g., BSCS, BSIT, MSCS"
+                        className="text-uppercase"
+                    />
+                </div>
+                <div className="student-form-group flex-1">
                     <label>Course Name</label>
                     <input
                         type="text"
                         required
                         value={form.name}
                         onChange={e => setForm({ ...form, name: e.target.value })}
-                        placeholder="Course Name"
+                        placeholder="Full course name"
                     />
                 </div>
             </div>
 
             <div className="student-form-row">
-                <div className="student-form-group" style={{ flex: 1 }}>
-                    <label>Level</label>
+                <div className="student-form-group flex-1">
+                    <label>Program Level</label>
                     <select
                         required
                         value={form.gender}
                         onChange={e => setForm({ ...form, gender: e.target.value })}
                     >
-                        <option value="">Select</option>
+                        <option value="">Select Level</option>
                         <option>Undergraduate</option>
+                        <option>Graduate</option>
                         <option>Postgraduate</option>
+                        <option>Doctorate</option>
                     </select>
                 </div>
-                <div className="student-form-group" style={{ flex: 1 }}>
-                    <label>Credits</label>
+                <div className="student-form-group flex-1">
+                    <label>Program Duration (years)</label>
                     <input
                         type="number"
                         required
+                        min="1"
+                        max="10"
                         value={form.age}
                         onChange={e => setForm({ ...form, age: e.target.value })}
-                        placeholder="Credits"
+                        placeholder="e.g., 4"
                     />
                 </div>
             </div>
 
             <div className="student-form-row">
-                <div className="student-form-group" style={{ flex: 1 }}>
-                    <label>About</label>
+                <div className="student-form-group flex-1">
+                    <label>Description</label>
                     <textarea
                         required
                         value={form.about}
                         onChange={e => setForm({ ...form, about: e.target.value })}
                         placeholder="About this course"
-                        style={{ minHeight: 60 }}
+                        className="min-height-60"
                     />
                 </div>
             </div>
@@ -109,6 +124,7 @@ export default function Courses() {
     const navigate = useNavigate();
 
     const defaultForm = {
+        code: "",
         name: "",
         department: "",
         age: "",
@@ -129,6 +145,10 @@ export default function Courses() {
     const [search, setSearch] = useState("");
     const [showFilter, setShowFilter] = useState(false);
     const [selectedCourse, setSelectedCourse] = useState(null);
+    
+    // Filter state
+    const [departmentFilter, setDepartmentFilter] = useState('all');
+    const [levelFilter, setLevelFilter] = useState('all');
     
     // Sorting state
     const [sortField, setSortField] = useState(null);
@@ -292,10 +312,14 @@ export default function Courses() {
 
     const handleFilter = () => setShowFilter(true);
 
-    const filteredList = activeCourseList.filter(s =>
-        (s.name || "").toLowerCase().includes(search.toLowerCase()) ||
-        (s.email || "").toLowerCase().includes(search.toLowerCase())
-    );
+    const filteredList = activeCourseList.filter(c => {
+        const matchesSearch = (c.name || "").toLowerCase().includes(search.toLowerCase()) ||
+                             (c.code || "").toLowerCase().includes(search.toLowerCase()) ||
+                             (c.email || "").toLowerCase().includes(search.toLowerCase());
+        const matchesDepartment = departmentFilter === 'all' || c.department === departmentFilter;
+        const matchesLevel = levelFilter === 'all' || c.gender === levelFilter;
+        return matchesSearch && matchesDepartment && matchesLevel;
+    });
 
     // Handle column sorting
     const handleSort = (field) => {
@@ -322,8 +346,6 @@ export default function Courses() {
         if (aVal > bVal) return sortDirection === 'asc' ? 1 : -1;
         return 0;
     });
-
-    const handleLogout = () => navigate("/login");
 
     const handleCourseClick = (course) => setSelectedCourse(course);
     const handleBackToList = () => setSelectedCourse(null);
@@ -376,25 +398,20 @@ export default function Courses() {
     };
 
     return (
-        <div style={{ display: "flex", minHeight: "100vh", background: "#f8fafc" }}>
+        <div className="course-page-wrapper">
             <Navbar />
-            <main className="student-container" style={{ flex: 1 }}>
-                <div className="dashboard-header">
-                    <button className="logout-btn" onClick={handleLogout}>Log out</button>
-                </div>
-
+            <main className="course-main-container">
                 {!selectedCourse && (
-                    <div style={{ padding: '24px 40px', borderBottom: '1px solid #e5e7eb' }}>
-                        <h1 style={{ fontSize: 28, fontWeight: 700, color: '#111827', margin: 0, marginBottom: 4 }}>Courses</h1>
-                        <p style={{ fontSize: 14, color: '#6b7280', margin: 0 }}>Manage course information</p>
+                    <div className="course-page-header">
+                        <h1>Courses</h1>
+                        <p>Manage course information</p>
                     </div>
                 )}
 
                 {!selectedCourse && (
-                    <div style={{ display: 'flex', gap: 16, padding: '20px 40px', borderBottom: '1px solid #e5e7eb' }}>
-                        <div style={{ position: 'relative', flex: 1, maxWidth: 400 }}>
+                    <div className="course-toolbar">
+                        <div className="course-search-wrapper">
                             <svg
-                                style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)', width: 18, height: 18 }}
                                 viewBox="0 0 24 24"
                                 fill="none"
                                 stroke="#9ca3af"
@@ -408,55 +425,40 @@ export default function Courses() {
                                 placeholder="Search courses..."
                                 value={search}
                                 onChange={e => setSearch(e.target.value)}
-                                style={{
-                                    width: '100%',
-                                    padding: '10px 12px 10px 40px',
-                                    border: '1px solid #e5e7eb',
-                                    borderRadius: 8,
-                                    fontSize: 14,
-                                    outline: 'none'
-                                }}
                             />
                         </div>
+                        <select
+                            className="course-filter-select"
+                            value={departmentFilter}
+                            onChange={e => setDepartmentFilter(e.target.value)}
+                        >
+                            <option value="all">All Departments</option>
+                            {departments.filter(d => d && d.name).map(d => (
+                                <option key={d.id || d.name} value={d.name}>{d.name}</option>
+                            ))}
+                        </select>
+                        <select
+                            className="course-filter-select"
+                            value={levelFilter}
+                            onChange={e => setLevelFilter(e.target.value)}
+                        >
+                            <option value="all">All Levels</option>
+                            <option value="Undergraduate">Undergraduate</option>
+                            <option value="Postgraduate">Postgraduate</option>
+                        </select>
                         {selectedCourses.length > 0 && (
                             <button 
+                                className="course-archive-btn"
                                 onClick={handleArchiveAll}
-                                style={{
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    gap: 8,
-                                    padding: '10px 16px',
-                                    background: '#fef3c7',
-                                    color: '#ca8a04',
-                                    border: 'none',
-                                    borderRadius: 8,
-                                    fontSize: 13,
-                                    fontWeight: 600,
-                                    cursor: 'pointer',
-                                    whiteSpace: 'nowrap'
-                                }}
                             >
                                 📦 Archive Selected ({selectedCourses.length})
                             </button>
                         )}
-                        <button
+                        <button 
+                            className="course-add-btn-primary"
                             onClick={handleAdd}
-                            style={{
-                                padding: '10px 20px',
-                                background: '#111827',
-                                color: 'white',
-                                border: 'none',
-                                borderRadius: 8,
-                                fontSize: 14,
-                                fontWeight: 500,
-                                cursor: 'pointer',
-                                display: 'flex',
-                                alignItems: 'center',
-                                gap: 6,
-                                whiteSpace: 'nowrap'
-                            }}
                         >
-                            <span style={{ fontSize: 18, lineHeight: 1 }}>+</span>
+                            <span>+</span>
                             Add Course
                         </button>
                     </div>
@@ -464,10 +466,9 @@ export default function Courses() {
 
                 {selectedCourse && (
                     <div className="student-header">
-                        <button className="student-back-btn" onClick={handleBackToList}>
-                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
-                                <circle cx="12" cy="12" r="12" fill="#222" opacity="0.12"/>
-                                <path d="M14 8l-4 4 4 4" stroke="#222" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                        <button className="student-back-btn" onClick={handleBackToList} aria-label="Go back">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#183153" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                                <path d="M19 12H5M12 19l-7-7 7-7"/>
                             </svg>
                         </button>
                     </div>
@@ -506,7 +507,7 @@ export default function Courses() {
                         <div style={{ minWidth: 320, maxWidth: 600 }}>
                             <div style={{ marginBottom: 24 }}>
                                 <div style={{ fontWeight: 700, fontSize: "1.5rem", marginBottom: 8 }}>
-                                    {selectedCourse.name}
+                                    {selectedCourse.code} - {selectedCourse.name}
                                 </div>
                                 <div style={{ color: "#888", fontSize: "1rem" }}>
                                     {selectedCourse.department}
@@ -518,8 +519,8 @@ export default function Courses() {
                             
                             <div style={{ display: "flex", gap: 40, marginBottom: 24 }}>
                                 <div>
-                                    <div style={{ color: "#888", fontSize: 13 }}>Credits</div>
-                                    <div style={{ fontWeight: 600 }}>{selectedCourse.age}</div>
+                                    <div style={{ color: "#888", fontSize: 13 }}>Duration</div>
+                                    <div style={{ fontWeight: 600 }}>{selectedCourse.age} years</div>
                                 </div>
                                 <div>
                                     <div style={{ color: "#888", fontSize: 13 }}>Level</div>
@@ -562,47 +563,51 @@ export default function Courses() {
                         </div>
                     </div>
                 ) : (
-                    <div className="student-table-container">
+                    <div className="student-table-container course-table-wrapper">
                         <table className="student-table">
                             <thead>
                                 <tr>
-                                    <th style={{ width: 40, textAlign: 'center' }}>
+                                    <th className="checkbox-col">
                                         <input
                                             type="checkbox"
                                             checked={sortedList.length > 0 && selectedCourses.length === sortedList.length}
                                             onChange={handleSelectAllToggle}
-                                            style={{ cursor: 'pointer', width: 16, height: 16 }}
                                         />
                                     </th>
-                                    <th onClick={() => handleSort('name')} style={{ cursor: 'pointer', userSelect: 'none' }}>
+                                    <th className="sortable" onClick={() => handleSort('code')}>
+                                        Code {sortField === 'code' && (sortDirection === 'asc' ? '↑' : '↓')}
+                                    </th>
+                                    <th className="sortable" onClick={() => handleSort('name')}>
                                         Course Name {sortField === 'name' && (sortDirection === 'asc' ? '↑' : '↓')}
                                     </th>
-                                    <th onClick={() => handleSort('department')} style={{ cursor: 'pointer', userSelect: 'none' }}>
+                                    <th className="sortable" onClick={() => handleSort('department')}>
                                         Department {sortField === 'department' && (sortDirection === 'asc' ? '↑' : '↓')}
                                     </th>
-                                    <th onClick={() => handleSort('gender')} style={{ cursor: 'pointer', userSelect: 'none' }}>
+                                    <th className="sortable" onClick={() => handleSort('gender')}>
                                         Level {sortField === 'gender' && (sortDirection === 'asc' ? '↑' : '↓')}
                                     </th>
-                                    <th onClick={() => handleSort('age')} style={{ cursor: 'pointer', userSelect: 'none' }}>
-                                        Credits {sortField === 'age' && (sortDirection === 'asc' ? '↑' : '↓')}
+                                    <th className="sortable" onClick={() => handleSort('age')}>
+                                        Duration {sortField === 'age' && (sortDirection === 'asc' ? '↑' : '↓')}
                                     </th>
-                                    <th></th>
+                                    <th className="actions-col"></th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {sortedList.length === 0 && (
-                                    <tr><td colSpan="6">No courses found.</td></tr>
+                                    <tr><td colSpan="7">No courses found.</td></tr>
                                 )}
                                 {sortedList.map((s, idx) => (
-                                    <tr key={s.id ?? idx} style={{ cursor: "pointer" }}>
-                                        <td style={{ textAlign: 'center' }} onClick={e => e.stopPropagation()}>
+                                    <tr key={s.id ?? idx} className="clickable">
+                                        <td className="checkbox-cell" onClick={e => e.stopPropagation()}>
                                             <input
                                                 type="checkbox"
                                                 checked={selectedCourses.includes(s.id)}
                                                 onChange={() => handleCheckboxToggle(s.id)}
-                                                style={{ cursor: 'pointer', width: 16, height: 16 }}
                                                 onClick={e => e.stopPropagation()}
                                             />
+                                        </td>
+                                        <td onClick={() => handleCourseClick(s)}>
+                                            <HighlightText text={s.code} highlight={search} />
                                         </td>
                                         <td onClick={() => handleCourseClick(s)}>
                                             <HighlightText text={s.name} highlight={search} />
@@ -611,8 +616,8 @@ export default function Courses() {
                                             <HighlightText text={s.department} highlight={search} />
                                         </td>
                                         <td onClick={() => handleCourseClick(s)}>{s.gender}</td>
-                                        <td onClick={() => handleCourseClick(s)}>{s.age}</td>
-                                        <td>
+                                        <td onClick={() => handleCourseClick(s)}>{s.age} years</td>
+                                        <td className="actions-cell">
                                             <button
                                                 className="student-icon-btn"
                                                 title="Edit"

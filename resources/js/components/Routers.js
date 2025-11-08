@@ -10,6 +10,7 @@ import Student from "./Student";
 import Department from "./Department";
 import Courses from "./Courses";
 import Settings from "./Settings";
+import Profile from "./Profile";
 
 
 
@@ -26,6 +27,7 @@ export default function Routers() {
                     <Route path="/department" element={<Department />} />
                     <Route path="/courses" element={<Courses />} />
                     <Route path="/settings" element={<Settings />} />
+                    <Route path="/profile" element={<Profile />} />
 
 
 

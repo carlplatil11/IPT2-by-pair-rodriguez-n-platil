@@ -54,3 +54,25 @@ Route::get('students/{id}', [App\Http\Controllers\StudentController::class, 'sho
 Route::put('students/{id}', [App\Http\Controllers\StudentController::class, 'update']); // Update
 Route::patch('students/{id}', [App\Http\Controllers\StudentController::class, 'update']); // Partial update
 Route::delete('students/{id}', [App\Http\Controllers\StudentController::class, 'destroy']); // Delete
+
+// Academic Years CRUD API (explicit routes)
+Route::get('academic-years', [App\Http\Controllers\AcademicYearController::class, 'index']); // List all
+Route::post('academic-years', [App\Http\Controllers\AcademicYearController::class, 'store']); // Create
+Route::get('academic-years/{id}', [App\Http\Controllers\AcademicYearController::class, 'show']); // Read
+Route::put('academic-years/{id}', [App\Http\Controllers\AcademicYearController::class, 'update']); // Update
+Route::patch('academic-years/{id}', [App\Http\Controllers\AcademicYearController::class, 'update']); // Partial update
+Route::delete('academic-years/{id}', [App\Http\Controllers\AcademicYearController::class, 'destroy']); // Delete
+
+// Admin Profile API
+Route::get('admin/profile', [App\Http\Controllers\ProfileController::class, 'getProfile']); // Get profile
+Route::put('admin/profile', [App\Http\Controllers\ProfileController::class, 'updateProfile']); // Update profile
+Route::post('admin/credentials', [App\Http\Controllers\ProfileController::class, 'updateCredentials']); // Update credentials
+Route::post('admin/login', [App\Http\Controllers\ProfileController::class, 'login']); // Login
+
+// System Logs API (explicit routes)
+Route::get('logs', [App\Http\Controllers\LogController::class, 'index']); // List all logs
+Route::post('logs', [App\Http\Controllers\LogController::class, 'store']); // Create log
+Route::get('logs/{id}', [App\Http\Controllers\LogController::class, 'show']); // Read single log
+Route::delete('logs/{id}', [App\Http\Controllers\LogController::class, 'destroy']); // Delete single log
+Route::post('logs/clear', [App\Http\Controllers\LogController::class, 'clear']); // Clear all logs
+

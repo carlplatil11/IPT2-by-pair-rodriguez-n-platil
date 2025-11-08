@@ -13,7 +13,7 @@ const HighlightText = ({ text, highlight }) => {
     <>
       {parts.map((part, i) => 
         part.toLowerCase() === highlight.toLowerCase() ? 
-          <span key={i} style={{ backgroundColor: '#fef08a', fontWeight: 600 }}>{part}</span> : 
+          <span key={i} className="highlight-text">{part}</span> : 
           part
       )}
     </>
@@ -32,7 +32,7 @@ class LocalDB {
 const localDB = new LocalDB();
 
 /* Form overlay (left card) */
-const FacultyFullForm = memo(({ isEdit, onSubmit, onCancel, form, setForm, departments = [], courses = [] }) => {
+const FacultyFullForm = memo(({ isEdit, onSubmit, onCancel, form, setForm, departments = [], courses = [], academicYears = [] }) => {
   // Filter courses based on selected department
   const filteredCourses = form.department 
     ? courses.filter(c => c.department === form.department)
@@ -43,7 +43,7 @@ const FacultyFullForm = memo(({ isEdit, onSubmit, onCancel, form, setForm, depar
       <form className="faculty-full-form" onSubmit={onSubmit}>
         <div className="faculty-form-header-row">
           <h2 className="faculty-form-title">{isEdit ? "Edit Faculty" : "Add Faculty"}</h2>
-          <div className="faculty-form-group" style={{ minWidth: 260 }}>
+          <div className="faculty-form-group min-width-260">
             <label className="sr-only">Department</label>
             <select
               required
@@ -63,36 +63,25 @@ const FacultyFullForm = memo(({ isEdit, onSubmit, onCancel, form, setForm, depar
         </div>
 
       <div className="faculty-form-row">
-        <div className="faculty-form-group" style={{ flex: 1 }}>
+        <div className="faculty-form-group flex-1">
           <label>Full Name</label>
           <input type="text" required value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} placeholder="Full Name" />
         </div>
       </div>
 
       <div className="faculty-form-row">
-        <div className="faculty-form-group" style={{ flex: 2 }}>
+        <div className="faculty-form-group flex-2">
           <label>Email address</label>
           <input type="email" required value={form.email} onChange={e => setForm({ ...form, email: e.target.value })} placeholder="Email address" />
         </div>
-        <div className="faculty-form-group" style={{ flex: 1 }}>
-          <label>Gender</label>
-          <select required value={form.gender} onChange={e => setForm({ ...form, gender: e.target.value })}>
-            <option value="">Select</option>
-            <option>Male</option>
-            <option>Female</option>
-          </select>
-        </div>
-      </div>
-
-      <div className="faculty-form-row">
-        <div className="faculty-form-group" style={{ flex: 1 }}>
+        <div className="faculty-form-group flex-1">
           <label>Phone number</label>
           <input type="text" value={form.phone} onChange={e => setForm({ ...form, phone: e.target.value })} placeholder="Phone number" />
         </div>
       </div>
 
       <div className="faculty-form-row">
-        <div className="faculty-form-group" style={{ flex: 1 }}>
+        <div className="faculty-form-group flex-1">
           <label>Course</label>
           <select
             required
@@ -103,21 +92,53 @@ const FacultyFullForm = memo(({ isEdit, onSubmit, onCancel, form, setForm, depar
             <option value="">
               {form.department ? "Select course" : "Select department first"}
             </option>
-            {filteredCourses.filter(c => c && c.name).map(c => (
-              <option key={c.id ?? c.name} value={c.name}>{c.name}</option>
+            {filteredCourses.filter(c => c && (c.code || c.name)).map(c => (
+              <option key={c.id ?? c.code ?? c.name} value={c.code || c.name}>
+                {c.code ? `${c.code} - ${c.name}` : c.name}
+              </option>
             ))}
           </select>
         </div>
-        <div className="faculty-form-group" style={{ flex: 1 }}>
+      </div>
+
+      <div className="faculty-form-row">
+        <div className="faculty-form-group flex-1">
+          <label>Academic Year</label>
+          <select
+            required
+            value={form.academic_year}
+            onChange={e => setForm({ ...form, academic_year: e.target.value })}
+            aria-label="Academic Year"
+          >
+            <option value="">Select Academic Year</option>
+            {academicYears.filter(ay => ay && ay.name).map(ay => (
+              <option key={ay.id ?? ay.name} value={ay.name}>
+                {ay.name}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div className="faculty-form-group flex-1">
           <label>Age</label>
           <input type="number" required value={form.age} onChange={e => setForm({ ...form, age: e.target.value })} placeholder="Age" />
         </div>
       </div>
 
       <div className="faculty-form-row">
-        <div className="faculty-form-group" style={{ flex: 1 }}>
+        <div className="faculty-form-group flex-1">
+          <label>Gender</label>
+          <select required value={form.gender} onChange={e => setForm({ ...form, gender: e.target.value })}>
+            <option value="">Select</option>
+            <option>Male</option>
+            <option>Female</option>
+          </select>
+        </div>
+      </div>
+
+      <div className="faculty-form-row">
+        <div className="faculty-form-group flex-1">
           <label>About</label>
-          <textarea required value={form.about} onChange={e => setForm({ ...form, about: e.target.value })} placeholder="About this faculty member" style={{ minHeight: 60 }} />
+          <textarea required value={form.about} onChange={e => setForm({ ...form, about: e.target.value })} placeholder="About this faculty member" className="min-height-60" />
         </div>
       </div>
 
@@ -146,18 +167,20 @@ export default function Faculty() {
   }, []);
 
   const defaultForm = {
-    name: "", subject: "", email: "", age: "", gender: "Male", avatar: "", about: "", phone: "", department: ""
+    name: "", subject: "", email: "", age: "", gender: "Male", avatar: "", about: "", phone: "", department: "", academic_year: ""
   };
 
   const [facultyList, setFacultyList] = useState([]);
   const [departments, setDepartments] = useState([]);
   const [courses, setCourses] = useState([]);
+  const [academicYears, setAcademicYears] = useState([]);
   const [showAdd, setShowAdd] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
   const [editIndex, setEditIndex] = useState(null);
   const [form, setForm] = useState(defaultForm);
   const [search, setSearch] = useState("");
   const [departmentFilter, setDepartmentFilter] = useState("All Departments");
+  const [academicYearFilter, setAcademicYearFilter] = useState("All Academic Years");
   const [showFilter, setShowFilter] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -198,14 +221,15 @@ export default function Faculty() {
       if (mounted) await fetchFaculty();
     })();
     
-    // Refresh every 15 seconds to check for archived faculty
-    const interval = setInterval(() => {
-      if (mounted && !document.hidden) fetchFaculty();
-    }, 15000);
+    // Refresh only when tab becomes visible (no polling to prevent rate limiting)
+    const handleVisibilityChange = () => {
+      if (!document.hidden && mounted) fetchFaculty();
+    };
+    document.addEventListener('visibilitychange', handleVisibilityChange);
     
     return () => { 
-      mounted = false; 
-      clearInterval(interval);
+      mounted = false;
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
     };
   }, []);
 
@@ -232,8 +256,8 @@ export default function Faculty() {
     };
 
     fetchDepartments();
-    // Reduced polling to 60 seconds to prevent rate limiting
-    const interval = setInterval(fetchDepartments, 60000);
+    // Departments rarely change, no polling needed
+    // Data will be refreshed when component remounts or tab becomes visible
     
     // Refetch when page becomes visible
     const handleVisibilityChange = () => {
@@ -242,7 +266,51 @@ export default function Faculty() {
     document.addEventListener('visibilitychange', handleVisibilityChange);
     
     return () => {
-      clearInterval(interval);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
+  }, []);
+
+  // fetch academic years for dropdown
+  useEffect(() => {
+    let isFetching = false;
+    
+    const fetchAcademicYears = async () => {
+      if (document.hidden || isFetching) return;
+      isFetching = true;
+      
+      try {
+        const res = await fetch('/api/academic-years');
+        if (!res.ok) throw new Error('no api');
+        const json = await res.json();
+        // Filter out archived academic years and sort by year
+        const activeAcademicYears = Array.isArray(json) 
+          ? json.filter(ay => !ay.archived && ay.archived !== 1)
+                .sort((a, b) => {
+                  // Extract start year from academic year name (e.g., "2024-2025" -> 2024)
+                  const yearA = parseInt((a.name || "").split('-')[0]) || 0;
+                  const yearB = parseInt((b.name || "").split('-')[0]) || 0;
+                  return yearB - yearA; // Sort descending (newest first)
+                })
+          : [];
+        setAcademicYears(activeAcademicYears);
+      } catch {
+        setAcademicYears([]);
+      } finally {
+        isFetching = false;
+      }
+    };
+
+    fetchAcademicYears();
+    // Academic years rarely change, no polling needed
+    // Data will be refreshed when component remounts or tab becomes visible
+    
+    // Refetch when page becomes visible
+    const handleVisibilityChange = () => {
+      if (!document.hidden) fetchAcademicYears();
+    };
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    
+    return () => {
       document.removeEventListener('visibilitychange', handleVisibilityChange);
     };
   }, []);
@@ -270,8 +338,8 @@ export default function Faculty() {
     };
 
     fetchCourses();
-    // Reduced polling to 60 seconds to prevent rate limiting
-    const interval = setInterval(fetchCourses, 60000);
+    // Courses rarely change, no polling needed
+    // Data will be refreshed when component remounts or tab becomes visible
     
     // Refetch when page becomes visible
     const handleVisibilityChange = () => {
@@ -280,7 +348,6 @@ export default function Faculty() {
     document.addEventListener('visibilitychange', handleVisibilityChange);
     
     return () => {
-      clearInterval(interval);
       document.removeEventListener('visibilitychange', handleVisibilityChange);
     };
   }, []);
@@ -342,19 +409,21 @@ export default function Faculty() {
     }
   };
 
-  const handleDelete = async (item) => {
+  const handleArchive = async (item) => {
     if (!item || !item.id) return;
-    if (!window.confirm("Are you sure you want to delete this record?")) return;
+    if (!window.confirm("Are you sure you want to archive this faculty member?")) return;
     try {
-      const res = await fetch(`/api/faculties/${item.id}`, { method: 'DELETE' });
+      const res = await fetch(`/api/faculties/${item.id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ archived: true })
+      });
       if (res.ok) {
-        setFacultyList(prev => prev.filter(f => f.id !== item.id));
-        logger.logDelete('Faculty', `Deleted faculty: ${item.name}`);
+        setFacultyList(prev => prev.map(f => f.id === item.id ? { ...f, archived: true } : f));
+        logger.logArchive('Faculty', `Archived faculty: ${item.name}`);
       }
-      else { await localDB.delete(item.id); setFacultyList(prev => prev.filter(f => f.id !== item.id)); }
-    } catch {
-      await localDB.delete(item.id);
-      setFacultyList(prev => prev.filter(f => f.id !== item.id));
+    } catch (err) {
+      console.error('Failed to archive faculty:', err);
     }
     if (selectedUser && selectedUser.id === item.id) setSelectedUser(null);
   };
@@ -428,7 +497,8 @@ export default function Faculty() {
     const matchesSearch = (f.name || "").toLowerCase().includes(search.toLowerCase()) ||
                          (f.email || "").toLowerCase().includes(search.toLowerCase());
     const matchesDepartment = departmentFilter === "All Departments" || f.department === departmentFilter;
-    return matchesSearch && matchesDepartment;
+    const matchesAcademicYear = academicYearFilter === "All Academic Years" || f.academic_year === academicYearFilter;
+    return matchesSearch && matchesDepartment && matchesAcademicYear;
   });
 
   // Handle column sorting
@@ -465,31 +535,26 @@ export default function Faculty() {
   };
 
   const handleFilter = () => setShowFilter(true);
-  const handleLogout = () => navigate("/login");
   const handleUserClick = (user) => setSelectedUser(user);
   const handleBackToList = () => setSelectedUser(null);
 
   const fontStyle = { fontFamily: "Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial" };
 
   return (
-    <div style={{ display: "flex", minHeight: "100vh", background: "#f8fafc", ...fontStyle }}>
+    <div className="faculty-page-wrapper">
       <Navbar />
-      <main className="faculty-container" style={{ flex: 1 }}>
-        <div className="dashboard-header">
-          <button className="logout-btn" onClick={handleLogout}>Log out</button>
-        </div>
-
+      <main className="faculty-main-container">
         {!selectedUser && (
-          <div style={{ padding: '24px 40px', borderBottom: '1px solid #e5e7eb' }}>
-            <h1 style={{ margin: 0, fontSize: 28, fontWeight: 700, color: '#111827' }}>Faculty</h1>
-            <p style={{ margin: '4px 0 0 0', fontSize: 14, color: '#6b7280' }}>Manage faculty information</p>
+          <div className="faculty-page-header">
+            <h1>Faculty</h1>
+            <p>Manage faculty information</p>
           </div>
         )}
 
         {!selectedUser && (
-          <div style={{ display: 'flex', gap: 16, padding: '20px 40px', alignItems: 'center', borderBottom: '1px solid #e5e7eb' }}>
-            <div style={{ position: 'relative', flex: 1, maxWidth: 400 }}>
-              <svg style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)', width: 20, height: 20 }} viewBox="0 0 24 24" fill="none" stroke="#9ca3af" strokeWidth="2">
+          <div className="faculty-toolbar">
+            <div className="faculty-search-wrapper">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#9ca3af" strokeWidth="2">
                 <circle cx="11" cy="11" r="8"/>
                 <path d="m21 21-4.35-4.35"/>
               </svg>
@@ -498,173 +563,135 @@ export default function Faculty() {
                 placeholder="Search faculty..." 
                 value={search} 
                 onChange={e => setSearch(e.target.value)}
-                style={{
-                  width: '100%',
-                  padding: '10px 12px 10px 40px',
-                  border: '1px solid #d1d5db',
-                  borderRadius: 8,
-                  fontSize: 14,
-                  outline: 'none',
-                  transition: 'border-color 0.2s'
-                }}
-                onFocus={e => e.target.style.borderColor = '#3b82f6'}
-                onBlur={e => e.target.style.borderColor = '#d1d5db'}
               />
             </div>
             <select
+              className="faculty-filter-select"
               value={departmentFilter}
               onChange={e => setDepartmentFilter(e.target.value)}
-              style={{
-                padding: '10px 32px 10px 12px',
-                border: '1px solid #d1d5db',
-                borderRadius: 8,
-                fontSize: 14,
-                color: '#374151',
-                background: '#fff',
-                cursor: 'pointer',
-                outline: 'none',
-                appearance: 'none',
-                backgroundImage: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' fill=\'none\' viewBox=\'0 0 20 20\'%3E%3Cpath stroke=\'%236b7280\' stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'1.5\' d=\'M6 8l4 4 4-4\'/%3E%3C/svg%3E")',
-                backgroundPosition: 'right 8px center',
-                backgroundRepeat: 'no-repeat',
-                backgroundSize: '20px'
-              }}
             >
               <option value="All Departments">All Departments</option>
               {departments.filter(d => d && d.name).map(d => (
                 <option key={d.id ?? d.name} value={d.name}>{d.name}</option>
               ))}
             </select>
+            <select
+              className="faculty-filter-select"
+              value={academicYearFilter}
+              onChange={e => setAcademicYearFilter(e.target.value)}
+            >
+              <option value="All Academic Years">All Academic Years</option>
+              {academicYears.filter(ay => ay && ay.name).map(ay => (
+                <option key={ay.id ?? ay.name} value={ay.name}>{ay.name}</option>
+              ))}
+            </select>
             {selectedFaculty.length > 0 && (
               <button 
+                className="faculty-archive-btn"
                 onClick={handleArchiveAll}
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: 8,
-                  padding: '10px 16px',
-                  background: '#fef3c7',
-                  color: '#ca8a04',
-                  border: 'none',
-                  borderRadius: 8,
-                  fontSize: 13,
-                  fontWeight: 600,
-                  cursor: 'pointer',
-                  whiteSpace: 'nowrap'
-                }}
               >
                 📦 Archive Selected ({selectedFaculty.length})
               </button>
             )}
             <button 
+              className="faculty-add-btn-primary"
               onClick={handleAdd}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: 8,
-                padding: '10px 20px',
-                background: '#111827',
-                color: '#fff',
-                border: 'none',
-                borderRadius: 8,
-                fontSize: 14,
-                fontWeight: 600,
-                cursor: 'pointer',
-                whiteSpace: 'nowrap'
-              }}
             >
-              <span style={{ fontSize: 18, lineHeight: 1 }}>+</span>
+              <span>+</span>
               Add Faculty
             </button>
           </div>
         )}
 
         <div className="faculty-header" style={{ display: selectedUser ? 'flex' : 'none' }}>
-          <button className="faculty-back-btn" onClick={() => selectedUser ? handleBackToList() : navigate(-1)}>
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="12" fill="#222" opacity="0.12"/><path d="M14 8l-4 4 4 4" stroke="#222" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+          <button className="faculty-back-btn" onClick={() => selectedUser ? handleBackToList() : navigate(-1)} aria-label="Go back">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#183153" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M19 12H5M12 19l-7-7 7-7"/>
+            </svg>
           </button>
 
           <div className="faculty-actions">
           </div>
         </div>
 
-  {showAdd && <FacultyFullForm isEdit={false} onSubmit={handleAddSubmit} onCancel={() => setShowAdd(false)} form={form} setForm={setForm} departments={departments} courses={courses} />}
-  {showEdit && <FacultyFullForm isEdit={true} onSubmit={handleEditSubmit} onCancel={() => setShowEdit(false)} form={form} setForm={setForm} departments={departments} courses={courses} />}
+  {showAdd && <FacultyFullForm isEdit={false} onSubmit={handleAddSubmit} onCancel={() => setShowAdd(false)} form={form} setForm={setForm} departments={departments} courses={courses} academicYears={academicYears} />}
+  {showEdit && <FacultyFullForm isEdit={true} onSubmit={handleEditSubmit} onCancel={() => setShowEdit(false)} form={form} setForm={setForm} departments={departments} courses={courses} academicYears={academicYears} />}
 
         {!showAdd && !showEdit && selectedUser ? (
-          <div style={{ display: "flex", justifyContent: "center", alignItems: "flex-start", marginTop: 40, gap: 60 }}>
-            <div style={{ display: "flex", flexDirection: "column", alignItems: "center", minWidth: 320 }}>
-              <img src={selectedUser.avatar || "https://randomuser.me/api/portraits/lego/1.jpg"} alt={selectedUser.name} style={{ width: 220, height: 220, borderRadius: "50%", objectFit: "cover", boxShadow: "0 4px 24px #e6eaf1" }} />
-              <div style={{ marginTop: 24, fontWeight: 700, fontSize: "1.3rem", textAlign: "center" }}>{selectedUser.name}</div>
-              <div style={{ color: "#888", fontSize: "1rem", marginBottom: 24, textAlign: "center" }}>{selectedUser.subject}</div>
+          <div className="faculty-detail-wrapper">
+            <div className="faculty-detail-left">
+              <img src={selectedUser.avatar || "https://randomuser.me/api/portraits/lego/1.jpg"} alt={selectedUser.name} className="faculty-detail-avatar-large" />
+              <div className="faculty-detail-name">{selectedUser.name}</div>
+              <div className="faculty-detail-department">{selectedUser.subject}</div>
 
-              <div style={{ display: "flex", gap: 24, marginTop: 16 }}>
-                <button style={{ background: "#0033ff", border: "none", borderRadius: 12, padding: 12, cursor: "pointer", fontFamily: fontStyle.fontFamily, fontWeight: 600, color: "#fff" }} onClick={() => handleEdit(selectedUser)}>
+              <div className="faculty-detail-actions">
+                <button className="faculty-form-submit" onClick={() => handleEdit(selectedUser)}>
                   Edit
                 </button>
-                <button style={{ background: "#ff2d2d", border: "none", borderRadius: 12, padding: 12, cursor: "pointer", fontFamily: fontStyle.fontFamily, fontWeight: 600, color: "#fff" }} onClick={() => { handleDelete(selectedUser); handleBackToList(); }}>
-                  Delete
+                <button className="faculty-form-cancel" onClick={() => { handleArchive(selectedUser); handleBackToList(); }}>
+                  Archive
                 </button>
               </div>
             </div>
 
-            <div style={{ minWidth: 320, maxWidth: 400 }}>
-              <div style={{ fontWeight: 700, fontSize: "1.1rem", marginBottom: 8 }}>About</div>
-              <div style={{ color: "#555", marginBottom: 24, lineHeight: 1.6 }}>{selectedUser.about}</div>
-              <div style={{ display: "flex", gap: 40 }}>
-                <div>
-                  <div style={{ color: "#888", fontSize: 13 }}>Age</div>
-                  <div style={{ fontWeight: 600 }}>{selectedUser.age}</div>
+            <div className="faculty-detail-right">
+              <div className="faculty-detail-section-title">About</div>
+              <div className="faculty-detail-about">{selectedUser.about}</div>
+              <div className="faculty-detail-stats">
+                <div className="faculty-detail-stat-item">
+                  <div className="stat-label">Age</div>
+                  <div className="stat-value">{selectedUser.age}</div>
                 </div>
-                <div>
-                  <div style={{ color: "#888", fontSize: 13 }}>Gender</div>
-                  <div style={{ fontWeight: 600 }}>{selectedUser.gender}</div>
+                <div className="faculty-detail-stat-item">
+                  <div className="stat-label">Gender</div>
+                  <div className="stat-value">{selectedUser.gender}</div>
                 </div>
               </div>
             </div>
           </div>
         ) : (
-          <div className="faculty-table-container">
+          <div className="faculty-table-container faculty-table-wrapper">
             <table className="faculty-table">
               <thead>
                 <tr>
-                  <th style={{ width: 40, textAlign: 'center' }}>
+                  <th className="checkbox-col">
                     <input
                       type="checkbox"
                       checked={sortedList.length > 0 && selectedFaculty.length === sortedList.length}
                       onChange={handleSelectAllToggle}
-                      style={{ cursor: 'pointer', width: 16, height: 16 }}
                     />
                   </th>
-                  <th onClick={() => handleSort('name')} style={{ cursor: 'pointer', userSelect: 'none' }}>
+                  <th className="sortable" onClick={() => handleSort('name')}>
                     Name {sortField === 'name' && (sortDirection === 'asc' ? '↑' : '↓')}
                   </th>
-                  <th onClick={() => handleSort('subject')} style={{ cursor: 'pointer', userSelect: 'none' }}>
+                  <th className="sortable" onClick={() => handleSort('subject')}>
                     Course {sortField === 'subject' && (sortDirection === 'asc' ? '↑' : '↓')}
                   </th>
-                  <th onClick={() => handleSort('email')} style={{ cursor: 'pointer', userSelect: 'none' }}>
+                  <th className="sortable" onClick={() => handleSort('email')}>
                     Email address {sortField === 'email' && (sortDirection === 'asc' ? '↑' : '↓')}
                   </th>
-                  <th onClick={() => handleSort('department')} style={{ cursor: 'pointer', userSelect: 'none' }}>
+                  <th className="sortable" onClick={() => handleSort('department')}>
                     Department {sortField === 'department' && (sortDirection === 'asc' ? '↑' : '↓')}
                   </th>
-                  <th onClick={() => handleSort('gender')} style={{ cursor: 'pointer', userSelect: 'none' }}>
+                  <th className="sortable" onClick={() => handleSort('academic_year')}>
+                    Academic Year {sortField === 'academic_year' && (sortDirection === 'asc' ? '↑' : '↓')}
+                  </th>
+                  <th className="sortable" onClick={() => handleSort('gender')}>
                     Gender {sortField === 'gender' && (sortDirection === 'asc' ? '↑' : '↓')}
                   </th>
-                  <th></th>
+                  <th className="actions-col"></th>
                 </tr>
               </thead>
               <tbody>
-                {(!loading && sortedList.length === 0) && <tr><td colSpan="7">No faculty found.</td></tr>}
-                {(loading) && <tr><td colSpan="7">Loading…</td></tr>}
+                {(!loading && sortedList.length === 0) && <tr><td colSpan="8">No faculty found.</td></tr>}
+                {(loading) && <tr><td colSpan="8">Loading…</td></tr>}
                 {sortedList.map((f, idx) => (
-                  <tr key={f.id ?? idx} style={{ cursor: "pointer" }}>
-                    <td style={{ textAlign: 'center' }} onClick={e => e.stopPropagation()}>
+                  <tr key={f.id ?? idx} className="clickable">
+                    <td className="checkbox-cell" onClick={e => e.stopPropagation()}>
                       <input
                         type="checkbox"
                         checked={selectedFaculty.includes(f.id)}
                         onChange={() => handleCheckboxToggle(f.id)}
-                        style={{ cursor: 'pointer', width: 16, height: 16 }}
                         onClick={e => e.stopPropagation()}
                       />
                     </td>
@@ -677,13 +704,30 @@ export default function Faculty() {
                     <td onClick={() => handleUserClick(f)}><HighlightText text={f.subject} highlight={search} /></td>
                     <td onClick={() => handleUserClick(f)}><HighlightText text={f.email} highlight={search} /></td>
                     <td onClick={() => handleUserClick(f)}><HighlightText text={f.department} highlight={search} /></td>
+                    <td onClick={() => handleUserClick(f)}>
+                      {f.academic_year ? (
+                        <span style={{ 
+                          display: 'inline-block', 
+                          padding: '4px 10px', 
+                          borderRadius: '12px', 
+                          fontSize: '12px', 
+                          fontWeight: '600',
+                          background: '#e0f2fe',
+                          color: '#0369a1'
+                        }}>
+                          <HighlightText text={f.academic_year} highlight={search} />
+                        </span>
+                      ) : (
+                        <span style={{ color: '#999', fontSize: '13px' }}>Not set</span>
+                      )}
+                    </td>
                     <td onClick={() => handleUserClick(f)}>{f.gender}</td>
-                    <td>
+                    <td className="actions-cell">
                       <button className="faculty-icon-btn" title="Edit" onClick={e => { e.stopPropagation(); handleEdit(f); }}>
                         <svg width="20" height="20" fill="none" stroke="#222" strokeWidth="2" viewBox="0 0 24 24"><path d="M12 20h9" /><path d="M16.5 3.5a2.121 2.121 0 1 1 3 3L7 19.5 3 21l1.5-4L16.5 3.5z" /></svg>
                       </button>
-                      <button className="faculty-icon-btn" title="Delete" onClick={e => { e.stopPropagation(); handleDelete(f); }}>
-                        <svg width="20" height="20" fill="none" stroke="#222" strokeWidth="2" viewBox="0 0 24 24"><path d="M3 6h18" /><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" /><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" /><path d="M10 11v6" /><path d="M14 11v6" /></svg>
+                      <button className="faculty-icon-btn" title="Archive" onClick={e => { e.stopPropagation(); handleArchive(f); }}>
+                        <svg width="20" height="20" fill="none" stroke="#222" strokeWidth="2" viewBox="0 0 24 24"><path d="M3 3h18v6H3V3z" /><path d="M3 9v10a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V9" /><path d="M10 13h4" /></svg>
                       </button>
                     </td>
                   </tr>

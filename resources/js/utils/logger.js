@@ -1,46 +1,7 @@
-// Centralized logging utility
+// Centralized logging utility with backend support
 class Logger {
   constructor() {
-    this.storageKey = 'system_logs';
-  }
-
-  // Get all logs from localStorage
-  getLogs() {
-    try {
-      const raw = localStorage.getItem(this.storageKey);
-      return raw ? JSON.parse(raw) : [];
-    } catch {
-      return [];
-    }
-  }
-
-  // Save logs to localStorage
-  saveLogs(logs) {
-    try {
-      localStorage.setItem(this.storageKey, JSON.stringify(logs));
-    } catch (error) {
-      console.error('Failed to save logs:', error);
-    }
-  }
-
-  // Add a new log entry
-  log(action, type, details, status = 'success') {
-    const logs = this.getLogs();
-    const newLog = {
-      id: Date.now() + Math.random(), // Ensure unique ID
-      timestamp: new Date().toISOString(),
-      user: this.getCurrentUser(),
-      action,
-      type,
-      details,
-      status
-    };
-    
-    // Keep only last 100 logs to avoid storage issues
-    const updatedLogs = [newLog, ...logs].slice(0, 100);
-    this.saveLogs(updatedLogs);
-    
-    return newLog;
+    this.apiEndpoint = '/api/logs';
   }
 
   // Get current user from localStorage or default
@@ -53,9 +14,60 @@ class Logger {
     }
   }
 
+  // Add a new log entry to backend
+  async log(action, type, details, status = 'success') {
+    const logData = {
+      user: this.getCurrentUser(),
+      action,
+      type,
+      details,
+      status
+    };
+    
+    try {
+      const response = await fetch(this.apiEndpoint, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(logData)
+      });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      return await response.json();
+    } catch (error) {
+      console.error('Failed to save log to backend:', error);
+      // Fallback: Still return the log object even if backend fails
+      return {
+        ...logData,
+        id: Date.now(),
+        timestamp: new Date().toISOString()
+      };
+    }
+  }
+
   // Clear all logs
-  clearLogs() {
-    this.saveLogs([]);
+  async clearLogs() {
+    try {
+      const response = await fetch(`${this.apiEndpoint}/clear`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      return await response.json();
+    } catch (error) {
+      console.error('Failed to clear logs:', error);
+      throw error;
+    }
   }
 
   // Convenience methods for common actions

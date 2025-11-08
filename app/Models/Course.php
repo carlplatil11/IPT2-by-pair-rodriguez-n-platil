@@ -10,6 +10,7 @@ class Course extends Model
     use HasFactory;
 
     protected $fillable = [
+        'code',
         'name',
         'age', // used for credits
         'gender', // used for level: Undergraduate/Postgraduate

@@ -21,5 +21,6 @@ class Faculty extends Model
         'phone',
         'department',
         'archived',
+        'academic_year',
     ];
 }
